@@ -1,0 +1,407 @@
+<NewDataSet>
+  <xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:Locale="en-US">
+      <xs:complexType>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="Table">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDName" type="xs:string" minOccurs="0" />
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="NPDPolicyCombiningAlgorithm" type="xs:string" minOccurs="0" />
+                <xs:element name="NPDStatus" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table1">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetName" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="ResourceID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetStatus" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersion" type="xs:decimal" minOccurs="0" />
+                <xs:element name="PolicySetVersionDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetCurrentVersion" type="xs:decimal" minOccurs="0" />
+                <xs:element name="PolicyCombiningAlgorithm" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionDefaultXML" type="xs:string" minOccurs="0" />
+                <xs:element name="IsMatchedBySearch" type="xs:boolean" minOccurs="0" />
+                <xs:element name="RowVersionCounter" type="xs:long" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table2">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetHierarchyPath" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table3">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="ObligationID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="ObligationStatus" type="xs:string" minOccurs="0" />
+                <xs:element name="ObligationActionXML" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table4">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeIssuerID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeCategory" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeValueList" type="xs:string" minOccurs="0" />
+                <xs:element name="IsMustBePresentInRequest" type="xs:boolean" minOccurs="0" />
+                <xs:element name="TargetFunction" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeXPath" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table5">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PermissionScopeTemplateID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="TemplateFormula" type="xs:string" minOccurs="0" />
+                <xs:element name="TemplateFormulaSequenceNumber" type="xs:int" minOccurs="0" />
+                <xs:element name="TemplateFormulaAttributeSourceXML" type="xs:string" minOccurs="0" />
+                <xs:element name="LogicalOperator" type="xs:string" minOccurs="0" />
+                <xs:element name="PermissionScopeTemplateStatus" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table6">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="PermissionScopeTemplateID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PermissionScopeTemplateAttributeStatus" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table7">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyName" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyStatus" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyVersion" type="xs:decimal" minOccurs="0" />
+                <xs:element name="PolicyVersionDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyCurrentVersion" type="xs:decimal" minOccurs="0" />
+                <xs:element name="RuleCombiningAlgorithm" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyVersionDefaultXML" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table8">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="ObligationID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="ObligationStatus" type="xs:string" minOccurs="0" />
+                <xs:element name="ObligationActionXML" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table9">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeIssuerID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeCategory" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeValueList" type="xs:string" minOccurs="0" />
+                <xs:element name="IsMustBePresentInRequest" type="xs:boolean" minOccurs="0" />
+                <xs:element name="TargetFunction" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeXPath" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table10">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicyVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleName" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleStatus" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleVersion" type="xs:decimal" minOccurs="0" />
+                <xs:element name="RuleVersionDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleCurrentVersion" type="xs:decimal" minOccurs="0" />
+                <xs:element name="RuleEffect" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleVersionConditionXML" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table11">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeIssuerID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeCategory" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeValueList" type="xs:string" minOccurs="0" />
+                <xs:element name="IsMustBePresentInRequest" type="xs:boolean" minOccurs="0" />
+                <xs:element name="TargetFunction" type="xs:string" minOccurs="0" />
+                <xs:element name="TargetAttributeXPath" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table12">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeName" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeType" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeDataTypeLKID" type="xs:short" minOccurs="0" />
+                <xs:element name="IsGlobal" type="xs:boolean" minOccurs="0" />
+                <xs:element name="AttributeQueryXML" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table13">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeIssuerID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeIssuerName" type="xs:string" minOccurs="0" />
+                <xs:element name="IsGlobal" type="xs:boolean" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table14">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeIssuerID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeSourceName" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeSource" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeSourceIsDefault" type="xs:boolean" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table15">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="PolicySetVersionSearchTargetType" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionSearchTargetAttributeName" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionSearchTargetAttributeValue" type="xs:string" minOccurs="0" />
+                <xs:element name="PolicySetVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table16">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="NPDID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="RuleVersionID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="AttributeID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="Table17">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="ResourceID" msdata:DataType="System.Guid, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" type="xs:string" minOccurs="0" />
+                <xs:element name="ResourceName" type="xs:string" minOccurs="0" />
+                <xs:element name="ResourceDescription" type="xs:string" minOccurs="0" />
+                <xs:element name="ResourcePolicySourceXML" type="xs:string" minOccurs="0" />
+                <xs:element name="BusinessStatus" type="xs:string" minOccurs="0" />
+                <xs:element name="ResourceStatus" type="xs:string" minOccurs="0" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:choice>
+      </xs:complexType>
+    </xs:element>
+  </xs:schema>
+  <Table>
+    <NPDName>EP Admin</NPDName>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <NPDPolicyCombiningAlgorithm>all-permit</NPDPolicyCombiningAlgorithm>
+    <NPDStatus>Active</NPDStatus>
+  </Table>
+  <Table1>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <PolicySetID>d482f004-7154-e511-80ce-989096db664b</PolicySetID>
+    <PolicySetVersionID>d782f004-7154-e511-80ce-989096db664b</PolicySetVersionID>
+    <PolicySetName>WebPageAccessCheckPolicySet</PolicySetName>
+    <ResourceID>c9bb1ed1-7054-e511-80ce-989096db664b</ResourceID>
+    <PolicySetStatus>Active</PolicySetStatus>
+    <PolicySetVersion>1.0000</PolicySetVersion>
+    <PolicySetCurrentVersion>1.0000</PolicySetCurrentVersion>
+    <PolicyCombiningAlgorithm>all-permit</PolicyCombiningAlgorithm>
+    <IsMatchedBySearch>true</IsMatchedBySearch>
+    <RowVersionCounter>-9223372036854775807</RowVersionCounter>
+  </Table1>
+  <Table4>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <PolicySetID>d482f004-7154-e511-80ce-989096db664b</PolicySetID>
+    <PolicySetVersionID>d782f004-7154-e511-80ce-989096db664b</PolicySetVersionID>
+    <AttributeID>31cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <TargetAttributeCategory />
+    <TargetAttributeValueList>EPResource</TargetAttributeValueList>
+    <IsMustBePresentInRequest>false</IsMustBePresentInRequest>
+    <TargetFunction>StringEqual</TargetFunction>
+    <TargetAttributeXPath />
+  </Table4>
+  <Table4>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <PolicySetID>d482f004-7154-e511-80ce-989096db664b</PolicySetID>
+    <PolicySetVersionID>d782f004-7154-e511-80ce-989096db664b</PolicySetVersionID>
+    <AttributeID>34cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <TargetAttributeCategory />
+    <TargetAttributeValueList>Action</TargetAttributeValueList>
+    <IsMustBePresentInRequest>false</IsMustBePresentInRequest>
+    <TargetFunction>StringEqual</TargetFunction>
+    <TargetAttributeXPath />
+  </Table4>
+  <Table7>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <PolicySetID>d482f004-7154-e511-80ce-989096db664b</PolicySetID>
+    <PolicySetVersionID>d782f004-7154-e511-80ce-989096db664b</PolicySetVersionID>
+    <PolicyID>581d88b3-7054-e511-80ce-989096db664b</PolicyID>
+    <PolicyVersionID>5b1d88b3-7054-e511-80ce-989096db664b</PolicyVersionID>
+    <PolicyName>WebPageAccessCheckPolicy</PolicyName>
+    <PolicyStatus>Active</PolicyStatus>
+    <PolicyVersion>1.0000</PolicyVersion>
+    <PolicyCurrentVersion>1.0000</PolicyCurrentVersion>
+    <RuleCombiningAlgorithm>all-permit</RuleCombiningAlgorithm>
+  </Table7>
+  <Table10>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <PolicyID>581d88b3-7054-e511-80ce-989096db664b</PolicyID>
+    <PolicyVersionID>5b1d88b3-7054-e511-80ce-989096db664b</PolicyVersionID>
+    <RuleID>d48d2fa6-7054-e511-80ce-989096db664b</RuleID>
+    <RuleVersionID>d78d2fa6-7054-e511-80ce-989096db664b</RuleVersionID>
+    <RuleName>WebPageAccessCheckRule</RuleName>
+    <RuleStatus>Active</RuleStatus>
+    <RuleVersion>1.0000</RuleVersion>
+    <RuleCurrentVersion>1.0000</RuleCurrentVersion>
+    <RuleEffect>Permit</RuleEffect>
+    <RuleVersionConditionXML>&lt;Apply xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" FunctionId="IntegerGreaterThan" &gt;              &lt;Apply xmlns:xacml="urn:oasis:names:tc:xacml:2.0:policy:schema:os" FunctionId="BitwiseAnd" &gt;                &lt;ResourceAttributeDesignator AttributeId="EPResourceRoleSum" DataType="http://www.w3.org/2001/XMLSchema#integer"&gt;&lt;/ResourceAttributeDesignator&gt;                &lt;SubjectAttributeDesignator AttributeId="EPSubjectRoleSum" DataType="http://www.w3.org/2001/XMLSchema#integer"&gt;&lt;/SubjectAttributeDesignator&gt;              &lt;/Apply&gt;              &lt;AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer"&gt;0&lt;/AttributeValue&gt;            &lt;/Apply&gt;</RuleVersionConditionXML>
+  </Table10>
+  <Table12>
+    <AttributeID>31cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <AttributeName>ResourceName</AttributeName>
+    <AttributeType>Resource</AttributeType>
+    <AttributeDataTypeLKID>1</AttributeDataTypeLKID>
+    <IsGlobal>true</IsGlobal>
+  </Table12>
+  <Table12>
+    <AttributeID>34cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <AttributeName>ActionName</AttributeName>
+    <AttributeType>Action</AttributeType>
+    <AttributeDataTypeLKID>1</AttributeDataTypeLKID>
+    <IsGlobal>true</IsGlobal>
+  </Table12>
+  <Table12>
+    <AttributeID>26dc0072-7054-e511-80ce-989096db664b</AttributeID>
+    <AttributeName>EPResourceRoleSum</AttributeName>
+    <AttributeType>Resource</AttributeType>
+    <AttributeDataTypeLKID>3</AttributeDataTypeLKID>
+    <IsGlobal>false</IsGlobal>
+  </Table12>
+  <Table12>
+    <AttributeID>92a31c83-7054-e511-80ce-989096db664b</AttributeID>
+    <AttributeName>EPSubjectRoleSum</AttributeName>
+    <AttributeType>Subject</AttributeType>
+    <AttributeDataTypeLKID>3</AttributeDataTypeLKID>
+    <IsGlobal>false</IsGlobal>
+  </Table12>
+  <Table13>
+    <AttributeID>31cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <AttributeIssuerID>04cb5c66-ec23-e511-80c9-989096db664b</AttributeIssuerID>
+    <AttributeIssuerName>RBAC</AttributeIssuerName>
+    <IsGlobal>true</IsGlobal>
+  </Table13>
+  <Table13>
+    <AttributeID>34cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <AttributeIssuerID>04cb5c66-ec23-e511-80c9-989096db664b</AttributeIssuerID>
+    <AttributeIssuerName>RBAC</AttributeIssuerName>
+    <IsGlobal>true</IsGlobal>
+  </Table13>
+  <Table13>
+    <AttributeID>26dc0072-7054-e511-80ce-989096db664b</AttributeID>
+    <AttributeIssuerID>3e6bea5a-7054-e511-80ce-989096db664b</AttributeIssuerID>
+    <AttributeIssuerName>EPSecurityAttributeIssuer</AttributeIssuerName>
+    <IsGlobal>false</IsGlobal>
+  </Table13>
+  <Table13>
+    <AttributeID>92a31c83-7054-e511-80ce-989096db664b</AttributeID>
+    <AttributeIssuerID>3e6bea5a-7054-e511-80ce-989096db664b</AttributeIssuerID>
+    <AttributeIssuerName>EPSecurityAttributeIssuer</AttributeIssuerName>
+    <IsGlobal>false</IsGlobal>
+  </Table13>
+  <Table14>
+    <AttributeID>31cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <AttributeIssuerID>04cb5c66-ec23-e511-80c9-989096db664b</AttributeIssuerID>
+    <AttributeSourceName>RBAC-Source</AttributeSourceName>
+    <AttributeSource>&lt;SourceDetail SourceType="RBAC" Location="RBAC"&gt;&lt;Parameters&gt;&lt;Parameter Name="TimeOut" Value="500"/&gt;&lt;Parameter Name="Retry" Value="1"/&gt;&lt;/Parameters&gt;&lt;/SourceDetail&gt;</AttributeSource>
+    <AttributeSourceIsDefault>true</AttributeSourceIsDefault>
+  </Table14>
+  <Table14>
+    <AttributeID>34cb5c66-ec23-e511-80c9-989096db664b</AttributeID>
+    <AttributeIssuerID>04cb5c66-ec23-e511-80c9-989096db664b</AttributeIssuerID>
+    <AttributeSourceName>RBAC-Source</AttributeSourceName>
+    <AttributeSource>&lt;SourceDetail SourceType="RBAC" Location="RBAC"&gt;&lt;Parameters&gt;&lt;Parameter Name="TimeOut" Value="500"/&gt;&lt;Parameter Name="Retry" Value="1"/&gt;&lt;/Parameters&gt;&lt;/SourceDetail&gt;</AttributeSource>
+    <AttributeSourceIsDefault>true</AttributeSourceIsDefault>
+  </Table14>
+  <Table15>
+    <PolicySetVersionSearchTargetType>Resource</PolicySetVersionSearchTargetType>
+    <PolicySetVersionSearchTargetAttributeName>ResourceName</PolicySetVersionSearchTargetAttributeName>
+    <PolicySetVersionSearchTargetAttributeValue>EPResource</PolicySetVersionSearchTargetAttributeValue>
+  </Table15>
+  <Table15>
+    <PolicySetVersionSearchTargetType>Action</PolicySetVersionSearchTargetType>
+    <PolicySetVersionSearchTargetAttributeName>ActionName</PolicySetVersionSearchTargetAttributeName>
+    <PolicySetVersionSearchTargetAttributeValue>Action</PolicySetVersionSearchTargetAttributeValue>
+  </Table15>
+  <Table16>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <RuleID>d48d2fa6-7054-e511-80ce-989096db664b</RuleID>
+    <RuleVersionID>d78d2fa6-7054-e511-80ce-989096db664b</RuleVersionID>
+    <AttributeID>26dc0072-7054-e511-80ce-989096db664b</AttributeID>
+  </Table16>
+  <Table16>
+    <NPDID>e209fe43-7054-e511-80ce-989096db664b</NPDID>
+    <RuleID>d48d2fa6-7054-e511-80ce-989096db664b</RuleID>
+    <RuleVersionID>d78d2fa6-7054-e511-80ce-989096db664b</RuleVersionID>
+    <AttributeID>92a31c83-7054-e511-80ce-989096db664b</AttributeID>
+  </Table16>
+  <Table17>
+    <ResourceID>c9bb1ed1-7054-e511-80ce-989096db664b</ResourceID>
+    <ResourceName>EPResource</ResourceName>
+    <ResourceStatus>Active</ResourceStatus>
+  </Table17>
+</NewDataSet>

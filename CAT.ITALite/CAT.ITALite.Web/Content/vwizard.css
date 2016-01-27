@@ -1,0 +1,124 @@
+﻿/*Styles for vwizard-----------------------------------------------------------*/
+.vwizard-shield {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 1001;
+    background: black;
+    opacity: .75;
+    width: 100%;
+    height: 100%;
+    filter: Alpha(Opacity=75) /*{opacityOverlay}*/;
+}
+
+.vwizard {
+    position: fixed;
+    z-index: 1001;
+}
+
+    .vwizard .bar {
+        display: inline-block;
+        width: 30px;
+        height: 100px;
+    }
+
+    .vwizard .ancor {
+        display: inline-block;
+        position: absolute;
+    }
+
+        .vwizard .ancor .bar {
+            display: inline-block;
+            width: 30px;
+            height: 100%;
+            text-align: center;
+            color: #FFF;
+            font-weight: bold;
+        }
+
+            .vwizard .ancor .bar span {
+                position: relative;
+                top: 90%;
+            }
+
+    .vwizard .ancor-left {
+        background-color: blue;
+    }
+
+    .vwizard .ancor-right {
+        background-color: green;
+        text-align: right;
+    }
+
+    .vwizard .content {
+        display: inline-block;
+        position: relative;
+        background-color: #FFF;
+        z-index: 2012;
+    }
+
+        .vwizard .content .close {
+            background: url('/content/themes/base/images/vwizard-close.png');
+            background-position: center center;
+            background-repeat: no-repeat;
+            width: 10px;
+            height: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 3046;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+
+        .vwizard .content .buttons {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+        }
+
+            .vwizard .content .buttons .button {
+                width: 40px;
+                height: 30px;
+                border: none;
+                cursor: pointer;
+                background-repeat: no-repeat;
+                background-color: transparent;
+                background-position: center top;
+                display: inline-block;
+            }
+
+            .vwizard .content .buttons .prev {
+                background-image: url('/content/themes/base/images/vwizard-prev.png');
+            }
+
+            .vwizard .content .buttons .next {
+                background-image: url('/content/themes/base/images/vwizard-next.png');
+            }
+
+            .vwizard .content .buttons .finished {
+                background-image: url('/content/themes/base/images/vwizard-finished.png');
+            }
+
+            .vwizard .content .buttons .help {
+                background-image: url('/content/themes/base/images/vwizard-help.png');
+            }
+
+        .vwizard .content .pages {
+            position: absolute;
+            margin-right: 15px;
+            margin-bottom: 20px;
+        }
+
+            .vwizard .content .pages .page {
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                display: block;
+                width: 300px;
+                height: 300px;
+                padding: 20px;
+                background-color: #FFF;
+            }

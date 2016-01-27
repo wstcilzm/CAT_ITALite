@@ -1,0 +1,595 @@
+﻿/*Styles for vgrid ----------------------------------------------------------*/
+.vgrid {
+    color: #323232;
+    font-size: 12px;
+    position: relative;
+}
+
+    .vgrid table {
+        border-collapse: inherit;
+        table-layout: fixed;
+        margin-top: 0px;
+    }
+
+    .vgrid .vgrid-caption {
+        font: 28px/40px "Segoe UI Light";
+        text-transform: lowercase;
+        color: #444;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 10px;
+    }
+
+    .vgrid .vgrid-filter-icon {
+        background-color: #FFF;
+        background-image: url(/content/themes/base/images/icon-search.png);
+        background-position: 50% 7px;
+        background-repeat: no-repeat;
+        border-bottom: 3px solid #CCC;
+        border-left: 1px solid #CCC;
+        cursor: pointer;
+        display: block;
+        height: 24px;
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        width: 27px;
+        z-index: 3;
+    }
+
+    .vgrid .vgrid-filter-box {
+        position: absolute;
+        right: 0;
+        border-right: 1px solid #CCC;
+        padding: 0;
+        width: 250px;
+        height: 65px;
+    }
+
+        .vgrid .vgrid-filter-box input {
+            font-size: 11px;
+            width: 200px;
+            float: right;
+            border: 1px solid #CCC;
+            margin: 0;
+            height: 20px;
+            padding: 5px;
+            background-color: #fff;
+            margin-right: -1px;
+            -webkit-transition: border-color .1s ease-in-out 0s;
+            -moz-transition: border-color .1s ease-in-out 0s;
+            -o-transition: border-color .1s ease-in-out 0s;
+            -ms-transition: border-color .1s ease-in-out 0s;
+            transition: border-color .1s ease-in-out 0s;
+        }
+
+            .vgrid .vgrid-filter-box input:hover {
+                border-color: #27AAE1;
+            }
+
+    .vgrid .vgrid-header {
+        font-size: 14px;
+        border-bottom: 3px solid #CCCCCC;
+        overflow: hidden;
+        position: relative;
+    }
+
+        .vgrid .vgrid-header th {
+            border-right: 1px solid #CCCCCC;
+            color: #323232;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+            .vgrid .vgrid-header th:last-child {
+                border-right: none;
+            }
+
+            .vgrid .vgrid-header th:hover {
+                background-color: #E1F3FB;
+                cursor: pointer;
+            }
+
+            .vgrid .vgrid-header th div.vgrid-column-filter-icon {
+                position: relative;
+                top: 4px;
+                left: 5px;
+                display: inline-block;
+                width: 14px;
+                height: 14px;
+                background-image: url("/content/themes/base/images/column_filter_icon.png");
+                background-repeat: no-repeat;
+                margin-right: 20px;
+                padding: 0;
+                background-position: center;
+            }
+
+                .vgrid .vgrid-header th div.vgrid-column-filter-icon[onfilter="onfilter"] {
+                    background-image: url("/content/themes/base/images/column_filter_active_icon.png");
+                }
+
+        .vgrid .vgrid-header .sortable {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .vgrid .vgrid-header th div {
+            font-family: "Segoe UI Semibold";
+            font-weight: lighter;
+            text-transform: uppercase;
+            font-size: 11px;
+            text-align: left;
+            line-height: 24px;
+            height: 24px;
+            padding-left: 5px;
+            color: #323232;
+        }
+
+        .vgrid .vgrid-header th input[type="checkbox"] {
+            border: none;
+            margin-left: 5px;
+        }
+
+        .vgrid .vgrid-header th.sortdown {
+            background-color: #E5E5E5;
+            background-image: url('/content/themes/base/images/icon-sort-down.png');
+            background-position: right;
+            background-repeat: no-repeat;
+        }
+
+        .vgrid .vgrid-header th.sortup {
+            background-color: #E5E5E5;
+            background-image: url('/content/themes/base/images/icon-sort-up.png');
+            background-position: right;
+            background-repeat: no-repeat;
+        }
+
+    .vgrid .vgrid-dragbar {
+        position: absolute;
+        overflow: visible;
+        float: left;
+        z-index: 2;
+    }
+
+        .vgrid .vgrid-dragbar div {
+            float: left;
+            background: none;
+            display: block;
+            position: absolute;
+            height: 24px;
+            width: 5px;
+            cursor: col-resize;
+        }
+
+            .vgrid .vgrid-dragbar div:hover {
+                border-left: 1px solid #CCC;
+            }
+
+        .vgrid .vgrid-dragbar .dragging {
+            border-left: 2px solid #CCC;
+        }
+
+    .vgrid .vgrid-body {
+        overflow-x: auto;
+        overflow-y: auto;
+        border: none;
+        padding: 0px;
+        margin: 0px;
+    }
+
+        .vgrid .vgrid-body::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+            background: #ccc;
+        }
+
+        .vgrid .vgrid-body::-webkit-scrollbar-thumb {
+            overflow: visible;
+            border: solid 1px #A6A6A6;
+            background: #666;
+        }
+
+        .vgrid .vgrid-body::-webkit-scrollbar-button {
+            height: 0;
+            width: 0;
+        }
+
+        .vgrid .vgrid-body table {
+            border-top: 10px solid #FFFFFF;
+        }
+
+            .vgrid .vgrid-body table > tbody {
+                display: block;
+                overflow: auto;
+                width: 100%;
+            }
+
+        .vgrid .vgrid-body tr {
+        }
+
+            .vgrid .vgrid-body tr td.primary {
+                /*background-color: #E1F3FB;*/
+            }
+
+            .vgrid .vgrid-body tr td.checkbox input {
+                margin-left: 5px;
+                /*background-color:#FFF;*/
+            }
+
+                .vgrid .vgrid-body tr td.checkbox input[type="checkbox"] {
+                    border: none;
+                }
+
+            .vgrid .vgrid-body tr td {
+                padding: 0px;
+                height: 30px;
+                line-height: 30px;
+                border-bottom: 1px solid white;
+                border-right: 1px solid;
+                border-right-color: transparent;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+
+                .vgrid .vgrid-body tr td div.editor-div {
+                    line-height: 30px;
+                    height: 30px;
+                }
+
+                .vgrid .vgrid-body tr td span.editor-icon {
+                    display: inline-block;
+                    width: 20px;
+                    height: 30px;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    float: left;
+                }
+
+                .vgrid .vgrid-body tr td div.editor-empty {
+                    color: #AAA;
+                    font-style: italic;
+                }
+
+                .vgrid .vgrid-body tr td span.editor-processing {
+                    background-image: url('/content/themes/base/images/progress.gif');
+                }
+
+                .vgrid .vgrid-body tr td span.editor-error {
+                    background-image: url('/content/themes/base/images/editor-error.gif');
+                }
+
+                .vgrid .vgrid-body tr td span.editor-warning {
+                }
+
+                .vgrid .vgrid-body tr td div.editor-div-focus {
+                    background-color: #FFF;
+                    color: #444;
+                }
+
+                .vgrid .vgrid-body tr td div a.vgrid-datatype-url {
+                    color: #2086BF;
+                    cursor: auto;
+                    font-family: 'Segoe UI';
+                    font-size: 11px;
+                    text-decoration: none;
+                    background-color: transparent;
+                }
+
+                    .vgrid .vgrid-body tr td div a.vgrid-datatype-url:hover {
+                        text-decoration: underline;
+                    }
+
+                .vgrid .vgrid-body tr td > div {
+                    padding-left: 5px;
+                    display: block;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                }
+
+        .vgrid .vgrid-body .per {
+            position: relative;
+            height: 20px;
+        }
+
+            .vgrid .vgrid-body .per > span {
+                position: absolute;
+                top: -3px;
+                color: #333;
+                padding-left: 5px;
+            }
+
+    .vgrid .vgrid-total {
+        border-top: 2px solid #CCC;
+        overflow: hidden;
+    }
+
+        .vgrid .vgrid-total table tr td {
+            padding: 0px;
+            height: 20px;
+            line-height: 20px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 1px solid #CCC;
+        }
+
+            .vgrid .vgrid-total table tr td:last-child {
+                border: none;
+            }
+
+        .vgrid .vgrid-total .vgrid-statistics {
+            font-size: 13px;
+            font-family: 'Segoe UI';
+            background-color: #FFF;
+        }
+
+        .vgrid .vgrid-total table tr td div {
+            padding-left: 5px;
+            display: block;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+            .vgrid .vgrid-total table tr td div.text {
+                font-weight: bold;
+                font-size: 16px;
+                color: rgb(248, 242, 242);
+                font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+            }
+
+    .vgrid .vgrid-body tr:nth-of-type(2n+1) {
+        /* background-color: #E1F3FB; */
+        background: rgba(122, 203, 242, 0.2);
+    }
+
+    .vgrid .vgrid-body tr:hover {
+        /*background-color: #E1F3FB !important;*/
+        background-color: #6AC4EA !important;
+        color: #FFF !important;
+    }
+
+        .vgrid .vgrid-body tr:hover td.primary {
+            background-color: #71B1D1;
+            color: #FFFFFF;
+            background-image: url('/content/themes/base/images/grid-go-wht.png');
+            background-position: right;
+            background-repeat: no-repeat;
+            cursor: pointer;
+        }
+
+    .vgrid .vgrid-body tr[vselected="true"] td {
+        background-color: #6AC4EA;
+        color: #FFFFFF;
+    }
+
+    .vgrid .vgrid-body tr[vselected="true"]:hover {
+        background-color: #E1F3FB !important;
+    }
+
+    .vgrid .vgrid-body tr[vselected="true"] td .vm-status {
+        background-image: url("/content/themes/base/images/status_w.png");
+    }
+
+    .vgrid .vgrid-body tr[vselected="true"] td .vm-status-saved {
+        background-image: url("/content/themes/base/images/save-icon_w.png") !important;
+    }
+
+    .vgrid .vgrid-body tr[vselected="true"] td.primary {
+        background-color: #3AA0CC;
+        color: #FFFFFF;
+        background-image: url('/content/themes/base/images/grid-go-wht.png');
+        background-position: right;
+        background-repeat: no-repeat;
+    }
+
+    .vgrid .vgrid-body div.vgrid-empty {
+        background-color: #FFF !important;
+        text-align: center;
+        font-size: 25px;
+        color: #777;
+    }
+
+    .vgrid .vgrid-pagebar {
+        height: 25px;
+        line-height: 25px;
+        padding-top: 5px;
+        border-top: 3px solid #CCCCCC;
+        border-bottom: 1px solid #CCCCCC;
+    }
+
+        .vgrid .vgrid-pagebar .btnseparator {
+            display: inline-block;
+            width: 0px;
+            height: 20px;
+            border-left: 1px solid #CCC;
+            border-right: 1px solid #FFF;
+            margin-left: 10px;
+            margin-right: 10px;
+            float: left;
+        }
+
+        .vgrid .vgrid-pagebar .pageGroup {
+            display: inline-block;
+            float: left;
+        }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageOption {
+                display: inline-block;
+                float: left;
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pagination {
+                display: inline-block;
+                float: left;
+                width: 35px;
+                padding: 3px 5px 1px 5px;
+                margin: 0px;
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageButton {
+                display: inline-block;
+                float: left;
+                width: 20px;
+                height: 20px;
+                border: 1px solid;
+                border-color: transparent;
+                background-repeat: no-repeat;
+                background-position: center;
+                cursor: pointer;
+            }
+
+                .vgrid .vgrid-pagebar .pageGroup .pageButton:hover {
+                    border: 1px solid #CCC;
+                }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageRefresh {
+                background-image: url('/content/themes/base/images/reload-icon.png');
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageFirst {
+                background-image: url('/content/themes/base/images/first.gif');
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pagePrev {
+                background-image: url('/content/themes/base/images/prev.gif');
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageNext {
+                background-image: url('/content/themes/base/images/next.gif');
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageLast {
+                background-image: url('/content/themes/base/images/last.gif');
+            }
+
+            .vgrid .vgrid-pagebar .pageGroup .pageInfo {
+                display: inline-block;
+                float: left;
+            }
+
+    .vgrid .vgrid-column-filter-panel {
+        width: 250px;
+        height: 250px;
+        min-height: 250px;
+        min-width: 250px;
+        position: absolute;
+        background: #fff;
+        border: 1px solid #C6C6C6;
+    }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-header {
+            text-transform: uppercase;
+            font-size: 13px;
+            font-family: 'Segoe UI';
+            width: 200px;
+            height: 20px;
+            margin-left: 25px;
+            margin-top: 20px;
+        }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-search {
+            width: 200px;
+            margin-left: 25px;
+            margin-top: 10px;
+            background: #fff;
+            border: 1px solid #AAA;
+            padding-left: 0;
+            padding-right: 0;
+            background-image: url(/content/themes/base/images/icon-search.png);
+            background-position-x: 180px;
+            background-position-y: center;
+            background-repeat: no-repeat;
+        }
+
+            .vgrid .vgrid-column-filter-panel .vgrid-column-filter-search:focus {
+                border-color: #27AAE1;
+            }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-ok,
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-cancel {
+            min-width: 70px;
+            height: 25px;
+            background-color: #D4D4D4;
+            color: #333;
+            float: right;
+            margin: 5PX;
+            text-align: center;
+            line-height: 24px;
+            font-size: 11px;
+            border: 1px solid #AAA;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-cancel {
+            margin-right: 23px;
+        }
+
+            .vgrid .vgrid-column-filter-panel .vgrid-column-filter-ok:hover,
+            .vgrid .vgrid-column-filter-panel .vgrid-column-filter-cancel:hover {
+                border-color: #27AAE1;
+            }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-ok[disable="true"] {
+            background-color: #EFEFEF;
+            border-color: #D9D9D9;
+            color: #D9D9D9;
+        }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-dragbar {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 16px;
+            height: 16px;
+            background-image: url(/content/themes/base/images/column_filter_drag.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: se-resize;
+        }
+
+        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-list {
+            margin-left: 25px;
+            margin-top: 5px;
+            width: 200px;
+            height: 100px;
+            padding: 0px;
+            border: 1px solid #AAA;
+            overflow: auto;
+            font-size: 11px;
+        }
+
+            .vgrid .vgrid-column-filter-panel .vgrid-column-filter-list ul {
+                margin: 0;
+                margin-left: 5px;
+                list-style: none;
+                padding: 0;
+            }
+
+                .vgrid .vgrid-column-filter-panel .vgrid-column-filter-list ul li {
+                    margin: 0;
+                    padding: 0;
+                    white-space: nowrap;
+                }
+
+                    .vgrid .vgrid-column-filter-panel .vgrid-column-filter-list ul li input[type="checkbox"] {
+                        padding: 0;
+                        margin: 0;
+                        margin-top: 5px;
+                        margin-right: 5px;
+                    }
+
+                    .vgrid .vgrid-column-filter-panel .vgrid-column-filter-list ul li div {
+                        display: inline-block;
+                        white-space: nowrap;
+                    }
+
+                        .vgrid .vgrid-column-filter-panel .vgrid-column-filter-list ul li div:last-child {
+                            position: relative;
+                            top: -2px;
+                        }

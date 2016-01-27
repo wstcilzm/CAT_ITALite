@@ -1,0 +1,130 @@
+﻿@{
+    Layout = null;
+}
+<script type="text/javascript">
+    $(function () {
+        user.selectedList = [];
+        var removeElement = function (array, a) {           
+            if (array && $.isArray(array) && array.length > 0) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] == a) {
+                        array.splice(i, 1);
+                        break;
+                    }
+                }
+            }            
+        };
+        var generateTable = function () {
+            var trs = user.grid.vgrid('selectedRows');
+            var table = $('<table><thead><tr><td>User Name</td><td>Display Name</td><td>Delete</td></tr></thead><tbody></tbody></table>');
+            trs.each(function () {
+                var name = $(this).attr('userName');
+                var id = $(this).attr('userId');
+                var dn = $(this).attr('displayName');
+                user.selectedList.push(id);
+                var tr = $('<tr tid="' + id + '"><td>' + name +'</td><td>'+dn+'</td><td><img src="/Content/images/delete.jpg"/></td></tr>');
+                tr.find('img').click(function () {
+                    removeElement(user.selectedList, id);
+                    $('tr[tid=' + id + ']').empty();                   
+                });
+                table.find('tbody').append(tr);
+            });
+            $('#selectedTable').append(table);
+        };
+        var assignment = {
+            wizard: $('.assign-wizard'),
+            panel: $('.assign-panel'),
+            init: function () {
+                var wizardSetting = {
+                    width: 600,
+                    height: 450,
+                    onCreate: function () {
+                        assignment.loadGroups();
+                    },
+                    finish: function () {
+                        var groupId = $("#group").val();
+                        for (var i = 0; i < user.selectedList.length; i++) {
+                            alert("each function");
+                            $.ajax({
+                                type: 'Get',
+                                url: 'http://localhost:33042/api/assignment/addusertogroup?userId=' + user.selectedList[i] + '&groupId=' + groupId,
+                                success: function (r) {
+                                    alert("$ajax success");
+                                    callback(r, tr, id, actionMsgTemplate);
+
+                                },
+                                error: function (e) {
+                                    layout.onGetJsonError(id, actionTitle, e);
+                                    alert("$ajax error");
+                                }
+                            });
+                        };
+                    }
+                };
+                assignment.wizard.vwizard(wizardSetting).vwizard('open');
+            },          
+            loadGroups: function () {
+                $.ajax({
+                    url: 'http://localhost:33042/api/group/list',
+                    type: 'Get',
+                    success: function (r) {
+                        var optionstring = "";
+                        for (var i = 0; i < r.result.length; i++) {
+                            optionstring += "<option value=\"" + r.result[i].PartitionKey + "\">" + r.result[i].RowKey + "</option>";
+                        }
+                        $("#group").html("<option value='Choose'>Choose...</option>" + optionstring);
+                    },
+                    error: function (e) {
+                        console.error(e);
+                    }
+                });
+            },           
+        };
+        assignment.init();
+        generateTable();
+    });
+
+    function arrRemove(arr, i) {
+        return arr.slice(0, i).concat(arr.slice(i));
+        alert("Remove id");
+    }
+</script>
+<style>
+    .assign-wizard textarea,
+    .assign-wizard input, select, span {
+        margin: 0 50px 0 50px;
+        display: block;
+    }
+    #cbgroup{
+
+    }
+    #selectedTable
+    {
+    }
+    #selectedTable table{
+        margin: 0px 0px 0px 55px;
+    }
+    #selectedTable td {
+        border: 1px solid black;
+        width: 200px;
+        padding: 10px;        
+    }
+</style>
+<div class="assign-wizard">
+    <div class="assign-panel">
+        <div class="editor-caption">Assign user to group</div>
+        <div id="cbgroup">
+            <p>
+                <span><strong>Group</strong></span>
+            </p>
+            <p>
+                <select id="group" style="width:250px;">
+                    <option value=""></option>
+                </select>
+            </p>           
+            <span></span>
+        </div>
+        <div id="selectedTable">
+        </div>
+    </div>
+</div>

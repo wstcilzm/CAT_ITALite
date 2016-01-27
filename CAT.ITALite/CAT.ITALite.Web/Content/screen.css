@@ -1,0 +1,35 @@
+﻿
+/* --------------Pad(landscape)------------ */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : landscape) {
+}
+
+/* --------------Pad(portrait)------------ */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (orientation : portrait) {
+}
+
+/* --------------labtop,desktop----------- */
+@media only screen and (max-width : 1200px) {
+    .global,
+    .global .g-north,
+    .global .g-south,
+    .background-shadow {
+        width: 960px;
+    }
+
+    .content-wrapper {
+        max-width: 760px;
+    }
+
+    .vmdetail,
+    .global .g-body > div {
+        width: 760px;
+    }
+
+    .vshell .processingbar-item .title .caption {
+        width: 600px;
+    }
+}
+
+/* --------------big screen--------------- */
+@media only screen and (min-width : 1824px) {
+}

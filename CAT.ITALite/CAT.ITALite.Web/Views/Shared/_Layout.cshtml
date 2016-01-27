@@ -1,0 +1,97 @@
+﻿@using CAT.ITALite.Web.Utils
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/js")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="global-bg"></div>
+    <div class="global">
+        <div class="g-north vshell">
+            <div class="eyebow-small">
+                <div class="logo">
+                    <img src="~/favicon.ico"><span>CAT ITALite Ver 1.0.0.0</span>
+                </div>
+                <div class="user">
+                    <div class="summary">
+                        <div class="name">Beta User</div>
+                        <div class="photo" style="background:url(@{@PortalConfig.CurrentUser.PhotoUrl});
+                             background-size: 30px; background-position:center">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="g-middle">
+            <div class="g-west">
+                <div id="gmenu" class="menu">
+                </div>
+            </div>
+            <div class="g-east">
+                <div class="g-body">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <div class="g-south vshell">
+            <div class="vshell-container">
+                <div id="vstormActions" class="processingbar">
+                </div>
+                <div class="command">
+                    <div class="command-title">
+                        <button class="open disable" type="button" disabled>NEW</button>
+                        <div id="command-toolbar" class="tools">
+                        </div>
+                        <div id="command-subtoolbar"></div>
+                        <button id="command-actionCount" class="processing"></button>
+                        <button class="help"></button>
+                    </div>
+                    <div class="command-body" style="height: 0;">
+                        <div class="caption">
+                            NEW
+                            <button class="closebtn button button-close"></button>
+                        </div>
+                        <div class="command-content">
+                            <div class="command-menu">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="vmCreator"></div>
+    <div id="groupChanger"></div>
+    <div class="confirmbar-shield">
+        <iframe class="confirmbar-shield-bg"></iframe>
+        <div class="confirmbar">
+            <div id="confirmbar" class="confirmbar-item">
+                <span class="confirm-icon"></span>
+                <div class="confirm-title"></div>
+                <div class="confirm-options">
+                    <button title="No">
+                        <span class="confirm-button-text">No</span>
+                        <span class="confirm-button-icon confirm-no"></span>
+                    </button>
+                    <button title="Yes">
+                        <span class="confirm-button-text">Yes</span><span class="confirm-button-icon confirm-yes"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vstormlogo">
+    </div>
+</body>
+</html>

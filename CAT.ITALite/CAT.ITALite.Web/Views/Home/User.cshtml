@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Users";
+}
+<script type="text/javascript">
+    $(function () {
+        var user = {
+            panel: $('.user-panel'),
+            grid: $('.user-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    user.load();
+                });
+                t.add('AssignToGroup', 'AssignToGroup', 'toolbar-showall', function () {
+                    $('.assign-group-wizard').load('../Home/AssignUserToGroup');
+                });
+            },
+            //initEvent: function () {
+            //},
+            load: function () {
+                user.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/user/list',
+                    traditional: true,
+                    success: function (d) {
+                        user.bindData(d.result);
+                        user.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        user.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                user.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: 'Users',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight * 2 / 3,
+                    noDataMsg: 'No applications found',
+                    rp: 20,
+                    rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, {name:'displayName',field:'DisplayName'}],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'User Name', field: 'RowKey', width: 4, primary: true },
+                        { caption: 'User Id', field: 'PartitionKey', width: 2 },
+                        { caption: 'Display Name', field: 'DisplayName', width: 2 },
+                        { caption: 'Account Enabled', field: 'AccountEnabled', width: 1 },
+                        { caption: 'Mail Nickname', field: 'MailNickname', width: 1 },
+                        { caption: 'Usage Location', field: 'UsageLocation', width: 1 },
+                        { caption: 'User Type', field: 'UserType', type: 'number', width: 1 }
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var tr = $(this).parent();
+                        self.location = "../../Home/UserDetail?id=" + tr.attr('cid');
+                    }
+                };
+                return gridSetting;
+            },
+            init: function () {
+                //app.initEvent();
+                user.grid.vgrid(user.getGridSetting());
+                $(".userappgroup-details").show();
+            },
+            groupOperate: function (groupId, op, field, msg, params, actionTitle, actionMsgTemplate, callback) {
+                //
+                //var trs = user.grid.vgrid('selectedRows');
+                if (user.selectedList.count > 0) {
+                    //var id = op;
+                    //layout.action.create(id, { title: actionTitle });
+                    //var colIdx = user.grid.vgrid("columnIndex", "UserName");
+                    //colIdx = user.grid.vgrid("columnIndex", field);
+                    if (!callback) {
+                        callback = user.groupOperateCallback;
+                    }
+                    user.selectedList.each(function () {
+                        var tr = $(this);
+                        var userId = tr.attr('userId');
+                        layout.action.push(id, actionMsgTemplate.info.format(tr.attr('userid')));
+                        $.ajax({
+                            type: 'Get',
+                            url: 'http://localhost:33042/api/assignment/addusertogroup?userId=' + userId + '&groupId=' + groupId,
+                            success: function (r) {
+                                callback(r, tr, id, actionMsgTemplate);
+                            },
+                            error: function (e) {
+                                layout.onGetJsonError(id, actionTitle, e);
+                            }
+                        });
+                    });
+                    user.grid.vgrid('unSelectAll');
+                }
+            },
+            groupOperateCallback: function (data, tr, actionId, actionMsgTemplate) {
+                var colIdx = user.grid.vgrid('columnIndex', 'State');
+                if (data.status == 'success') {
+                    layout.action.success(actionId, actionMsgTemplate.success.format(tr.attr('userid')));
+                } else {
+                    layout.action.error(actionId, actionMsgTemplate.error.format(tr.attr('userid')), data.Message);
+                }
+            }
+        };
+
+        user.init();
+        user.load();
+        user.createToolbar();
+        window.user = user;
+    });
+</script>
+<style>
+    #tb-detail {
+        text-align: left;
+        padding: 1px;
+        width: 800px;
+        border: 1px solid black;
+    }
+
+        #tb-detail table tr th td {
+            text-align: left;
+            align-content: center;
+            width: 300px;
+        }
+</style>
+<div class="user-panel">
+    <div class="user-grid"></div>
+</div>
+<div class="assign-group-wizard">
+</div>
+<div class="userappgroup-details">
+    <h1>Details</h1>
+    <table id="tb-detail">
+        <tr>
+            <th>Name:</th>
+            <th>Detail:</th>
+        </tr>
+        <tr>
+            <td>Group</td>
+            <td>GroupName</td>
+        </tr>
+        <tr>
+            <td>App</td>
+            <td>AppName</td>
+        </tr>
+    </table>
+</div>
+

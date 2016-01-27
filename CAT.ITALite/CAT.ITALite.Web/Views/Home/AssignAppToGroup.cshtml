@@ -1,0 +1,117 @@
+﻿@{ 
+    Layout = null;
+}
+<script type="text/javascript">
+    $(function () {
+        app.selectedList = [];
+        var removeElement = function (array, a) {
+            if (array && $.isArray(array) && array.length > 0) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] == a) {
+                        array.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        };
+        var generateTable = function () {
+            var trs = app.grid.vgrid('selectedRows');
+            var table = $('<table><thead><tr><td>App Name</td><td>Delete</td></tr></thead><tbody></tbody></table>');
+            trs.each(function () {
+                var id = $(this).attr('appId');
+                var name = $(this).attr('appName');
+                app.selectedList.push(id);
+                var tr = $('<tr tid="' + id + '"><td>' + name + '</td><td><img src="/Content/images/delete.jpg"/></td></tr>');
+                tr.find('img').click(function () {
+                    removeElement(app.selectedList, id);
+                    $('tr[tid=' + id + ']').empty();
+                    alert('Remove Finished');
+                });
+                table.find('tbody').append(tr);
+            });
+            $('#appTable').append(table);
+        };
+        var assignApp = {
+            wizard: $(".assign-app-to-group"),
+            panel: $(".assign-app-to-group-panel"),
+            init: function () {
+                var wizardSetting = {
+                    width: 600,
+                    height: 450,
+                    OnCreate: function () {
+                        assignApp.loadGroups();
+                    },
+                    finish: function () {
+                        var groupId = $("#appGroup").val();
+                        for (var i = 0; i < app.selectedList.length; i++) {
+                            alert("add app!");
+                            $.ajax({
+                                type: 'Get',
+                                url: 'http://localhost:33042/api/assignment/addapptogroup?appId=' + app.selectedList[i] + '&groupId=' + groupId,
+                                success: function (r) {
+                                    alert("$Ajax add apps to group successfully!");
+                                },
+                                error: function (e) {
+                                    alert("$Ajax add apps failed!");
+                                }
+                            });
+                        };
+                        //assignApp.wizard.vwizard('close');
+                    }
+                };
+                assignApp.wizard.vwizard(wizardSetting).vwizard('open');
+            },           
+            loadGroups: function () {
+                $.ajax({
+                    url: 'http://localhost:33042/api/group/list',
+                    type: 'Get',
+                    success: function (r) {
+                        var optionstring = "";
+                        for (var i = 0; i < r.result.length; i++) {
+                            optionstring += "<option value=\"" + r.result[i].PartitionKey + "\">" + r.result[i].RowKey + "</option>";
+                        }
+                        $("#appGroup").html("<option value='Choose'>Choose...</option>" + optionstring);
+                    },
+                    error: function (e) {
+                        console.error(e);
+                    }
+                });
+            },           
+        };
+        assignApp.init();
+        assignApp.loadGroups();
+        generateTable();
+    })
+</script>
+<style>
+    #appTable table
+    {
+        margin:0px 0px 0px 55px;
+    }
+
+    #appTable td{
+        border:1px solid black;
+        width:200px;
+        padding:10px;
+    }
+</style>
+
+<div class="assign-app-to-group">
+    <div class="assign-app-to-group-panel">
+        <div class="editor-caption">Assign application to group</div>
+        <div>
+            <p>
+                <span><strong>Group</strong></span>
+            </p>
+            <p>
+                <select id="appGroup" style="width:250px;">
+                    <option value=""></option>
+                </select>
+            </p>            
+            <span></span>
+            <div>
+                <div id="appTable"></div>
+            </div>
+        </div>
+    </div>
+</div>

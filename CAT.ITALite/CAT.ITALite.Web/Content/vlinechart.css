@@ -1,0 +1,130 @@
+﻿.linechart {
+    background-color: #FFF;
+    position: relative;
+}
+
+
+    .linechart .linechart-header {
+        width: 100%;
+        height: 30px;
+    }
+
+        .linechart .linechart-header .linechart-caption {
+            font: 28px/40px "Segoe UI Light";
+            text-transform: lowercase;
+            color: #444;
+            margin: 0;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            padding: 10px;
+        }
+
+        .linechart .linechart-header .linechart-timerange,
+        .linechart .linechart-header .linechart-chartscale {
+            float: right;
+            z-index: 2;
+            margin-right: 10px;
+            border: none;
+            top: 5px;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+
+        .linechart .linechart-header .linechart-refreshicon {
+            float: right;
+            background-image: url("/content/themes/base/images/icon-refresh2-16-g-idl.png");
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            margin-top: 5px;
+            cursor: pointer;
+        }
+
+            .linechart .linechart-header .linechart-refreshicon:hover {
+                background-image: url("/content/themes/base/images/icon-refresh2-16-g-hvr.png");
+            }
+
+    .linechart .linechart-grid {
+        width: 100%;
+    }
+
+    .linechart .linechart-body {
+        width: 100%;
+        position: relative;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+        .linechart .linechart-body .linechart-label {
+            position: absolute;
+        }
+
+        .linechart .linechart-body .linechart-hint {
+            position: absolute;
+            border: 1px solid #CCC;
+            color: #fff;
+            font-size: 13px;
+            font-family: 'Segoe UI';
+            padding: 5px;
+        }
+
+
+        .linechart .linechart-body .linechart-xaxis {
+            position: absolute;
+            bottom: 0;
+            font-size: 11px;
+        }
+
+            .linechart .linechart-body .linechart-xaxis span {
+                display: inline-block;
+                text-align: center;
+            }
+
+                .linechart .linechart-body .linechart-xaxis span:first-child {
+                    text-align: left;
+                }
+
+                .linechart .linechart-body .linechart-xaxis span:last-child {
+                    text-align: right;
+                }
+
+        .linechart .linechart-body .linechart-yaxis {
+        }
+
+
+        .linechart .linechart-body .linechart-chart,
+        .linechart .linechart-body .linechart-overly {
+        }
+
+        .linechart .linechart-body .linechart-overly {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+
+    .linechart .linechart-grid {
+    }
+
+        .linechart .linechart-grid .linechart-checked,
+        .linechart .linechart-grid .linechart-unchecked {
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 16px;
+            height: 16px;
+            background-size: contain;
+            border-radius: 10px;
+            margin-right: 5px;
+            float: right;
+        }
+
+        .linechart .linechart-grid .linechart-checked {
+            background-image: url("/content/themes/base/images/linechart_check.png");
+        }
+
+        .linechart .linechart-grid .linechart-unchecked {
+            background-image: url("/content/themes/base/images/linechart_uncheck.png");
+            background-color: #CCC;
+        }

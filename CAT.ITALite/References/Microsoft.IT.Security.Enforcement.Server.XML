@@ -1,0 +1,2320 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.IT.Security.Enforcement.Server</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.AttributeBuilder">
+            <summary>
+            Defines interface to build attribute query for attribute which doesn't contain value
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.AttributeBuilder.Build(Microsoft.IT.Security.Enforcement.DataEntities.Request,Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,System.Guid)">
+             <summary>
+             Build missing attribute list by comparing policyset attributes against request attributes
+             </summary>
+             <param name="request">request object passed in to get all the attributes which are passed in request itself</param>
+             <param name="policySet">policyset object passed in to get all the target attributes</param>
+            <param name="correlationId">correlation id in access control request</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.AttributeBuilder.Rebuild(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.String,System.Guid,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Build missing attribute list by comparing policyset attributes against request attributes
+            </summary>
+            <param name="missingTargetAttributeDetails">missing attribute details retrieved by PIP</param>
+            <param name="policySet">policyset object passed in to get all the target attributes</param>
+            <param name="requestAttributeValues">request attribute values</param>
+            <param name="resourceId">resource id of request</param>
+            <param name="correlationId">correlation id in access control request</param>
+            <param name="requestAttributeIssuers">dictionary that holds attribute values. Keys will be based on attributeid and issuer name</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.AttributeBuilder.ToXml">
+            <summary>
+            Generates xml for xacml query
+            </summary>
+            <returns>return xacml query for missing attribute details</returns>
+        </member>
+        <member name="P:Microsoft.IT.Security.Enforcement.Server.AttributeBuilder.MissingAttributes">
+            <summary>
+            returns missing attribute list
+            </summary>
+        </member>
+        <member name="P:Microsoft.IT.Security.Enforcement.Server.AttributeBuilder.RequestAttributesDictionary">
+            <summary>
+            returns request attribute value dictionary
+            </summary>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.BindingFactory">
+            <summary>
+            BindingFactory class to create the binding for the WCF client
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.BindingFactory.CreateBinding(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Creates the binding based on the values defined in the attribute source xml
+            </summary>
+            <param name="contractName">String containing the contract name</param>
+            <param name="contractNamespace">String containing the contract namespace</param>
+            <param name="configuration">Configuration containing the binding information</param>
+            <param name="context">Custom context with correlationID populated.</param>
+            <returns>Binding object</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.BindingFactory.SetCredentialsToProxy(System.Collections.Generic.Dictionary{System.String,System.String},System.Type,System.Object,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Sets the certificate credentials to the proxy object
+            </summary>
+            <param name="configurations">Dictionary containing the certificate information</param>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.ContextHandler.ContextHandlerProvider">
+            <summary>
+            Defines ContextHandler Provider which manages the data flow of context handler
+            and invokes sub components in pre-defined sequence
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContextHandler.ContextHandlerProvider.Ping(Microsoft.IT.Security.Core.Diagnostics.MonitoredServicesResponse,Microsoft.IT.Security.Core.Diagnostics.MonitorLevel,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Add ping information from dependent service
+            </summary>
+            <param name="response">monitor response object</param>                
+            <param name="level">monitor level</param>              
+            <param name="context">context with correlation id etc</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContextHandler.ContextHandlerProvider.GetContextHandlerInstance(Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            This method creates instance of IContextHandler, currently it creates new instance everytime, 
+            the implementation will be changed to use object pool
+            </summary>
+            <returns>instance of IContextHandler</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContextHandler.ContextHandlerProvider.GetAttributesValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            This method is used to retrieve missing attributes value from policy information point
+            </summary>
+            <param name="requestDictionary">RequestDictionary is used to pass input values to retrieve missing attributes value</param>
+            <param name="missingAttributes">Missing attributes list whose values will be populated in policy information point</param>
+            <param name="context">context with corelation id etc</param>
+            <returns>returns missing attributes list with values</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.ContextHandler.StandardContextHandler">
+            <summary>
+            Define standard implementation for ContextHandler
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContextHandler.StandardContextHandler.GetAttributesValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            This method is used to retrieve missing attributes value from policy information point
+            </summary>
+            <param name="requestDictionary">RequestDictionary is used to pass input values to retrieve missing attributes value</param>
+            <param name="missingAttributes">Missing attributes list whose values will be populated in policy information point</param>
+            <param name="context">context with corelation id etc</param>
+            <returns>returns missing attributes list with values</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.ContractFactory">
+            <summary>
+            Class for creating the dynamic proxy for WCF from the Service location available in source xml
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContractFactory.#ctor(System.Uri,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Creates the dynamic proxy for the WCF service
+            </summary>
+            <param name="wsdlUri">Uri of the service</param>
+            <param name="configurations">Configurations collection containing the binding, endpoint, certificate information</param>
+            <param name="context">custom context containing contextual inforation for logging</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContractFactory.GetServiceContract(System.String,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Gets the service contract type from the contract assembly generated during proxy creation
+            </summary>
+            <param name="contractName">Service Contract name</param>
+            <param name="context">context with corelation id etc</param>
+            <returns>Contract type</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.ContractFactory.SetCertificate(System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Sets the certificate to the proxy object based on the certificate information
+            available in the dictionary
+            </summary>
+            <param name="configurations">Dictionary containing the certificate information</param>
+            <param name="context">context with corelation id etc</param>
+            <returns>X509Certificate</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.DynamicClient">
+            <summary>
+            Dynamic Client class which creates the dynamic proxy using the BindingFactory and
+            ContractFactory classes
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.DynamicClient.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Constructor creating the dynamic proxy
+            </summary>
+            <param name="location">Service Location</param>
+            <param name="configurations">Dictionary object containing the certificate, binding and endpoint information
+            required to generate a proxy object</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.DynamicClient.CallOperation(System.String,System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Invokes the WCF operation of the WCF service invoked using the dynamic proxy
+            </summary>
+            <param name="method">Operation name</param>
+            <param name="parameters">Parameter collection</param>
+            <returns>Object returned from the service call</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.DynamicClient.Close">
+            <summary>
+            To Close the dynamic proxy.
+            </summary>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary">
+            <summary>
+            FunctionLibrary implements basic set of functions defined in XACML spec,
+            system currently support 20-30 such functions and will incrementally add
+            by need base
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringEqual method, this is to compare string equal function
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringGreaterThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringGreaterThan method, this is to compare string is greater than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringGreaterThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringGreaterThanOrEqual method, this is to compare string is greater than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringLessThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringLessThan method, this is to compare string is greater than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringLessThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringLessThanOrEqual method, this is to compare string is greater than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringNormalizeSpace(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringNormalizeSpace method.
+            This function SHALL take one argument of data-type http://www.w3.org/2001/XMLSchema#string and
+            SHALL normalize the value by stripping off all leading and trailing white space characters.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">String value on which to perform the operation.</param>
+            <returns>The trimmed string</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringNormalizeToLowerCase(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringNormalizeToLowerCase method.
+            This function SHALL take one argument of data-type http://www.w3.org/2001/XMLSchema#string and
+            SHALL normalize the value by converting each upper case character to its lower case equivalent.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="attributeValues">String value for operation.</param>
+            <returns>String in lower case </returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringConcatenate(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two or more arguments of data-type
+            "http://www.w3.org/2001/XMLSchema#string" and SHALL return a
+            "http://www.w3.org/2001/XMLSchema#string". The result SHALL be the concatenation, in
+            order, of the arguments
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">String array of values to conactenate</param>
+            <returns>String</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringSubset(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘string’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return "True" if and
+            only if the first argument is a subset of the second argument. Each argument SHALL be
+            considered to have had its duplicates removed, as determined by
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal", before the subset calculation.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringAtLeastOneMemberOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘string’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringSetEquals(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘string’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return the result of
+            applying "urn:oasis:names:tc:xacml:1.0:function:and" to the application of
+            "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the first and second arguments and
+            the application of "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the second and
+            first arguments.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringRegExpMatch(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function decides a regular expression match. It SHALL take two arguments of
+            “http://www.w3.org/2001/XMLSchema#string” and SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. The first argument SHALL be a regular
+            expression and the second argument SHALL be a general string. The function
+            specification SHALL be that of the “xf:matches” function with the arguments reversed
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values, first item is regular expression, second value is compared value</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringIntersection(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of  http://www.w3.org/2001/XMLSchema#string values.
+            It SHALL return a bag of  http://www.w3.org/2001/XMLSchema#string values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:string-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:string-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Bag of strings</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringIsIn(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take an argument of http://www.w3.org/2001/XMLSchema#string as the first argument and
+            a bag of http://www.w3.org/2001/XMLSchema#string values as the second argument and SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL evaluate to "True" if and only if the first argument matches by the "urn:oasis:names:tc:xacml:x.x:function:string-equal" any value in the bag.
+            Otherwise, it SHALL return “False”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="attributeValues">list of values, first value is Element that is searched for in the bag, second value is Comma Separated string elements.</param>
+            <returns>returns True if the exists in the bag or else it returns false.</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringUnion(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of  http://www.w3.org/2001/XMLSchema#string values.
+            It SHALL return a bag of  http://www.w3.org/2001/XMLSchema#string values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:string-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:string-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Bag of strings</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringOneAndOnly(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringOneAndOnly method, this is to compare string one and only function
+            compared from string must present and only once in  compared to string
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.BooleanEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement BooleanEqual method.
+            This function SHALL take two arguments of data-type http://www.w3.org/2001/XMLSchema#boolean and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL return "True" if and only if the arguments are equal. Otherwise, it SHALL return “False”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.BooleanAtLeastOneMemberOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘boolean’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement IntegerEqual method, this is to compare int value of string is equal to and string to
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerGreaterThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement IntegerGreaterThan method, this is to compare int value of string from is greater than or equal to string to
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerGreaterThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement IntegerGreaterThanOrEqual method, this is to compare int value of string is greater than or equal to and string to
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerLessThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement IntegerLessThan method, this is to compare int value of string is less than string to
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerLessThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement IntegerLessThanOrEqual method, this is to compare int value of string is less than or equal to string to
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for comparision</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerAdd(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function MAY take more than two arguments and SHALL return an element of integer datatype respectively after addition.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="valuesToAdd">String array of values to perform addition on</param>
+            <returns>Integer value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerSubtract(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the integer data-type and SHALL return an element of integer datatype respectively after performing subtraction.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for operation</param>
+            <returns>Integer Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerMultiply(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the integer data-type and SHALL return an element of integer datatype respectively after performing multiplication.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for operation</param>
+            <returns>Integer Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerDivide(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the integer data-type and SHALL return an element of integer datatype respectively after performing division.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for operation</param>
+            <returns>Integer Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerMod(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the integer data-type and SHALL return an element of integer datatype respectively after performing mod.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of values for operation</param>
+            <returns>Integer Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerIntersection(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of integer values.
+            It SHALL return a bag of integer values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:integer-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:integer-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="attributeValues">list of bag values</param>
+            <returns>Bag of integers</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerAtLeastOneMemberOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘integer’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerSubset(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘integer’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return "True" if and
+            only if the first argument is a subset of the second argument. Each argument SHALL be
+            considered to have had its duplicates removed, as determined by
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal", before the subset calculation.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerSetEquals(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘integer’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return the result of
+            applying "urn:oasis:names:tc:xacml:1.0:function:and" to the application of
+            "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the first and second arguments and
+            the application of "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the second and
+            first arguments.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerIsIn(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take an argument of http://www.w3.org/2001/XMLSchema#integer as the first argument and
+            a bag of http://www.w3.org/2001/XMLSchema#integer values as the second argument and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL evaluate to "True" if and only if the first argument matches by the "urn:oasis:names:tc:xacml:x.x:function:integer-equal" any value in the bag.
+            Otherwise, it SHALL return “False”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="attributeValues">list of values for operation, first value is Element that is searched for in the bag, second value is Comma Separated integer elements.</param>
+            <returns>returns True if the exists in the bag or else it returns false.</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerOneAndOnly(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implements urn:oasis:names:tc:xacml:1.0:function:integer-one-and-only
+            This function SHALL take a bag of http://www.w3.org/2001/XMLSchema#integer values as an argument and SHALL return a value of http://www.w3.org/2001/XMLSchema#integer.
+            It SHALL return the only value in the bag.
+            If the bag does not have one and only one value, then the expression SHALL evaluate to "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="attributeValues">list of values for operation, first value is Comma separated list of Integers.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IntegerUnion(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of integer values.
+            It SHALL return a bag of integer values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:integer-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:integer-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Bag of integers</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DoubleEqual method, this is to compare double value of string from is equal to string to
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleGreaterThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DoubleGreaterThan method, this is to compare double value of string from is greater than string to
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleGreaterThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DoubleGreaterThanOrEqual method, this is to compare double value of string from is greater than or equal to string to
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleLessThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DoubleLessThan method, this is to compare double value of string from is less than string to
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleLessThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DoubleLessThanOrEqual method, this is to compare double value of string from is less than or equal to string to
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleAdd(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function MAY take more than two arguments and SHALL return an element of double datatype respectively after addition.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="valuesToAdd">String array of values to perform addition on</param>
+            <returns>Double value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleSubtract(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the double data-type and SHALL return an element of double datatype respectively after performing subtraction.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Double Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleMultiply(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the integer data-type and SHALL return an element of double datatype respectively after performing multiplication.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Double Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleDivide(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of the Double data-type and SHALL return an element of Double datatype respectively after performing division.
+            Each function evaluation SHALL proceed as specified by their logical counterparts in IEEE 754 [IEEE 754]. In an expression that contains any
+            of these functions, if any argument is "Indeterminate", then the expression SHALL evaluate to
+            "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Double Value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleAtLeastOneMemberOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘double’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleSubset(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘double’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return "True" if and
+            only if the first argument is a subset of the second argument. Each argument SHALL be
+            considered to have had its duplicates removed, as determined by
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal", before the subset calculation.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleSetEquals(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘double’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return the result of
+            applying "urn:oasis:names:tc:xacml:1.0:function:and" to the application of
+            "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the first and second arguments and
+            the application of "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the second and
+            first arguments.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleIntersection(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of double values.
+            It SHALL return a bag of double values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:double-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:double-equal,
+            SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Bag of Double</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleIsIn(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take an argument of http://www.w3.org/2001/XMLSchema#double as the first argument and
+            a bag of http://www.w3.org/2001/XMLSchema#double values as the second argument and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL evaluate to "True" if and only if the first argument matches by the "urn:oasis:names:tc:xacml:x.x:function:double-equal" any value in the bag.
+            Otherwise, it SHALL return “False”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="values">list of values for operation, first value is Element that is searched for in the bag,second value is Comma Separated Double Elements.</param>
+            <returns>returns True if the exists in the bag or else it returns false.</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleOneAndOnly(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implements urn:oasis:names:tc:xacml:1.0:function:double-one-and-only.
+            This function SHALL take a bag of http://www.w3.org/2001/XMLSchema#double values as an argument and
+            SHALL return a value of http://www.w3.org/2001/XMLSchema#double. It SHALL return the only value in the bag.
+            If the bag does not have one and only one value, then the expression SHALL evaluate to "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="values">list of values for operation</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DoubleUnion(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of double values.
+            It SHALL return a bag of double values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:double-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:double-equal,
+            SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Bag of Double</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.TimeEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Compare Equality of Two Given Time.
+            This function SHALL take two arguments of data-type http://www.w3.org/2001/XMLSchema#time and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            It SHALL perform its evaluation according to the “op:time-equal” function.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.TimeGreaterThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement TimeGreaterThan method, this is to compare string is greater than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.TimeGreaterThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement TimeGreaterThanOrEqual method, this is to compare string is greater than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.TimeLessThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement TimeLessThan method, this is to compare string is less than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.TimeLessThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement TimeLessThanOrEqual method, this is to compare string is less than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implements DateEqual Function.
+            This function SHALL take two arguments of data-type http://www.w3.org/2001/XMLSchema#date and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            It SHALL perform its evaluation according to the “op:date-equal” function.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateGreaterThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateGreaterThan method, this is to compare string is greater than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateGreaterThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateGreaterThanOrEqual method, this is to compare string is greater than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateLessThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateLessThan method, this is to compare string is less than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateLessThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateLessThanOrEqual method, this is to compare string is less than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of data-type
+            “http://www.w3.org/2001/XMLSchema#dateTime” and SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL perform its evaluation
+            according to the “op:dateTime-equal” function [XF Section 8.3.8].
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeGreaterThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateTimeGreaterThan method, this is to compare string is greater than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeGreaterThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateTimeGreaterThanOrEqual method, this is to compare string is greater than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeLessThan(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateTimeLessThan method, this is to compare string is less than string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeLessThanOrEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement DateTimeLessThanOrEqual method, this is to compare string is less than or equal to string
+            </summary>
+            <param name="parentObject">parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeIntersection(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of  http://www.w3.org/2001/XMLSchema#dateTime values.
+            It SHALL return a bag of  http://www.w3.org/2001/XMLSchema#dateTime values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:dateTime-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:dateTime-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Bag of DateTime</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeUnion(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of  http://www.w3.org/2001/XMLSchema#dateTime values.
+            It SHALL return a bag of  http://www.w3.org/2001/XMLSchema#dateTime values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:dateTime-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:dateTime-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Bag of DateTime</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeAtLeastOneMemberOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘datetime’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeSubset(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘datetime’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return "True" if and
+            only if the first argument is a subset of the second argument. Each argument SHALL be
+            considered to have had its duplicates removed, as determined by
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal", before the subset calculation.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DateTimeSetEquals(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘datetime’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return the result of
+            applying "urn:oasis:names:tc:xacml:1.0:function:and" to the application of
+            "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the first and second arguments and
+            the application of "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the second and
+            first arguments.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DayTimeDurationEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of data-type "http://www.w3.org/TR/2002/WD4083
+            xquery-operators-20020816#dayTimeDuration" and SHALL return an
+            "http://www.w3.org/2001/XMLSchema#boolean". This function shall perform its evaluation
+            according to the "op:dayTimeDuration-equal" function [XF Section 8.3.5]. Note that the
+            lexical representation of each argument MUST be converted to a value expressed in
+            fractional seconds [XF Section 8.2.2].
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.YearMonthDurationEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments of data-type "http://www.w3.org/TR/2002/WD4090
+            xquery-operators-20020816#yearMonthDuration" and SHALL return an
+            "http://www.w3.org/2001/XMLSchema#boolean". This function shall perform its evaluation
+            according to the "op:yearMonthDuration-equal" function [XF Section 8.3.2]. Note that the
+            lexical representation of each argument MUST be converted to a value expressed in
+            integer months [XF Section 8.2.1]
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.AnyUriEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implements Uri Equality Check.
+            This function SHALL take two arguments of data-type http://www.w3.org/2001/XMLSchema#anyURI and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            It SHALL perform its evaluation according to the “op:anyURI-equal” function.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.AnyUriRegExpMatch(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function decides a regular expression match. It SHALL take two arguments; the first is
+            of type "http://www.w3.org/2001/XMLSchema#string" and the second is of type
+            “http://www.w3.org/2001/XMLSchema#anyURI”. It SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. The first argument SHALL be a regular
+            expression and the second argument SHALL be a URI. The function SHALL convert the
+            second argument to type “http://www.w3.org/2001/XMLSchema#string”, then apply
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation, first value is Regulare expression to match, second value is string to search for a match</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Base64BinaryEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Compares two hexa decimal strings for Equality.
+            This function SHALL take two arguments of data-type http://www.w3.org/2001/XMLSchema#base64Binary and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            It SHALL return "True" if the octet sequences represented by the value of both arguments have equal length and are equal in
+            a conjunctive, point-wise, comparison using the urn:oasis:names:tc:xacml:1.0:function:integer-equal function.
+            Otherwise, it SHALL return “False”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressEqual(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Compares two email Addresses for Equality.
+            This function SHALL take two arguments of data-type “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name” and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            It SHALL return “True” if and only if the two arguments are equal.
+            Otherwise, it SHALL return “False”.
+            An RFC822 name consists of a local-part followed by "@" followed by a domain-part.
+            The local-part is case-sensitive, while the domain-part (which is usually a DNS host name) is not case-sensitive.
+            Perform the following operations:
+            1.	Normalize the domain-part of each argument to lower case
+            2.	Compare the expressions by applying the function “urn:oasis:names:tc:xacml:1.0:function:string-equal” to the normalized arguments.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressAtLeastOneMemberOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘RFC822name(email address)’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressSubset(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘RFC822Name(email address)’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return "True" if and
+            only if the first argument is a subset of the second argument. Each argument SHALL be
+            considered to have had its duplicates removed, as determined by
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal", before the subset calculation.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressSetEquals(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘Rfc822Name(email address)’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. It SHALL return the result of
+            applying "urn:oasis:names:tc:xacml:1.0:function:and" to the application of
+            "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the first and second arguments and
+            the application of "urn:oasis:names:tc:xacml:x.x:function:type-subset" to the second and
+            first arguments.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressNameMatch(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments, the first is of data-type
+            “http://www.w3.org/2001/XMLSchema#string” and the second is of data-type
+            “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name” and SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. This function SHALL evaluate to "True" if
+            the first argument matches the second argument according to the following specification.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation, first value is the string parameter to match, second value is Mail Address to match on</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressRegExpMatch(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function decides a regular expression match. It SHALL take two arguments; the first is
+            of type “http://www.w3.org/2001/XMLSchema#string” and the second is of type
+            “urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name”. It SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. The first argument SHALL be a regular
+            expression and the second argument SHALL be an RFC 822 name. The function SHALL
+            convert the second argument to type “http://www.w3.org/2001/XMLSchema#string”, then
+            apply “urn:oasis:names:tc:xacml:1.0:function:string-regexp-match”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation, first value is Regulare expression to match, second value is string value to validate on</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressIntersection(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of RFC822Name values.
+            It SHALL return a bag of RFC822Name values such that it contains only elements that are common between the two bags,
+            which is determined by urn:oasis:names:tc:xacml:x.x:function:rfc822Name-equal.
+            No duplicates, as determined by urn:oasis:names:tc:xacml:x.x:function:rfc822Name-equal, SHALL exist in the result.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>Bag of Email Addresses</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressIsIn(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function SHALL take an argument of urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name values as the first argument and
+            a bag of urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name value as the second argument and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL evaluate to "True" if and only if the first argument matches by the "urn:oasis:names:tc:xacml:x.x:function:rfc822Name-equal" any value in the bag.
+            Otherwise, it SHALL return “False”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="values">list of values for operation, first value is Element that is searched for in the bag, second value is Comma Separated Email Addresses.</param>
+            <returns>returns True if the exists in the bag or else it returns false.</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.MailAddressOneAndOnly(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implements urn:oasis:names:tc:xacml:1.0:function:rfc822Name-one-and-only.
+            This function SHALL take a bag of  urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name values as an argument and
+            SHALL return a value of  urn:oasis:names:tc:xacml:1.0:data-type:rfc822Name. It SHALL return the only value in the bag.
+            If the bag does not have one and only one value, then the expression SHALL evaluate to "Indeterminate".
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="values">list of values for operation, first value is Comma separated list of RFC822Name compliant Email Address.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IPAddressRegExpMatch(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function decides a regular expression match. It SHALL take two arguments; the first is
+            of type “http://www.w3.org/2001/XMLSchema#string” and the second is of type
+            “urn:oasis:names:tc:xacml:2.0:data-type:ipAddress”. It SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. The first argument SHALL be a regular
+            expression and the second argument SHALL be an IPv4 or IPv6 address. The function
+            SHALL convert the second argument to type “http://www.w3.org/2001/XMLSchema#string”,
+            then apply “urn:oasis:names:tc:xacml:1.0:function:string-regexp-match”.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation, first value is Regulare expression to match, second value is string value to validate on</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.DnsNameRegExpMatch(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            This function decides a regular expression match. It SHALL take two arguments; the first is
+            of type “http://www.w3.org/2001/XMLSchema#string” and the second is of type
+            “urn:oasis:names:tc:xacml:2.0:data-type:dnsName”. It SHALL return an
+            “http://www.w3.org/2001/XMLSchema#boolean”. The first argument SHALL be a regular
+            expression and the second argument SHALL be a DNS name. The function SHALL
+            convert the second argument to type “http://www.w3.org/2001/XMLSchema#string”, then
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation, first value is Regulare expression to match, second value is string value to validate on</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Or(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+             <summary>
+             This function SHALL return "False" if it has no arguments and SHALL return "True" if at
+            least one of its arguments evaluates to "True". The order of evaluation SHALL be from first
+            argument to last. The evaluation SHALL stop with a result of "True" if any argument
+            evaluates to "True", leaving the rest of the arguments unevaluated.
+             </summary>
+             <param name="parentObject">Parent object which has target attribute invoking this function</param>
+             <param name="values">String array of boolean values</param>
+             <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.And(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+             <summary>
+             This function SHALL return "True" if it has no arguments and SHALL return "False" if one of
+            its arguments evaluates to "False". The order of evaluation SHALL be from first argument
+            to last. The evaluation SHALL stop with a result of "False" if any argument evaluates to
+            "False", leaving the rest of the arguments unevaluated.
+             </summary>
+             <param name="parentObject">Parent object which has target attribute invoking this function</param>
+             <param name="values">String array of boolean values</param>
+             <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Not(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+             <summary>
+             This function SHALL take one argument of data-type
+            “http://www.w3.org/2001/XMLSchema#boolean”. If the argument evaluates to "True", then
+            the result of the expression SHALL be "False". If the argument evaluates to "False", then
+            the result of the expression SHALL be "True".
+             </summary>
+             <param name="parentObject">Parent object which has target attribute invoking this function</param>
+             <param name="values">list of values for operation</param>
+             <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.NOf(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            The first argument to this function SHALL be of data-type
+            http://www.w3.org/2001/XMLSchema#integer. The remaining arguments SHALL be of
+            data-type http://www.w3.org/2001/XMLSchema#boolean. The first argument specifies the
+            minimum number of the remaining arguments that MUST evaluate to "True" for the
+            expression to be considered "True". If the first argument is 0, the result SHALL be "True".
+            If the number of arguments after the first one is less than the value of the first argument,
+            then the expression SHALL result in "Indeterminate". The order of evaluation SHALL be:
+            first evaluate the integer value, then evaluate each subsequent argument. The evaluation
+            SHALL stop and return "True" if the specified number of arguments evaluate to "True". The
+            evaluation of arguments SHALL stop if it is determined that evaluating the remaining
+            arguments will not satisfy the requirement.
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="inputValues">list of values for operation, first value is The minimum number of the remaining arguments that MUST evaluate to "True" for the expression to be considered "True", second value is string array of boolean elements</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.RoleConstraintIntersection(Microsoft.IT.Security.Enforcement.DataEntities.Rule,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},Microsoft.IT.Security.Enforcement.Server.AttributeBuilder)">
+            <summary>
+            Implement RoleConstraintIntersection custom function, this is to evaluate the role constraint has intersection with
+            resource constraints
+            </summary>
+            <param name="rule">Rule</param>
+            <param name="attributeValues">attribute values specified in the condition</param>
+            <param name="requestAttributeValues">values for each attribute id in request</param>
+            <param name="requestAttributeIssuers">attribute issuers</param>
+            <param name="attributeBuilder">attribute builder</param>
+            <returns>boolean results of role constraint evaluation</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.RuleConditionFunction(Microsoft.IT.Security.Enforcement.DataEntities.Rule,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},Microsoft.IT.Security.Enforcement.Server.AttributeBuilder)">
+            <summary>
+            Implement RuleConditionFunction method, this is to evaluate complicated condition
+            </summary>
+            <param name="rule">Rule</param>
+            <param name="requestAttributeValues">request attribute values used in the condition</param>
+            <param name="requestAttributeIssuers">request attribute issuers</param>
+            <param name="attributeBuilder">attribute builder instance,when processing rules' condition, if result is false, should add missing attribute to missing attributes</param>
+            <returns>boolean value, true or false of condition</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringEqualCaseInsensitive(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringEqualCaseInsensitive method, this is to compare string equal function
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringNotEqualTo(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringNotEqualTo method, this is to compare string equal function
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringNotEqualToCaseInsensitive(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringNotEqualToCaseInsensitive method, this is to compare string equal function
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsStringIntersectionCaseInsensitive(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement IsStringIntersectionCaseInsensitive method, this is to compare string intersection function
+            compared from string must intersect  compared to string
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringNotIntersection(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringNotIntersection method, this is to compare string intersection function
+            compared from string must not intersect  compared to string
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.StringNotIntersectionCaseInsensitive(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement StringNotIntersectionCaseInsensitive method, this is to compare string intersection function
+            compared from string must not intersect  compared to string with case insensitive
+            </summary>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="values">list of values for operation</param>
+            <returns>boolean value, true or false of comparision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.TypeIntersection(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Implement TypeIntersection custom function, this is to return intersection of 2 lists
+            </summary>
+            <param name="parameters">two list of attribute ids</param>
+            <param name="attributeValues">values for each attribute id</param>
+            <returns>string value, intersection of values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.NormalizeXpath(System.String)">
+            <summary>
+            normalize xpath expression to escape '
+            </summary>
+            <param name="value">input</param>
+            <returns>normalized xpath expression</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.OneAndOnly``1(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            This function SHALL take a bag of type T values as an argument and
+            SHALL return a value of type T. It SHALL return the only value in the bag.
+            If the bag does not have one and only one value, then the expression SHALL evaluate to "Indeterminate".
+            </summary>
+            <typeparam name="T">Generic Type T</typeparam>
+            <param name="parentObject">Parent object which has target attribute invoking this function.</param>
+            <param name="bag">Collection of objects on type T on which the operation needs to be performed.</param>
+            <param name="condition">Extra validation Condition that can be performed on the split Array. On null input no validation is performed.</param>
+            <returns>The element in the bag if only one element is present. Or else it sets IsIndeterminate flag to true.</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidCastException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsIn``1(System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            This function SHALL take an argument of type T as the first argument and a bag of type values as the second argument and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL evaluate to "True" if and only if the first argument matches by the
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal" any value in the bag. Otherwise, it SHALL return “False”.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="element"></param>
+            <param name="bag"></param>
+            <param name="condition">Optional condition that </param>
+            <returns>Returns boolean</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidCastException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsIn``1(System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            This function SHALL take an argument of type T as the first argument and a bag of type values as the second argument and
+            SHALL return an http://www.w3.org/2001/XMLSchema#boolean.
+            The function SHALL evaluate to "True" if and only if the first argument matches by the
+            "urn:oasis:names:tc:xacml:x.x:function:type-equal" any value in the bag. Otherwise, it SHALL return “False”.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="element"></param>
+            <param name="bag"></param>
+            <param name="condition">Optional condition that </param>
+            <returns>Returns boolean</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidCastException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Intersection``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            Does Generic intersection
+            This function SHALL take two arguments that are both a bag of T values.
+            It SHALL return a bag of T values such that it contains only elements that are common between the two bags,
+            which is determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal".
+            No duplicates, as determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal", SHALL exist in the result.
+            </summary>
+            <typeparam name="T">Generic Type</typeparam>
+            <param name="firstBag">First bag of type T which is represented as a comma separated string</param>
+            <param name="secondBag">Second bag of type T which is represented as a comma separated string</param>
+            <param name="condition">The Validation condition which needs to be run. If null is passed it does not do the validation</param>
+            <returns>Bag of Type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Intersection``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Does Generic intersection
+            This function SHALL take two arguments that are both a bag of T values.
+            It SHALL return a bag of T values such that it contains only elements that are common between the two bags,
+            which is determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal".
+            No duplicates, as determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal", SHALL exist in the result.
+            </summary>
+            <typeparam name="T">Generic Type</typeparam>
+            <param name="firstBag">First bag of type T which is represented as a comma separated string</param>
+            <param name="secondBag">Second bag of type T which is represented as a comma separated string</param>
+            <param name="condition">The Validation condition which needs to be run. If null is passed it does not do the validation</param>
+            <returns>Bag of Type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:System.InvalidCastException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Intersection``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Converter{System.String,``0})">
+            <summary>
+            Does Generic intersection
+            This function SHALL take two arguments that are both a bag of T values.
+            It SHALL return a bag of T values such that it contains only elements that are common between the two bags,
+            which is determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal".
+            No duplicates, as determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal", SHALL exist in the result.
+            </summary>
+            <typeparam name="T">Generic Type</typeparam>
+            <param name="firstBag">First bag of type T which is represented as a comma separated string</param>
+            <param name="secondBag">Second bag of type T which is represented as a comma separated string</param>
+            <returns>Bag of Type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Union``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            Does Generic union
+            This function SHALL take two arguments that are both a bag of T values.
+            It SHALL return a bag of T values such that it contains all elements of two bags.
+            No duplicates, as determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal", SHALL exist in the result.
+            </summary>
+            <typeparam name="T">Generic Type</typeparam>
+            <param name="firstBag">First bag of type T which is represented as a comma separated string</param>
+            <param name="secondBag">Second bag of type T which is represented as a comma separated string</param>
+            <param name="condition">The Validation condition which needs to be run. If null is passed it does not do the validation</param>
+            <returns>Bag of Type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Union``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            Does Generic union
+            This function SHALL take two arguments that are both a bag of T values.
+            It SHALL return a bag of T values such that it contains all elements of two bags.
+            No duplicates, as determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal", SHALL exist in the result.
+            </summary>
+            <typeparam name="T">Generic Type</typeparam>
+            <param name="firstBag">First bag of type T which is represented as a comma separated string</param>
+            <param name="secondBag">Second bag of type T which is represented as a comma separated string</param>
+            <param name="condition">The Validation condition which needs to be run. If null is passed it does not do the validation</param>
+            <returns>Bag of Type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+            <exception cref="T:System.InvalidCastException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.Union``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Converter{System.String,``0})">
+            <summary>
+            Does Generic union
+            This function SHALL take two arguments that are both a bag of T values.
+            It SHALL return a bag of T values such that it contains all elements of two bags.
+            No duplicates, as determined by "urn:oasis:names:tc:xacml:x.x:function:type-equal", SHALL exist in the result.
+            </summary>
+            <typeparam name="T">Generic Type</typeparam>
+            <param name="firstBag">First bag of type T which is represented as a comma separated string</param>
+            <param name="secondBag">Second bag of type T which is represented as a comma separated string</param>
+            <returns>Bag of Type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.ArgumentNullException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.ParseStringToBag``1(System.Collections.Generic.List{System.String},System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            Parses a comma separated string of elements to parse.
+            </summary>
+            <typeparam name="T">Generic Type to convert to</typeparam>
+            <param name="bag">A comma separated string of elements to parse</param>
+            <param name="condition">An optional condition that can be used to run an extra Validation on top after parsing</param>
+            <returns>An IList of type T</returns>
+            <exception cref="T:System.FormatException"/>
+            <exception cref="T:System.InvalidCastException"/>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.AtLeastOneMemberOf``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘type’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <typeparam name="T">Type of elements passed in</typeparam>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="firstBag">First bag of type elements</param>
+            <param name="secondBag">Second bag of type elements</param>
+            <param name="converter">Converter to convert to specified type</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.AtLeastOneMemberOf``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Converter{System.String,``0})">
+            <summary>
+            This function SHALL take two arguments that are both a bag of ‘type’ values. It SHALL
+            return a “http://www.w3.org/2001/XMLSchema#boolean”. The function SHALL evaluate to
+            "True" if and only if at least one element of the first argument is contained in the second
+            argument as determined by "urn:oasis:names:tc:xacml:x.x:function:type-is-in".
+            </summary>
+            <typeparam name="T">Type of elements passed in</typeparam>
+            <param name="parentObject">Parent object which has target attribute invoking this function</param>
+            <param name="firstBag">First bag of type elements</param>
+            <param name="secondBag">Second bag of type elements</param>
+            <param name="converter">Converter to convert to specified type</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsSubset``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Converter{System.String,``0})">
+            <summary>
+            This function shall evaluate whether the second bag of elements is subset of first bag of elements
+            </summary>
+            <typeparam name="T">Type of elements passed in</typeparam>
+            <param name="mainset">First Bag of elements</param>
+            <param name="subset">Second Bag of elements</param>
+            <param name="converter">Converter to convert to specified type</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsSubset``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            This function shall evaluate whether the second bag of elements is subset of first bag of elements
+            </summary>
+            <typeparam name="T">Type of elements passed in</typeparam>
+            <param name="mainset">First Bag of elements</param>
+            <param name="subset">Second Bag of elements</param>
+            <param name="condition">The Validation condition which needs to be run. If null is passed it does not do the validation</param>
+            <param name="converter">Converter to convert to specified type</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsSetEqual``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Converter{System.String,``0})">
+            <summary>
+            This function shall evaluate whether the second bag of elements is set equal of first bag of elements
+            </summary>
+            <typeparam name="T">Type of elements passed in</typeparam>
+            <param name="mainset">First Bag of elements</param>
+            <param name="subset">Second Bag of elements</param>
+            <param name="converter">Converter to convert to specified type</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.IsSetEqual``1(Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Func{System.String,System.Boolean},System.Converter{System.String,``0})">
+            <summary>
+            This function shall evaluate whether the second bag of elements is set equal of first bag of elements
+            </summary>
+            <typeparam name="T">Type of elements passed in</typeparam>
+            <param name="mainset">First Bag of elements</param>
+            <param name="subset">Second Bag of elements</param>
+            <param name="condition">The Validation condition which needs to be run. If null is passed it does not do the validation</param>
+            <param name="converter">Converter to convert to specified type</param>
+            <returns>Boolean</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.ProcessList(System.String,Microsoft.IT.Security.Enforcement.DataEntities.Rule,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement processList custom function, this is to evaluate sub list of functin stacks
+            </summary>
+            <param name="formula">constraint template formula</param>
+            <param name="rule">Rule</param>
+            <param name="functionStackList">string representation of function stack</param>
+            <param name="scopeValues">scoping values</param>
+            <param name="requestValues">request values</param>
+            <param name="requestIssuers">request issuers</param>
+            <returns>string value, true/flase</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.ProcessFunction(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,Microsoft.IT.Security.Enforcement.DataEntities.TargetAttributeEntity,System.String,System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Implement ProcessFunction method, this is to a wrapper function to invoke specific functions
+            </summary>
+            <param name="baseObject">reference to base object which contains this target</param>
+            <param name="target">target being evaluated</param>
+            <param name="function">apply function</param>
+            <param name="requestValue">attribute value from request</param>
+            <param name="policyValue">attribute value specified in policy</param>
+            <return>return the process result</return>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.ProcessChildNode(Microsoft.IT.Security.Enforcement.DataEntities.Rule,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},Microsoft.IT.Security.Enforcement.Server.AttributeBuilder,System.Xml.XmlNode,System.String)">
+            <summary>
+            Implement ProcessChildNode method, this is to recursively get node from XmlDocument
+            </summary>
+            <param name="rule">reference to rule object which contains this condition</param>
+            <param name="requestAttributeValues">request attributes</param>
+            <param name="requestAttributeIssuers">request attributes issuers</param>
+            <param name="attributeBuilder">attribute builder to store the missing attributes</param>
+            <param name="patentNode">parent Xml Node</param>
+            <param name="function">apply function</param>
+            <return>return the process result</return>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.FunctionLibrary.GetFormulaProcessedValue(Microsoft.IT.Security.Enforcement.DataEntities.Rule,System.String,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Implement GetFormulaProcessedValue custom function, this is to evaluate the formula
+            resource constraints
+            </summary>
+            <param name="rule">Rule</param>
+            <param name="formula">content of formula</param>
+            <param name="scopingValues">scoping attribute values specified</param>
+            <param name="requestAttributeValues">values for each attribute id in request</param>
+            <param name="requestAttributeIssuers">attribute issuers</param>
+            <returns>boolean results of formula evaluation</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.YearMonthDurationComparer">
+            <summary>
+            Comparer class for YearMonthDuration
+            Implements the IEquality interface to be used with set functions
+            </summary>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.DayTimeDurationComparer">
+            <summary>
+            Comparer class for DayTimeDuration
+            Implements the IEquality interface to be used with set functions
+            </summary>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider">
+            <summary>
+            Define PDP Provider which manages the data flow of PDP process
+            and invokes sub components in pre-defined sequence
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.callsPerSecond">
+            <summary>
+            PDP calls per second performance counter
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.avgCallTime">
+            <summary>
+            Avg. PDP call time performance counter
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.#ctor">
+            <summary>
+            PDP Provider has only private constructor so it can only be initiated from this class
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.RetrievePolicyDecisionPointProviderInstance">
+            <summary>
+            Implement get instance of PDP Provider, currently it creates new instance everytime, 
+            the implementation will be changed to use object pool, for example, COM+/Enterprise Service, etc.
+            </summary>
+            <returns>instance of PDPProvider</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.Ping(Microsoft.IT.Security.Core.Diagnostics.MonitoredServicesResponse,Microsoft.IT.Security.Core.Diagnostics.MonitorLevel,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Add ping information from dependent service
+            </summary>
+            <param name="response">monitor response object</param>                
+            <param name="level">monitor level</param>              
+            <param name="context">context with correlation id etc</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.AssertAccessControl(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.Request},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Implement Assert method to give authorization decision based on passed in request,
+            this is not strictly following XACML spec, but using RXP Security object model to speed up performance, 
+            input parameter is Request object
+            and return result is Response object.
+            </summary>
+            <param name="requests">access control requests.</param>
+            <param name="context">context with correlation id etc</param>
+            <returns>authorization decision(s)</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider.Ping(Microsoft.IT.Security.Core.Diagnostics.MonitorLevel)">
+            <summary>
+            <c>Ping</c>Method is used to monitor the service.
+            <list type="table">
+            <listheader>
+            <term>Parameter</term><description>Requirement</description>
+            </listheader>
+            <item><term>MonitorLevel</term><description>Required</description></item>
+            </list>
+            </summary>
+            <param name="level">Monitoring level to ping for.</param>
+            <list type="table">
+            <listheader>
+            <term>Fields in MonitorLevel</term><description>Description</description>
+            </listheader>
+            <item><term>Level0</term><description>Level 0.</description></item>
+            <item><term>Level1</term><description>Level 1</description></item>
+            <item><term>Level2</term><description>Level 2</description></item>
+            </list>
+            <returns>MonitoredServicesResponse</returns>        
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointThreadTask">
+            <summary>
+            Defines thread task
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointThreadTask.#ctor(Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointProvider,Microsoft.IT.Security.Enforcement.DataEntities.Request,System.Int32,System.Collections.Generic.Dictionary{System.Int32,Microsoft.IT.Security.Enforcement.DataEntities.Response},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Construct thread task to process each access control request
+            </summary>
+            <param name="request">access control request.</param>
+            <param name="policyDecisionPointInstance">policy decision point provider</param>
+            <param name="index">index of this request in requests list </param>
+            <param name="responses">overall responses</param>
+            <param name="context"> custom context with correlation id</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointThreadTask.Process">
+            <summary>
+            This method will be called by thread
+            </summary>
+            <param name="state">Passed in state can be used to send signals to main thread about thread status</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointThreadTask.Abort">
+            <summary>
+            Handle when thread is time out, add default response
+            </summary>
+            <param name="state">Handle when thread is aborted</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyDecisionPointThreadTask.GetMissingAttributes(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity})">
+            <summary>
+            This is used for tracing the missing attributes
+            </summary>
+            <param name="missingAttributes">List missing attributes</param>
+            <returns>string contains the list of missing attributes</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyEvaluator">
+            <summary>
+            Define Policy Evaluator which will evaluate applicable PolicySet against incoming request and
+            missing attributes' value (not present in request) collected by PIP.
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyEvaluator.Evaluate(Microsoft.IT.Security.Enforcement.DataEntities.Request,Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,System.Boolean,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+             <summary>
+             Implement Evaluate method to give authorization decision based on passed in request,
+             found applicable PolicySet and missing attribute values (not present in request) collected by PIP.
+             </summary>
+             <param name="request">access control request.</param>
+             <param name="policySet">found applicable policyset.</param>
+            <param name="reevaluate">reevaluate policies</param>
+             <param name="missingAttrtibuteEntityDetails">values collected by PIP for those attributes which do not have value in request.</param>
+            <param name="context">customer context</param>
+             <returns>authorization decision</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyEvaluator.RetrieveAttributeBuilder">
+            <summary>
+            return attribute builder used to build missing attributes
+            </summary>
+            <returns>attribute builder</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyFinder">
+            <summary>
+            Define PolicyFinder to search for applicable PolicySet for incoming request
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyDecisionPoint.PolicyFinder.GetPolicy(System.String,System.String,System.String,System.Collections.Generic.ICollection{Microsoft.IT.Security.Enforcement.DataEntities.SearchTarget},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Implement GetPolicy method to retrieve all applicable PolicySets for incoming request
+            </summary>
+            <param name="nameProtectionDomainName">NPD Name the resource belongs to.</param>
+            <param name="policyName">Specific policy name caller wants to search for, only applicable PolicySets matching the name will be returned.</param>
+            <param name="policyVersion">Specific policy version caller wants to search for, only applicable PolicySets matching the version will be returned.</param>
+            <param name="searchTargets">Specific search criterias caller wants to search for applicable PolicySet.</param>
+            <param name="context">context with corelation id etc</param>
+            <returns>matched applicable PolicySet</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider">
+            <summary>
+            Define standard AAC implementation of PIP interface
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.callsPerSecond">
+            <summary>
+            PIP calls per second performance counter
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.avgCallTime">
+            <summary>
+            Avg. PIP call time performance counter
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.GetAttributesValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Implements GetAttributesValue method of IPIP interface.
+            Parameters based on source XML will be formed and AAC DAL methods will be executed and
+            result will be used to populate missing attributes value
+            </summary>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <param name="missingAttributes">Missing Attribute list</param>
+            <returns>returns missing attribute list with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.GroupMissingAttributes(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Group missing attributes based on operation name and subject id
+            </summary>
+            <param name="missingAttributes">Missing Attribute list</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>returns dictionary which contains missing attribute groups based on operation name and subject id</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.GetParameters(Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Gets the parameter collection required for execution of AAC DAL method
+            </summary>
+            <param name="missingAttribute">Missing attribute entity passed in to construct paramters</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>Parameter name value collection</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.GetParametersForSpecificAAC(Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Reads the parameter collection from missing attribute source and populates the name value collection
+            into a dictionary after retrieving values from requestattributes
+            </summary>
+            <param name="missingAttribute">Missing attribute entity passed in to construct paramters</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>Parameter name value collection</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.ExecuteAACMethod(System.Collections.Generic.KeyValuePair{System.String,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity}},System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Executes the AAC DAL method based on the operation name and parameters passed in
+            </summary>
+            <param name="operation">Name of the AAC DAL method</param>
+            <param name="parameters">Parameters required for execution of AAC DAL method</param>
+            <param name="missingAttributes">Missing attribute entity passed in to populate the values</param>
+            <returns>Collection of MissingAttributeEntity with values if available</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.PopulateAttributeValuesList(System.Collections.Generic.ICollection{Microsoft.IT.Security.Administration.RoleAdministration.DataEntities.Role},System.String)">
+            <summary>
+            Populates the attribute values to a list of string to support multiple values.
+            </summary>
+            <param name="roles">Collection of roles</param>
+            <param name="additionalValue">additional value</param>
+            <returns>List of string containing the attribute values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.AccessAdministrationProvider.PopulateAttributeValuesList(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},Microsoft.IT.Security.Administration.RoleAdministration.DataEntities.Subject,System.String,System.String)">
+            <summary>
+            Populates the attribute values to a list of string for subject roles and scope entries
+            </summary>
+            <param name="missingAttributes">Missing Attribute list</param>
+            <param name="attributeValues">Attribute Values collection</param>
+            <param name="subjectWithScope">subject entity containing the role and scope entry collection</param>
+            <param name="templateName">template name</param>
+            <param name="roleName">role name</param>
+            <returns>Attribute values</returns>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.CSharp">
+            <summary>
+            Constant for association CSharp language to CodeDomProvider
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.ServiceName">
+            <summary>
+            Constant for mapping the ServiceName in source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.EndpointAddress">
+            <summary>
+            Constant for mapping the Endpoint address in source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.Binding">
+            <summary>
+            Constant for mapping the Binding in source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.ContractName">
+            <summary>
+            Constant for mapping the Contract Name in source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.ClientCredentials">
+            <summary>
+            Constant for mapping the Client Credentials from the service contract
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.CertificateName">
+            <summary>
+            Constant for mapping the Certificate FindByValue in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.WSHttpBinding">
+            <summary>
+            Constant for mapping the WsHttpBinding in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.BasicHttpBinding">
+            <summary>
+            Constant for mapping the BasicHttpBinding in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.NetTcpBinding">
+            <summary>
+            Constant for mapping the NetTcpBinding in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.SecurityType">
+            <summary>
+            Constant for mapping the SecurityType in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.MessageSecurity">
+            <summary>
+            Constant to define message level binding security
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.TransportSecurity">
+            <summary>
+            Constant to define transport level security
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.ClientCredentialType">
+            <summary>
+            Constant for mapping the CredentialType in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.StoreLocation">
+            <summary>
+            Constant for mapping the Certificate StoreLocation in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.StoreName">
+            <summary>
+            Constant for mapping the Certificate StoreName in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.X509FindType">
+            <summary>
+            Constant for mapping the X509FindType for Certificate in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.Windows">
+            <summary>
+            Constant for mapping the Windows authentication in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.Certificate">
+            <summary>
+            Constant for mapping the Certificate authentication in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.Client">
+            <summary>
+            Constant for appending the Client to a service name during proxy creation
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.ContractNamespace">
+            <summary>
+            Constant for mapping the WCF ContractNamespace in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.DomainNameSystem">
+            <summary>
+            Constant to map DPN paramter in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.SecurityPrincipalName">
+            <summary>
+            Constant to map SPN parameter in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.UserPrincipalName">
+            <summary>
+            Constant to map Upn parameter in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.PublicKey">
+            <summary>
+            Constant to map PublicKey parameter in the source xml
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointConstants.WcfRequestXmlInputParameter">
+            <summary>
+            Constant for sending the requestXml parameter required for WCF generic call
+            </summary>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointProvider">
+            <summary>
+            PIPProvider provides interface to retrieve values for missing attributes
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointProvider.callsPerSecond">
+            <summary>
+            PIP calls per second performance counter
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointProvider.avgCallTime">
+            <summary>
+            Avg. PIP call time performance counter
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointProvider.GetPolicyInformationPoint(System.String,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            This method returns specific PIP instance which implements IPIP interface based on type
+            </summary>
+            <param name="type">Determines which PIP instance needs to create to process missing attributes</param>
+            <param name="context">Context with correlation id etc </param>
+            <returns>returns specific implementation(SQL,WCF or AAC) of IPIP interface</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointProvider.GetAttributesValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Process missing attribute list for grouping,
+            call appropriate PIP instances and pass grouped missing attribute list to that instance
+            for further processing
+            </summary>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <param name="missingAttributes">Missing Attribute list</param>
+            <param name="context">context with correlation id etc</param>
+            <returns>returns missing attribute list with values</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointThreadTask">
+            <summary>
+            Defines thread task
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointThreadTask.Process">
+            <summary>
+            This method will be called by thread
+            </summary>
+        </member>
+        <member name="P:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointThreadTask.MissingAttributes">
+            <summary>
+            Missing attributes are process by thread and retrieves values from current attribute source
+            </summary>
+        </member>
+        <member name="P:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointThreadTask.ReturnedMissingAttributes">
+            <summary>
+            Missing attributes value popoulated by thread
+            </summary>
+        </member>
+        <member name="P:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.PolicyInformationPointThreadTask.Key">
+            <summary>
+            Attribute grouping key
+            </summary>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider">
+            <summary>
+            Define standard SQL implementation for IPIP interface
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.context">
+            <summary>
+            Private variable to store the CustomContext used for Tracing
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.callsPerSecond">
+            <summary>
+            PIP SQL calls per second performance counter
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.avgCallTime">
+            <summary>
+            Avg. PIP SQL call time performance counter
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.#ctor">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.GetAttributesValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Implements GetAttributesValue method of IPIP interface.
+            It performs inner level grouping based on connection string &amp; stored procedure name.
+            Inner level groups are used to create SQL commands.
+            Commands will be executed and result will be used to poluplate missing attributes value
+            </summary>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <param name="missingAttributes">Missing Attribute list</param>
+            <param name="context">Custom context with correlation ID populated.</param>
+            <returns>returns missing attribute list with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ExecuteCommands(System.Collections.Generic.IList{System.Data.SqlClient.SqlCommand},System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity}},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity})">
+            <summary>
+            Executes SQL Command and populate missing attributes list with values
+            </summary>
+            <param name="sqlCommands">SQL command list passed in to execute using same connection object</param>
+            <param name="missingAttributes">Missing attribute list passed in to populate with the values</param>
+            <returns>returns missing attribute list with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ExecuteCommandsInternal(System.Collections.Generic.IList{System.Data.SqlClient.SqlCommand},System.String,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Helper to isolate SQL operations for mock test purpose
+            </summary>
+            <param name="sqlCommands">SQL command list passed in to execute using same connection object</param>
+            <param name="connectionString">Connection string for the SQL connection</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ConstructSqlCommand(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Constructs SQLCommand either for Specific stored procedure call or for Generic stored procedure call
+            </summary>
+            <param name="missingAttributes">Missing attribute list passed in to construct SQL commands</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>returns missing attribute list with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ConstructSqlCommandForSpecificStoredProc(Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Constructs SQL command for Specific stored procedure call
+            </summary>
+            <param name="missingAttribute">Missing attribute list passed in to construct SQL commands</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>returns newly created SQL command using passed in paramters</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ConstructSqlCommandForGenericStoredProc(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Constructs SQL command for Generic stored procedure call
+            </summary>
+            <param name="missingAttributes">Missing attribute list passed in to construct SQL commands</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>returns newly created SQL command using passed in paramters</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ConstructSqlParameter(System.String,System.String)">
+            <summary>
+            Creates SQL parameter object
+            </summary>
+            <param name="parameterName">Parameter name</param>
+            <param name="parameterValue">Paramter value</param>
+            <returns>returns newly created SQL paramter object using passed in parameters</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.SqlProvider.ConstructSqlCommand(System.String,System.Collections.Generic.List{System.Data.SqlClient.SqlParameter})">
+            <summary>
+            Creates SQL command object
+            </summary>
+            <param name="storedProcedureName">Stored procedure name</param>
+            <param name="sqlParameters">SQL paramter list</param>
+            <returns>return newly created SQL command object using passed in parameters</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility">
+            <summary>
+            Defines common functionality
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.StartRequestXmlRootElement">
+            <summary>
+            Creates start root element for request xml
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.EndRequestXmlRootElement">
+            <summary>
+            Creates end root elment for request xml
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.AddParameterToRequestXml(System.String,System.String,System.String)">
+            <summary>
+            Adds attribute element to request xml
+            </summary>
+            <param name="name">Attribute name</param>
+            <param name="dataType">Attribute datatype</param>
+            <param name="value">Attribute value</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.GroupMissingAttributes(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            This method performs missing attribute grouping based on OperationName
+            </summary>
+            <param name="missingAttributes">Missing attribute list passed in to perform grouping</param>
+            <param name="correlationId">Correlation ID for the request</param>
+            <returns>returns dictionary that contains missing attribute grouping based on opearation name</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.GroupAndOrderMissingAttributes(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Int32,Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Group missing attributes based on soruce type and source location and order based on dependencies
+            </summary>
+            <param name="missingAttributes">missing attribute list will be processed for grouping</param>
+            <param name="requestAttributes">request Attribute dictionary</param>
+            <param name="iteration">iteration value will be used to get current attribute source</param>
+            <param name="correlationId">Correlation ID for the request</param>
+            <returns>returns a dictionary which contains collection if missing attribute groups based on priority</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.GetCurrentAttributeSource(Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity,System.String,System.Int32)">
+            <summary>
+            Retrieves current attribute source from attribute's attribute source collection
+            </summary>
+            <param name="missingAttribute">Missing attribute list</param>
+            <param name="environment">Environment name</param>
+            <param name="iteration">current iteration value</param>
+            <returns>returns current attribute source</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.ParseSourceXml(System.String,System.String)">
+            <summary>
+            Parse source xml and assin values to the properties of misssing attribute source object
+            </summary>
+            <param name="sourceXml">Source xml</param>
+            <param name="environment">Environment name</param>
+            <returns>return missing attribute source object</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.PopulateMissingAttributes(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.String)">
+            <summary>
+            Populates missing attributes value from response xml
+            </summary>
+            <param name="missingAttributes">Missing attribute list passed in to populate its value</param>
+            <param name="responseXml">Response xml contains missing attribute values</param>
+            <returns>return missing attributes with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.PopulateMissingAttributes(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Populates missing attributes value from response dictionary
+            </summary>
+            <param name="missingAttributes">Missing attribute list passed in to populate its value</param>
+            <param name="attributeValues">Response dictionary contains missing attribute values</param>
+            <returns>return missing attributes with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.RetrieveParameterValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},Microsoft.IT.Security.Enforcement.DataEntities.Parameter,Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity)">
+            <summary>
+            Retrieves parameter value from request dictionary
+            </summary>
+            <param name="requestAttributes">Request attribute dictionary</param>
+            <param name="parameter">Parameter passed in to retrieve its value</param>
+            <returns>returns parameter value</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.PopulateMissingAttributesWithErrorValue(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity})">
+            <summary>
+            Populate returned missing attributes with error value
+            </summary>
+            <param name="missingAttributes">missing attribute list with empty value</param>
+            <param name="returnedMissingAttributes">misssing attribute list with error values</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.GetObjectAsString(System.Object)">
+            <summary>
+            Converts an object to a human readable string by reflecting through all public properties.
+            </summary>
+            <param name="item">Serializable object to be converted to a string.</param>
+            <returns>String representation of the contents of the object.</returns>
+        </member>
+        <member name="P:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.Utility.RequestXml">
+            <summary>
+            Gets the RequestXml as a string
+            </summary>
+            <returns>returns xml string requestxml</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider">
+            <summary>
+            Define standard WCF implementation for IPIP interface
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider.callsPerSecond">
+            <summary>
+            PIP WCF calls per second performance counter
+            </summary>
+        </member>
+        <member name="F:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider.avgCallTime">
+            <summary>
+            Avg. PIP WCF call time performance counter
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider.GetAttributesValue(System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Implements GetAttributesValue method of IPIP interface.
+            It performs inner level grouping based on service url and the operation name.
+            Inner level groups are used to create parameter collection and invoke the WCF service
+            Result will be used to populate missing attributes value
+            </summary>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <param name="missingAttributes">Missing Attribute list</param>
+            <returns>returns missing attribute list with values</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider.GetParameters(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Get parameters required for calling the WCF service from the source xml
+            </summary>
+            <param name="missingAttributes">Collection of missing attributes</param>
+            <param name="requestAttributes">Dictionary of request attributes</param>
+            <returns>Collection of parameters as name value pair</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider.GetParametersForGenericServiceCall(System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Gets parameters for a generic WCF service call
+            </summary>
+            <param name="missingAttributes">Missing attribute list passed in to get parameters</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>returns paramters</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.PolicyInformationPoint.WcfProvider.GetParametersForSpecificServiceCall(Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue})">
+            <summary>
+            Gets parameters for a specific WCF service call
+            </summary>
+            <param name="missingAttribute">Missing attribute passed in to get parameters</param>
+            <param name="requestAttributes">Request dictionary contains values which are required to get missing attribute value</param>
+            <returns>returns paramters</returns>
+        </member>
+        <member name="T:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator">
+            <summary>
+            RuleEngineTranslator transaltes PolicySet to Windows Workflow Foundation
+            Rule Engine objects and execute rule engine to get authoriztaion decisions
+            </summary>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.GetWFRuleSet(Microsoft.IT.Security.Enforcement.DataEntities.Request,System.Guid)">
+            <summary>
+            Implement GetWFRuleSet method to get WF Rule Set from Cache using key as collection of SearchTarget and
+            policy version, if not found in cache, then return null
+            </summary>
+            <param name="request">access control request.</param>
+            <param name="correlationId">corrrelation id in the context</param>
+            <returns>Windows Workflow Foundation RuleSet</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.PublishWFRuleSet(Microsoft.IT.Security.Enforcement.DataEntities.Request,System.Workflow.Activities.Rules.RuleSet,System.Guid)">
+            <summary>
+            Implement PublishWFRuleSet method to publish WF Rule Set to Cache using key as collection of SearchTarget and
+            policy version
+            </summary>
+            <param name="request">access control request.</param>
+            <param name="ruleSet">Windows Workflow Foundation RuleSet</param>
+            <param name="correlationId">correlation id for tracking</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.ConstructWFRuleSet(Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,Microsoft.IT.Security.Enforcement.DataEntities.Request,System.Guid)">
+            <summary>
+            Implement ConstructWFRuleSET method to construct WF RuleSet object using PolicySet data
+            </summary>
+            <param name="policySet">found applicable PolicySet.</param>
+            <param name="request">access control Request.</param>
+            <param name="correlationId">correlation id for access control request</param>
+            <returns>Windows Workflow Foundation RuleSet</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreatePolicySetRules(System.Workflow.Activities.Rules.RuleSet,Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,System.CodeDom.CodeExpression,System.CodeDom.CodeBinaryOperatorExpression,System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},System.Int32@,System.Guid)">
+             <summary>
+             Recursively construct WF Conditions object from PolicySet
+             </summary>
+             <param name="ruleSet">WF RuleSet</param>
+             <param name="parentPolicySet">Parent policyset, will use this to construct WF Rule</param>
+             <param name="parentPolicySetExpression">parent policy set reference</param>
+             <param name="parentPolicySetCondition">parent policy set condition</param>
+            <param name="requestAttributeValues">attribute values in request</param>
+            <param name="internalRuleIndex">internal WF rule index</param>
+            <param name="correlationId">correlation id in request</param>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateConditionsForPolicySet(Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,System.Workflow.Activities.Rules.RuleSet,System.CodeDom.CodeExpression,System.Int32,System.String)">
+            <summary>
+            Construct WF Conditions object from PolicySet
+            </summary>
+            <param name="policySet">found applicable PolicySet.</param>
+            <param name="ruleSet">WF RuleSet</param>
+            <param name="parentTarget">Parent policyset reference, will use this to construct WF Rule</param>
+            <param name="type">indicate policyset is root node or not</param>
+            <param name="policySetIndex">index of policyset in policyset list</param>
+            <returns>List of two references, Windows Workflow Foundation CodeExpression as reference of this policyset, Windows Workflow Foundation CodeBinaryOperatorExpression as reference of this policyset's targets</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateConditionsForPolicy(Microsoft.IT.Security.Enforcement.DataEntities.SecurityPolicy,System.Workflow.Activities.Rules.RuleSet,System.CodeDom.CodeExpression,System.Int32,System.Guid)">
+            <summary>
+            Construct WF Conditions object from Policy
+            </summary>
+            <param name="policy">found applicable Policy.</param>
+            <param name="parentTarget">Parent policyset reference, will use this to construct WF Rule</param>
+            <param name="ruleSet">WF RuleSet</param>
+            <param name="policyIndex">Index of policy in the policy list</param>  
+            <param name="correlationId">correlation id for access control</param>
+            <returns>List of two references, Windows Workflow Foundation CodeExpression as reference of this policy, Windows Workflow Foundation CodeBinaryOperatorExpression as reference of this policyset's targets</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateRuleForPolicyRule(Microsoft.IT.Security.Enforcement.DataEntities.Rule,System.Workflow.Activities.Rules.RuleSet,System.CodeDom.CodeExpression,System.Int32,System.Int32@,System.Collections.Generic.List{System.CodeDom.CodeBinaryOperatorExpression},System.Collections.Generic.Dictionary{System.String,Microsoft.IT.Security.Enforcement.DataEntities.AttributeValue},Microsoft.IT.Security.Enforcement.Server.AttributeBuilder,System.Guid)">
+            <summary>
+            Construct WF Rule object from Policy's Rule
+            </summary>
+            <param name="policyRule">Policy's Rule.</param>
+            <param name="parentTarget">Parent policyset reference, will use this to construct WF Rule</param>
+            <param name="ruleSet">WF RuleSet</param>
+            <param name="ruleIndex">Index of attribute in the rule list</param>  
+            <param name="ruleName">name of the rule</param>  
+            <param name="parentConditions">parent conditions need to be added down to rule</param>
+            <param name="requestAttributeValues">attribute values in request</param>
+            <param name="attributeBuilder">attribute builder instance,when processing rules' condition, if result is false, should add missing attribute to missing attributes</param>
+            <param name="correlationId">correlation id in access control request</param>
+            <returns>Windows Workflow Foundation CodeExpression as reference of this rule</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateCombineConditionForAttributes(System.CodeDom.CodeExpression,System.CodeDom.CodeExpression)">
+            <summary>
+            Construct WF Condition object for Recursive combination
+            </summary>
+            <param name="previousCondition">previous condition</param>
+            <param name="currentCondition">current condition</param>
+            <returns>Windows Workflow Foundation CodeExpression as reference of and logic condition</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateConditionForAttributes(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.TargetAttributeEntity},System.CodeDom.CodeExpression)">
+            <summary>
+            Construct WF Condition object for Attributes
+            </summary>
+            <param name="parentObject">parent object which has target attributes</param>
+            <param name="attributes">target attributes.</param>
+            <param name="parentTarget">Parent policyset reference, will use this to construct WF Rule</param>
+             <returns>Windows Workflow Foundation CodeExpression as reference of condition for attributes</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.GroupExpression(System.CodeDom.CodeBinaryOperatorExpression,System.CodeDom.CodeBinaryOperatorExpression,System.Boolean)">
+            <summary>
+            Construct WF Condition object for And/Or repeatable grouping
+            </summary>
+            <param name="previousExpression">previous workflow expression</param>
+            <param name="currentExpression">current workflow expression</param>
+            <param name="isAndCondition">indicate it is and/or group both expression</param>
+             <returns>Windows Workflow Foundation CodeExpression as combining result</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateRuleForAttributes(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.TargetAttributeEntity},System.Workflow.Activities.Rules.RuleSet,System.CodeDom.CodeExpression,System.Int32@,System.Collections.Generic.List{System.CodeDom.CodeBinaryOperatorExpression},System.CodeDom.CodeBinaryOperatorExpression,System.Guid)">
+            <summary>
+            Construct WF Rule object for Attribute
+            </summary>
+            <param name="parentObject">parent object which has target attributes</param>
+            <param name="attributes">target attributes.</param>
+            <param name="parentTarget">Parent policyset reference, will use this to construct WF Rule</param>
+            <param name="ruleSet">WF RuleSet</param>
+            <param name="attributeIndex">Index of attribute in the attribute list</param>  
+            <param name="ruleName">name of the constructed WF rule</param>
+            <param name="parentConditions">parent conditions passed on</param>
+            <param name="appendCondition">additional condition can be appended after attribute</param>
+            <param name="correlationId">correlation id in access control request</param>
+             <returns>Windows Workflow Foundation CodeExpression as reference of this attribute</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.CreateCondition(Microsoft.IT.Security.Enforcement.DataEntities.WorkflowBase,Microsoft.IT.Security.Enforcement.DataEntities.TargetAttributeEntity,System.CodeDom.CodeExpression,System.CodeDom.CodeExpression,System.CodeDom.CodeExpression,System.CodeDom.CodeExpression,System.String,System.String,System.String,System.String,Microsoft.IT.Security.Core.DataEntities.AttributeDataType,System.String,System.CodeDom.CodeExpression)">
+            <summary>
+            Create WF Condition
+            </summary>
+            <param name="parentObject">parent object which has target attribute</param>
+            <param name="attributeNameReference">attributeNameReference expression.</param>
+            <param name="attributeValueReference">attributeValueReference expression.</param>
+            <param name="attributeTypeReference">attributeTypeReference expression.</param>
+            <param name="attributeCatetoryReference">attributeCategoryReference expression.</param>
+            <param name="attributeId">value of attribute id.</param>
+            <param name="attributeValue">value of attribute.</param>
+            <param name="attributeType">value of attribute type.</param>
+            <param name="attributeDataType">value of attribute data type.</param>
+            <param name="attributeCategory">value of attribute category.</param>
+            <param name="matchFunction">match function</param>
+            <returns>Windows Workflow Foundation Condition Binary Expression</returns>
+        </member>
+        <member name="M:Microsoft.IT.Security.Enforcement.Server.RuleEngineTranslator.ExecuteRules(Microsoft.IT.Security.Enforcement.DataEntities.Request,Microsoft.IT.Security.Enforcement.DataEntities.PolicySet,System.Boolean,System.Collections.Generic.IList{Microsoft.IT.Security.Enforcement.DataEntities.MissingAttributeEntity},Microsoft.IT.Security.Core.CustomContext)">
+            <summary>
+            Implement ExecuteRules method to construct WF RuleSet object using PolicySet data
+            and execute the rule against the request to get authorization decision.
+            </summary>
+            <param name="request">access control request.</param>
+            <param name="foundPolicySet">found applicable PolicySet.</param>
+            <param name="reevaluate">reevaluate policies</param>
+            <param name="missingTargetAttributeDetails">missing attribute values</param>
+            <param name="context">custom context</param>
+             <returns>final authorization decision.</returns>
+        </member>
+    </members>
+</doc>

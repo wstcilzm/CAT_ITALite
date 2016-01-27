@@ -1,0 +1,3251 @@
+﻿html {
+    margin: 0;
+    padding: 0;
+    background-color: #EEEEEE;
+}
+
+body {
+    color: #333;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll;
+}
+
+.vstormlogo {
+    background-repeat: no-repeat;
+    position: fixed;
+    right: 30px;
+    bottom: 95px;
+    width: 300px;
+    height: 300px;
+    opacity: .2;
+    background-size: contain;
+    background-position: right bottom;
+    z-index: 0;
+}
+
+select {
+    font-family: 'Segoe UI', Tahoma, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: #333;
+    outline: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    text-decoration: underline;
+}
+
+    a:link, a:visited,
+    a:active, a:hover {
+        color: #333;
+    }
+
+    a:hover {
+        background-color: #c7d1d6;
+    }
+
+header, footer, hgroup,
+nav, section {
+    display: block;
+}
+
+mark {
+    background-color: #a6dbed;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.clear-fix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+    color: #000;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.75em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+
+    h5 a:link, h5 a:visited, h5 a:active {
+        padding: 0;
+        text-decoration: none;
+    }
+
+
+tr > .caption {
+    padding-left: 10px;
+    font-weight: bold;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.task-status div {
+    background-color: #669BF2;
+}
+
+.task-status span {
+    position: absolute;
+    right: 50%;
+    top: -3px;
+    color: #FFF;
+    font-weight: bold;
+}
+
+/* main layout
+----------------------------------------------------------*/
+.content-wrapper {
+    margin: 0 auto;
+    max-width: 960px;
+}
+
+#body {
+    background-color: #efeeef;
+    clear: both;
+    padding-bottom: 35px;
+}
+
+.background-shadow {
+    width: 1160px;
+    position: fixed;
+    top: 0px;
+    box-shadow: 0 0 85px rgba(0, 0, 0, .3);
+    background-color: #FFF;
+    height: 100%;
+    z-index: -1;
+}
+
+header .content-wrapper {
+    padding-top: 20px;
+}
+
+footer {
+    clear: both;
+    background-color: #e2e2e2;
+    font-size: .8em;
+    height: 100px;
+}
+
+.editor-text {
+    padding: 5px 10px 5px 10px;
+    font-size: 14px;
+}
+
+.editor-table {
+    margin-left: 30px;
+}
+
+.editor-action {
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0px 5px 0px 5px;
+}
+
+.editor-title {
+}
+
+.editor-caption {
+    font: 28px/40px "Segoe UI Light";
+    text-transform: lowercase;
+    color: #444;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 10px;
+}
+
+.editor-select {
+    width: 288px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    border: 1px solid #A1A1A1;
+    padding: 5px 5px 6px;
+    margin-left: 30px;
+}
+
+.editor-button {
+    margin: 0px 5px 0px 5px;
+    padding: 3px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.editor-loading {
+    display: block;
+    padding-left: 30px;
+    background: url("/content/themes/base/images/progress.gif") no-repeat;
+    background-position: left center;
+}
+/* site title
+----------------------------------------------------------*/
+.site-title {
+    color: #c8c8c8;
+    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-size: 2.3em;
+    margin: 0;
+}
+
+    .site-title a, .site-title a:hover, .site-title a:active {
+        background: none;
+        color: #c8c8c8;
+        outline: none;
+        text-decoration: none;
+    }
+
+
+.info-title {
+    font: 30px/36px "Segoe UI Light";
+    font-weight: bold;
+    color: #444;
+    white-space: nowrap;
+}
+
+.summary-title {
+    font: 20px/24px "Segoe UI Light";
+    color: #444;
+    white-space: nowrap;
+}
+
+.summary-subtitle {
+    font: 14px/20px "Segoe UI Light";
+    color: #B2B2B5;
+    white-space: nowrap;
+}
+
+
+.category-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+}
+
+.category-subtitle {
+    font-size: 14px;
+    color: #444;
+    white-space: nowrap;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.category-value {
+    font-size: 14px;
+    color: #444;
+    white-space: nowrap;
+}
+
+/* login
+----------------------------------------------------------*/
+#login {
+    display: block;
+    font-size: .85em;
+    margin: 0 0 10px;
+    text-align: right;
+}
+
+    #login a {
+        background-color: #d3dce0;
+        margin-left: 10px;
+        margin-right: 3px;
+        padding: 2px 3px;
+        text-decoration: none;
+    }
+
+        #login a.username {
+            background: none;
+            margin: 0;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+    #login ul {
+        margin: 0;
+    }
+
+    #login li {
+        display: inline;
+        list-style: none;
+    }
+
+
+/* menu
+----------------------------------------------------------*/
+ul#menu {
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0 0 5px;
+    padding: 0;
+    text-align: right;
+}
+
+    ul#menu li {
+        display: inline;
+        list-style: none;
+        padding-left: 15px;
+    }
+
+        ul#menu li a {
+            background: none;
+            color: #999;
+            text-decoration: none;
+        }
+
+            ul#menu li a:hover {
+                color: #333;
+                text-decoration: none;
+            }
+
+
+/* page elements
+----------------------------------------------------------*/
+/* featured */
+.featured {
+    background-color: #fff;
+}
+
+    .featured .content-wrapper {
+        background-color: #7ac0da;
+        background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
+        background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
+        color: #3e5667;
+        padding: 20px 40px 30px 40px;
+    }
+
+    .featured hgroup.title h1, .featured hgroup.title h2 {
+        color: #fff;
+    }
+
+    .featured p {
+        font-size: 1.1em;
+    }
+
+/* page titles */
+hgroup.title {
+    margin-bottom: 10px;
+}
+
+    hgroup.title h1, hgroup.title h2 {
+        display: inline;
+    }
+
+    hgroup.title h2 {
+        font-weight: normal;
+        margin-left: 3px;
+    }
+
+/* features */
+section.feature {
+    width: 300px;
+    float: left;
+    padding: 10px;
+}
+
+/* ordered list */
+ol.round {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+    ol.round li {
+        margin: 25px 0;
+        padding-left: 45px;
+    }
+
+        ol.round li.zero {
+            background: url("../Images/orderedList0.png") no-repeat;
+        }
+
+        ol.round li.one {
+            background: url("../Images/orderedList1.png") no-repeat;
+        }
+
+        ol.round li.two {
+            background: url("../Images/orderedList2.png") no-repeat;
+        }
+
+        ol.round li.three {
+            background: url("../Images/orderedList3.png") no-repeat;
+        }
+
+        ol.round li.four {
+            background: url("../Images/orderedList4.png") no-repeat;
+        }
+
+        ol.round li.five {
+            background: url("../Images/orderedList5.png") no-repeat;
+        }
+
+        ol.round li.six {
+            background: url("../Images/orderedList6.png") no-repeat;
+        }
+
+        ol.round li.seven {
+            background: url("../Images/orderedList7.png") no-repeat;
+        }
+
+        ol.round li.eight {
+            background: url("../Images/orderedList8.png") no-repeat;
+        }
+
+        ol.round li.nine {
+            background: url("../Images/orderedList9.png") no-repeat;
+        }
+
+/* content */
+article {
+    float: left;
+    width: 70%;
+}
+
+aside {
+    float: right;
+    width: 25%;
+}
+
+    aside ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        aside ul li {
+            background: url("../Images/bullet.png") no-repeat 0 50%;
+            padding: 2px 0 2px 20px;
+        }
+
+.label {
+    font-weight: 700;
+}
+
+/* login page */
+
+#socialLoginForm {
+    margin-left: 40px;
+    float: left;
+    width: 40%;
+}
+
+    #socialLoginForm h2 {
+        margin-bottom: 5px;
+    }
+
+#socialLoginList button {
+    margin-bottom: 12px;
+}
+
+#logoutForm {
+    display: inline;
+}
+
+/* contact */
+.contact h3 {
+    font-size: 1.2em;
+}
+
+.contact p {
+    margin: 5px 0 0 10px;
+}
+
+.contact iframe {
+    border: 1px solid #333;
+    margin: 5px 0 0 10px;
+}
+
+/* forms */
+fieldset {
+    margin: 0;
+    padding: 0;
+}
+
+    fieldset legend {
+    }
+
+    fieldset ol {
+        padding: 0;
+        list-style: none;
+    }
+
+        fieldset ol li {
+            padding-bottom: 5px;
+        }
+
+label {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+    label.checkbox {
+        display: inline;
+    }
+
+input, textarea {
+    border: 1px solid #e2e2e2;
+    background: #fff;
+    color: #333;
+    font-size: 15px;
+    margin: 5px 0 6px 0;
+    padding: 5px;
+    width: 300px;
+}
+
+textarea {
+    font-family: inherit;
+    width: 500px;
+}
+
+    input:focus, textarea:focus {
+        border: 1px solid #7ac0da;
+    }
+
+input[type="checkbox"] {
+    background: transparent;
+    border: inherit;
+    width: auto;
+}
+
+/* info and errors */
+.message-info {
+    border: 1px solid;
+    clear: both;
+    padding: 10px 20px;
+}
+
+.message-error {
+    clear: both;
+    color: #e80c4d;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.message-success {
+    color: #7ac0da;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+}
+
+.error {
+    color: #e80c4d;
+}
+
+/* styles for validation helpers */
+.field-validation-error {
+    color: #e80c4d;
+    font-weight: bold;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+input.input-validation-error {
+    border: 1px solid #e80c4d;
+}
+
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+
+.validation-summary-errors {
+    color: #e80c4d;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+
+/* tables
+----------------------------------------------------------*/
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 0.75em;
+    border: 0 none;
+}
+
+th {
+    font-size: 1.2em;
+    text-align: left;
+    border: none 0px;
+    padding-left: 0;
+}
+
+    th a {
+        display: block;
+        position: relative;
+    }
+
+        th a:link, th a:visited, th a:active, th a:hover {
+            color: #333;
+            font-weight: 600;
+            text-decoration: none;
+            padding: 0;
+        }
+
+        th a:hover {
+            color: #000;
+        }
+
+    th.asc a, th.desc a {
+        margin-right: .75em;
+    }
+
+        th.asc a:after, th.desc a:after {
+            display: block;
+            position: absolute;
+            right: 0em;
+            top: 0;
+            font-size: 0.75em;
+        }
+
+        th.asc a:after {
+            content: '▲';
+        }
+
+        th.desc a:after {
+            content: '▼';
+        }
+
+td {
+    padding: 0.25em 2em 0.25em 0em;
+    border: 0 none;
+}
+
+
+
+tr.pager td {
+    padding: 0 0.25em 0 0;
+}
+
+
+/********************
+*   Mobile Styles   *
+********************/
+@media only screen and (max-width: 850px) {
+
+    /* header
+    ----------------------------------------------------------*/
+    header .float-left,
+    header .float-right {
+        float: none;
+    }
+
+    /* logo */
+    header .site-title {
+        margin: 10px;
+        text-align: center;
+    }
+
+    /* login */
+    #login {
+        font-size: .85em;
+        margin: 0 0 12px;
+        text-align: center;
+    }
+
+        #login ul {
+            margin: 5px 0;
+            padding: 0;
+        }
+
+        #login li {
+            display: inline;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #login a {
+            background: none;
+            color: #999;
+            font-weight: 600;
+            margin: 2px;
+            padding: 0;
+        }
+
+            #login a:hover {
+                color: #333;
+            }
+
+    /* menu */
+    nav {
+        margin-bottom: 5px;
+    }
+
+    ul#menu {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+        ul#menu li {
+            margin: 0;
+            padding: 0;
+        }
+
+
+    /* main layout
+    ----------------------------------------------------------*/
+    .main-content,
+    .featured + .main-content {
+        background-position: 10px 0;
+    }
+
+    .content-wrapper {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+
+    .featured .content-wrapper {
+        padding: 10px;
+    }
+
+    /* page content */
+    article, aside {
+        float: none;
+        width: 100%;
+    }
+
+    /* ordered list */
+    ol.round {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+        ol.round li {
+            padding-left: 10px;
+            margin: 25px 0;
+        }
+
+            ol.round li.zero,
+            ol.round li.one,
+            ol.round li.two,
+            ol.round li.three,
+            ol.round li.four,
+            ol.round li.five,
+            ol.round li.six,
+            ol.round li.seven,
+            ol.round li.eight,
+            ol.round li.nine {
+                background: none;
+            }
+
+    /* features */
+    section.feature {
+        float: none;
+        padding: 10px;
+        width: auto;
+    }
+
+        section.feature img {
+            color: #999;
+            content: attr(alt);
+            font-size: 1.5em;
+            font-weight: 600;
+        }
+
+    /* forms */
+    input {
+        width: 90%;
+    }
+
+    /* login page */
+    #loginForm {
+        border-right: none;
+        float: none;
+        width: auto;
+    }
+
+        #loginForm .validation-error {
+            display: block;
+            margin-left: 15px;
+        }
+
+    #socialLoginForm {
+        margin-left: 0;
+        float: none;
+        width: auto;
+    }
+
+
+    /* footer
+    ----------------------------------------------------------*/
+    footer .float-left,
+    footer .float-right {
+        float: none;
+    }
+
+    footer {
+        text-align: center;
+        height: auto;
+        padding: 10px 0;
+    }
+
+        footer p {
+            margin: 0;
+        }
+}
+
+/*Styles for global setting ---------------------------------------------*/
+.global-bg {
+    background-color: #EEEEEE;
+    background: url('/content/themes/base/images/wallpaper-white.png') repeat fixed;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    float: left;
+    z-index: -1;
+}
+
+.global {
+    width: 1160px;
+    margin: 0 auto;
+}
+
+    .global .g-north {
+        position: fixed;
+        top: 0px;
+        height: 30px;
+        background-color: #3C454F;
+        width: 1160px;
+        z-index: 100;
+    }
+
+    .global .g-middle {
+    }
+
+    .global .g-west {
+        float: left;
+        position: fixed;
+        padding-top: 30px;
+        padding-bottom: 60px;
+        top: 0px;
+        height: 100%;
+        width: 200px;
+        background-color: #71B1D1;
+    }
+
+    .global .g-east {
+        float: left;
+        position: relative;
+        margin: 30px 0 60px 200px;
+        z-index: 1;
+    }
+
+    .global .g-body {
+    }
+
+        .global .g-body > div {
+            width: 960px;
+        }
+
+    .global .g-south {
+        width: 1160px;
+    }
+
+.vshell {
+    position: fixed;
+    bottom: 0px;
+    background-color: #3C454F;
+    /*width: 1160px;*/
+    z-index: 100;
+}
+
+    .vshell .chocbar {
+        height: 0;
+        left: 0;
+        margin: 0;
+        overflow: visible;
+        padding: 0;
+        position: absolute;
+        top: 0;
+        width: 0;
+    }
+
+    .vshell .vshell-container {
+        background-color: #3C454F;
+        color: white;
+        position: relative;
+    }
+
+    .vshell .eyebow-small {
+        width: 100%;
+        background-image: url("/content/themes/base/images/vshell.eyebow.arrow.png");
+        background-position: 1135px;
+        background-repeat: no-repeat;
+        line-height: 30px;
+        height: 30px;
+        cursor: pointer;
+    }
+
+        .vshell .eyebow-small .logo {
+            display: inline-block;
+            margin-left: 15px;
+            float: left;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+            .vshell .eyebow-small .logo img {
+                height: 15px;
+                width: 15px;
+                padding: 5px 5px 0px 5px;
+            }
+
+        .vshell .eyebow-small .user {
+            display: inline-block;
+            float: right;
+            color: #FFFFFF;
+            position: relative;
+            background-color: #282F35;
+        }
+
+            .vshell .eyebow-small .user .summary {
+                background-color: #3C454F;
+                padding-left: 30px;
+                padding-right: 10px;
+            }
+
+                .vshell .eyebow-small .user .summary:hover {
+                    background-color: #282F35;
+                }
+
+            .vshell .eyebow-small .user .summary-active {
+                background-color: #282F35;
+            }
+
+            .vshell .eyebow-small .user a {
+                color: #FFF;
+                text-decoration: none;
+            }
+
+                .vshell .eyebow-small .user a:hover {
+                    background-color: transparent;
+                }
+
+            .vshell .eyebow-small .user .name {
+                display: inline-block;
+                right: 0px;
+            }
+
+            .vshell .eyebow-small .user .group {
+                display: inline-block;
+                padding: 0px 5px 0px 5px;
+                color: #FFFFFF;
+                margin-right: 40px;
+            }
+
+            .vshell .eyebow-small .user .photo {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 30px;
+                height: 30px;
+            }
+
+            .vshell .eyebow-small .user .usermenu {
+                margin: 10px 30px 10px 30px;
+            }
+
+                .vshell .eyebow-small .user .usermenu ul {
+                    list-style: none;
+                    padding: 0px;
+                    margin: 0px;
+                }
+
+                    .vshell .eyebow-small .user .usermenu ul li {
+                        line-height: 26px;
+                        padding: 0;
+                        margin: 0;
+                    }
+
+                        .vshell .eyebow-small .user .usermenu ul li.menu-active > a {
+                            font-weight: bold;
+                            color: #8BC53F !important;
+                            cursor: default !important;
+                        }
+
+                        .vshell .eyebow-small .user .usermenu ul li:hover > a {
+                            background-color: transparent;
+                            color: #2086BF;
+                        }
+
+                        .vshell .eyebow-small .user .usermenu ul li.usermenu-separator {
+                            margin: 13px 0;
+                            border-top: 1px solid #94979A;
+                        }
+
+                .vshell .eyebow-small .user .usermenu #usergrouplist span {
+                    text-transform: uppercase;
+                    display: block;
+                    font-size: 11px;
+                    color: #939799;
+                }
+
+
+    .vshell .eyebow-large {
+    }
+
+    .vshell .processingbar {
+    }
+
+    .vshell .processingbar-item {
+    }
+
+        .vshell .processingbar-item .title {
+            background-image: url('/content/themes/base/images/progressbar-title.png');
+            background-position: 0px 0px;
+            background-repeat: repeat-x;
+            height: 50px;
+            background-color: #495461;
+            line-height: 50px;
+            position: relative;
+        }
+
+        .vshell .processingbar-item .title-processing {
+            background-image: url('/content/themes/base/images/progress-bar.gif');
+        }
+
+        .vshell .processingbar-item .title .status {
+            height: 30px;
+            width: 30px;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            top: 15px;
+            left: 10px;
+        }
+
+        .vshell .processingbar-item .title .status-processing {
+            background-image: url('/content/themes/base/images/progress-icon.gif');
+        }
+
+        .vshell .processingbar-item .title .status-success {
+            background-image: url('/content/themes/base/images/vshell.toolbar.action-success.png');
+        }
+
+        .vshell .processingbar-item .title .status-warning {
+            background-image: url('/content/themes/base/images/vshell.toolbar.action-error.png');
+        }
+
+        .vshell .processingbar-item .title .status-error {
+            background-image: url('/content/themes/base/images/vshell.toolbar.action-error.png');
+        }
+
+        .vshell .processingbar-item .title .caption {
+            display: inline-block;
+            margin-left: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 800px;
+            padding-top: 5px;
+        }
+
+        .vshell .processingbar-item .title .options {
+            position: absolute;
+            right: 10px;
+            top: 0px;
+        }
+
+        .vshell .processingbar-item .title button {
+            background: transparent;
+            margin-top: 15px;
+            margin-left: 7px;
+            border: none;
+            color: white;
+            text-transform: uppercase;
+            line-height: 30px;
+            cursor: pointer;
+            height: 32px;
+            width: 32px;
+        }
+
+        .vshell .processingbar-item .title .options .showdetails {
+            background: transparent url("/content/themes/base/images/icons-action-32-sprites.png") no-repeat 0px -639px;
+        }
+
+            .vshell .processingbar-item .title .options .showdetails:hover {
+                background-position: -64px -639px;
+            }
+
+        .vshell .processingbar-item .title .options .close {
+            background: transparent url("/content/themes/base/images/icons-action-32-sprites.png") no-repeat 0px -127px;
+        }
+
+            .vshell .processingbar-item .title .options .close:hover {
+                background-position: -64px -127px;
+            }
+
+        .vshell .processingbar-item .title .options .collapse {
+            background: transparent url("/content/themes/base/images/collapse.png") no-repeat center;
+        }
+
+        .vshell .processingbar-item .details {
+            height: 200px;
+            background-color: #495461;
+            padding-left: 30px;
+            overflow-y: auto;
+        }
+
+            .vshell .processingbar-item .details .log {
+                font-size: 13px;
+                padding: 2px 10px 2px 16px;
+            }
+
+                .vshell .processingbar-item .details .log .log-item-coll {
+                    cursor: pointer;
+                }
+
+                .vshell .processingbar-item .details .log .log-item-detail {
+                    margin: 5px 80px 5px 30px;
+                    padding: 5px;
+                    color: white;
+                    border: 1px solid white;
+                }
+
+            .vshell .processingbar-item .details .log-info {
+                color: #FFF;
+            }
+
+            .vshell .processingbar-item .details .log-success {
+                color: #CACE3C;
+            }
+
+            .vshell .processingbar-item .details .log-error {
+                color: #EF7900;
+            }
+
+            .vshell .processingbar-item .details .log-warning {
+                color: #FDFE03;
+            }
+
+    .vshell .command {
+    }
+
+.confirmbar-shield {
+    display: none;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 19999;
+}
+
+.confirmbar-shield-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: black;
+    top: 0px;
+    left: 0px;
+    opacity: .75;
+    filter: Alpha(Opacity=75);
+}
+
+.confirmbar {
+    margin: 0 auto;
+    width: 1160px;
+}
+
+.confirmbar-item {
+    display: inline-block;
+    background: #495461;
+    height: 60px;
+    width: 1160px;
+    position: fixed;
+    bottom: 60px;
+    margin: 0 auto;
+}
+
+confirmbar-item:hover {
+    background-color: #222222;
+}
+
+.confirmbar-item .confirm-icon {
+    display: inline-block;
+}
+
+.confirmbar-item .confirm-title {
+    display: inline-block;
+    height: 60px;
+    line-height: 60px;
+    color: #FFF;
+}
+
+.confirmbar-item .confirm-options {
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    right: 20px;
+}
+
+    .confirmbar-item .confirm-options .confirm-button-text {
+        float: left;
+    }
+
+    .confirmbar-item .confirm-options > button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin-top: 15px;
+        text-transform: uppercase;
+        line-height: 30px;
+    }
+
+    .confirmbar-item .confirm-options .confirm-button-icon {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        height: 32px;
+        width: 32px;
+        display: inline-block;
+        float: right;
+        text-transform: uppercase;
+        line-height: 30px;
+    }
+
+    .confirmbar-item .confirm-options .confirm-yes {
+        background: transparent url("/content/themes/base/images/icons-action-32-sprites.png") no-repeat 0px -1470px;
+    }
+
+        .confirmbar-item .confirm-options .confirm-yes:hover {
+            background-position: -64px -1470px;
+        }
+
+    .confirmbar-item .confirm-options .confirm-no {
+        background: transparent url("/content/themes/base/images/icons-action-32-sprites.png") no-repeat 0px -127px;
+    }
+
+        .confirmbar-item .confirm-options .confirm-no:hover {
+            background-position: -64px -127px;
+        }
+
+.command-title {
+    height: 60px;
+    background: transparent url("/content/themes/base/images/vshell.toolbar.small.bg.png");
+    /*width: 1160px;*/
+    font-size: 10px;
+    overflow: hidden;
+    text-align: center;
+    text-transform: uppercase;
+    position: relative;
+}
+
+    .command-title button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        height: 60px;
+        text-transform: uppercase;
+        line-height: 30px;
+    }
+
+        .command-title button:hover {
+            background-color: #505861;
+        }
+
+        .command-title button.disable {
+            opacity: 0.4;
+            cursor: default !important;
+            background-color: transparent !important;
+        }
+
+    .command-title .open {
+        background-image: url("/content/themes/base/images/vshell.toolbar.small.icon.png");
+        background-position: 10px center;
+        margin-left: 10px;
+        background-repeat: no-repeat;
+        left: 0;
+        width: 83px;
+        position: absolute;
+        font: 14px/25px "Segoe UI Semibold",Verdana,Helvetica,Sans-Serif;
+        text-align: left;
+        padding-left: 45px;
+    }
+
+    .command-title .tools {
+        margin: 0 auto;
+    }
+
+        .command-title .tools button {
+            font-size: 9px;
+            padding-top: 25px;
+            background-repeat: no-repeat;
+            min-width: 60px;
+        }
+
+            .command-title .tools button.toolbar-add {
+                background-image: url("/content/themes/base/images/toolbar-add.png");
+                background-position: center 5px;
+            }
+
+            .command-title .tools button.toolbar-edit {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -516px;
+            }
+
+            .command-title .tools button.toolbar-start {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -1346px;
+            }
+
+            .command-title .tools button.toolbar-shutdown {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -237px -1410px;
+            }
+
+            .command-title .tools button.toolbar-reset {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -1154px;
+            }
+
+            .command-title .tools button.toolbar-delete {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -1602px;
+            }
+
+            .command-title .tools button.toolbar-transferowner {
+                background-image: url("/content/themes/base/images/people_24x24.png");
+                background-position: center 9px;
+            }
+
+            .command-title .tools button.toolbar-extend {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -385px;
+            }
+
+            .command-title .tools button.toolbar-configure {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -238px -512px;
+            }
+
+            .command-title .tools button.toolbar-cad {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -232px -1985px;
+            }
+
+            .command-title .tools button.toolbar-connect {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -1025px;
+            }
+
+            .command-title .tools button.toolbar-disconnect {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -237px -1665px;
+            }
+
+            .command-title .tools button.toolbar-migration {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -227px -960px;
+            }
+
+            .command-title .tools button.toolbar-snapshot {
+                background-image: url("/content/themes/base/images/snapshots_24x24.png");
+                background-position: center 7px;
+            }
+
+            .command-title .tools button.toolbar-switchnetwork {
+                background-image: url("/content/themes/base/images/switchnetwork_24.png");
+                background-position: center 7px;
+            }
+
+            .command-title .tools button.toolbar-refresh,
+            .command-title .tools button#btnRefreshVHD {
+                background-image: url("/content/themes/base/images/icons-action-refresh.png");
+                background-position: center 5px;
+            }
+
+            .command-title .tools button.toolbar-detail {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -227px -1280px;
+            }
+
+            .command-title .tools button.toolbar-back {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -237px -65px;
+            }
+
+            .command-title .tools button.toolbar-restarttask {
+                background-image: url("/content/themes/base/images/icons-action-32-rerequest.png");
+                background-position: center 5px;
+            }
+
+            .command-title .tools button.toolbar-addgroup {
+                background-image: url("/content/themes/base/images/folder_plus_icon_24.png");
+                background-position: center 10px;
+            }
+
+            .command-title .tools button.toolbar-removegroup {
+                background-image: url("/content/themes/base/images/folder_delete_icon_24.png");
+                background-position: center 10px;
+            }
+
+            .command-title .tools button.toolbar-addhost {
+                background-image: url("/content/themes/base/images/server_icon_24.png");
+                background-position: center 10px;
+            }
+
+            .command-title .tools button.toolbar-removehost {
+                background-image: url("/content/themes/base/images/delete_server_icon_24.png");
+                background-position: center 10px;
+            }
+
+            .command-title .tools button.toolbar-transferhost {
+                background-image: url("/content/themes/base/images/redo_icon_24.png");
+                background-position: center 10px;
+            }
+
+            .command-title .tools button.toolbar-runcommand {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -232px -318px;
+            }
+
+            .command-title .tools button.toolbar-approve {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -1473px;
+            }
+
+            .command-title .tools button.toolbar-deny {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -128px;
+            }
+
+            .command-title .tools button.toolbar-connectionstring {
+                background-image: url("/content/themes/base/images/connect_24x24.png");
+                background-position: center 8px;
+            }
+
+            .command-title .tools button.toolbar-productkey {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -237px -1985px;
+            }
+
+            .command-title .tools button.toolbar-export {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -237px -1855px;
+            }
+
+            .command-title .tools button.toolbar-exportreport {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -224px -1855px;
+            }
+
+            .command-title .tools button.toolbar-viewreport {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -2240px;
+            }
+
+            .command-title .tools button.toolbar-showall {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -242px -2305px;
+            }
+
+    .command-title #command-subtoolbar {
+        position: fixed;
+        background: #333;
+        border-top: solid 3px red;
+        bottom: 60px;
+        display: none;
+        z-index: 0;
+    }
+
+        .command-title #command-subtoolbar > div {
+            padding: 8px 20px 8px 20px;
+            min-width: 100px;
+        }
+
+            .command-title #command-subtoolbar > div:hover {
+                background: #6D747B;
+                cursor: pointer;
+            }
+
+    .command-title .wow-body {
+        height: 100px;
+        background-color: red;
+        position: static;
+        margin-left: 200px;
+        top: -100px;
+        width: 83px;
+        color: #333;
+        font-size: .85em;
+        overflow: visible;
+        font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    }
+
+    .command-title .processing {
+        background-image: url("/content/themes/base/images/progress-icon.gif");
+        background-position: right center;
+        background-repeat: no-repeat;
+        position: absolute;
+        right: 50px;
+        top: 0px;
+        padding-right: 26px;
+    }
+
+    .command-title .success {
+        background-image: url("/content/themes/base/images/vshell.toolbar.action-success.png");
+    }
+
+    .command-title .warning {
+        background-image: url("/content/themes/base/images/vshell.toolbar.action-error.png");
+    }
+
+    .command-title .error {
+        background-image: url("/content/themes/base/images/vshell.toolbar.action-error.png");
+    }
+
+    .command-title .help {
+        background-image: url("/content/themes/base/images/vshell.toolbar.small.help.png");
+        background-position: 10px center;
+        background-repeat: no-repeat;
+        width: 45px;
+        position: absolute;
+        margin-right: 10px;
+        right: 0px;
+        top: 0px;
+    }
+
+.vshell .command .command-body {
+    height: 500px;
+    background-color: #3C454F;
+    position: relative;
+    top: 0px;
+}
+
+    .vshell .command .command-body .caption {
+        color: #7ACBF2;
+        font-weight: bold;
+        font-size: 16px;
+        height: 50px;
+        line-height: 50px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .vshell .command .command-body .closebtn {
+        position: absolute;
+        right: 15px;
+    }
+
+
+    .vshell .command .command-body .button {
+        background: transparent url("/content/themes/base/images/icons-action-32-sprites.png") no-repeat 0px -127px;
+        cursor: pointer;
+        height: 32px;
+        width: 32px;
+        margin-top: 15px;
+        border: none;
+    }
+
+    .vshell .command .command-body .button-close {
+        background-position: 0px -127px;
+    }
+
+    .vshell .command .command-body .button-ok {
+        background-position: 0px -1472px;
+    }
+
+    .vshell .command .command-body .close:hover {
+        background-position: -64px -127px;
+    }
+
+    .vshell .command .command-body .command-content {
+    }
+
+        .vshell .command .command-body .command-content > div {
+            display: inline-block;
+        }
+
+        .vshell .command .command-body .command-content .command-menu {
+            height: 450px;
+            display: inline-block;
+        }
+
+            .vshell .command .command-body .command-content .command-menu .menu-panel {
+                height: 100%;
+                display: inline-block;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .info-panel {
+                width: 400px;
+                display: inline-block;
+                vertical-align: top;
+                border: 1px solid white;
+                height: 300px;
+                margin: 30px;
+                padding: 20px;
+                font-size: 20px;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .content-panel {
+                display: inline-block;
+                vertical-align: top;
+                margin-left: 30px;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .command-menu-panel {
+                border-right: 1px solid #7F868C;
+                display: inline-block;
+                height: 100%;
+                overflow: hidden;
+            }
+
+                .vshell .command .command-body .command-content .command-menu .command-menu-panel > ul {
+                    list-style: none;
+                    position: relative;
+                    top: 0px;
+                    float: left;
+                    padding: 0px;
+                    margin: 0px;
+                    width: 100%;
+                    margin-right: 20px;
+                }
+
+                    .vshell .command .command-body .command-content .command-menu .command-menu-panel > ul > li {
+                        text-transform: uppercase;
+                        border-left: 5px solid #3C454F;
+                        width: 100%;
+                    }
+
+                        .vshell .command .command-body .command-content .command-menu .command-menu-panel > ul > li.disable {
+                            color: gray;
+                        }
+
+                        .vshell .command .command-body .command-content .command-menu .command-menu-panel > ul > li[vselected="true"] {
+                            border-left: 5px solid #FFF !important;
+                            background-color: #6D747B;
+                        }
+
+                        .vshell .command .command-body .command-content .command-menu .command-menu-panel > ul > li:hover {
+                            background-color: #6D747B;
+                            border-left: 5px solid #6D747B;
+                        }
+
+            .vshell .command .command-body .command-content .command-menu .item {
+                height: 50px;
+                line-height: 50px;
+                cursor: pointer;
+                background: url(/content/themes/base/images/drawer-icons.1.png) center center no-repeat;
+                padding-left: 50px;
+                margin-left: 30px;
+                overflow: hidden;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .item-hyperv-vm,
+            .vshell .command .command-body .command-content .command-menu .item-azure-vm,
+            .vshell .command .command-body .command-content .command-menu .item-lab-env {
+                background-position: 0 -142px;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .item-quickcreate {
+                background-position: 0 -392px;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .item-customcreate {
+                background-position: 0 -442px;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .item-azurevhdupload {
+                background-position: 0 -442px;
+            }
+
+            .vshell .command .command-body .command-content .command-menu .item-azurevmcreate {
+                background-position: 0 -392px;
+            }
+
+        .vshell .command .command-body .command-content .command-creation {
+            height: 400px;
+            width: 230px;
+            border-left: 1px solid #FFF;
+            border-right: 1px solid #FFF;
+            display: none;
+        }
+
+        .vshell .command .command-body .command-content .command-introduce {
+            height: 250px;
+            width: 450px;
+            position: absolute;
+            border: 1px solid white;
+            left: 300px;
+            top: 100px;
+        }
+
+
+.vshell .item:hover {
+    background-color: #333333;
+}
+
+.menu {
+    padding-top: 30px;
+}
+
+    .menu .menu-item {
+        height: 60px;
+        line-height: 60px;
+        width: 185px;
+        padding-left: 15px;
+        line-height: 40px;
+        cursor: pointer;
+        color: #FFFFFF;
+    }
+
+    .menu div[class="menu-item"]:hover {
+        background-color: #7CC1DE;
+    }
+
+    .menu .menu-item .menu-icon {
+        background-position: -40px 0px;
+        height: 40px;
+        width: 40px;
+        background-repeat: no-repeat;
+        position: relative;
+        top: 10px;
+    }
+
+    .menu .menu-item-selected {
+        background-color: #FFFFFF;
+        color: #323232;
+    }
+
+        .menu .menu-item-selected .menu-icon {
+            background-position: 0px 0px;
+        }
+
+    .menu .menu-item .menu-caption {
+        font-weight: bold;
+        font-size: 12px;
+        text-transform: uppercase;
+        position: relative;
+        width: 135px;
+        top: -40px;
+        left: 50px;
+    }
+
+    .menu .menu-item .menu-count {
+        font-size: 9px;
+        position: relative;
+        top: -60px;
+        left: 50px;
+        width: 135px;
+    }
+
+    .menu .menu-item .count-loading {
+        background-image: url("/content/themes/base/images/progress.gif");
+        background-repeat: no-repeat;
+        background-position-y: 10px;
+    }
+
+    .menu .menu-item .home {
+        background-image: url("/content/themes/base/images/home.png");
+    }
+
+    .menu .menu-item .local-vm {
+        background-image: url("/content/themes/base/images/VirtualMachines.png");
+    }
+
+    .menu .menu-item .azure-vm {
+        background-image: url("/content/themes/base/images/VirtualMachines.png");
+    }
+
+    .menu .menu-item .host {
+        background-image: url("/content/themes/base/images/Pie.png");
+    }
+
+    .menu .menu-item .user {
+        background-image: url("/content/themes/base/images/user.png");
+    }
+
+    .menu .menu-item .group {
+        background-image: url("/content/themes/base/images/group.png");
+    }
+
+    .menu .menu-item .setting {
+        background-image: url("/content/themes/base/images/Settings.png");
+    }
+/*Styles for SQL status ------------------------------------------------------*/
+.sql-status,
+.sql-status-unknown {
+    background-image: url("/content/themes/base/images/status.png");
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    display: inline;
+    background-position: 0px -112px;
+}
+
+.sql-status-succeed {
+    background-position: 0px 0px;
+}
+
+.sql-status-waitingapproval {
+    background-position: 0px -112px;
+}
+
+.sql-status-denied {
+    background-position: 0px -64px;
+}
+
+.sql-status-progress,
+.sql-status-running {
+    background-image: url("/content/themes/base/images/progress.gif") !important;
+    padding-left: 20px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    display: inline;
+}
+
+.sql-status-pending {
+    background-position: 0px -96px;
+}
+
+.sql-status-failed {
+    background-position: 0px -80px;
+}
+
+/*Styles for VM status ------------------------------------------------------*/
+.vm-status,
+.vm-status-unknown {
+    background-image: url("/content/themes/base/images/status.png");
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    display: inline;
+    background-position: 0px -112px;
+}
+
+.vm-status-waitingapproval {
+    background-position: 0px -112px;
+}
+
+.vm-status-denied {
+    background-position: 0px -64px;
+}
+
+.vm-status-progress,
+.vm-status-undercreation,
+.vm-status-initializing,
+.vm-status-undermigration,
+.vm-status-underreplacement,
+.vm-status-undertemplatecreation,
+.vm-status-deleting,
+.vm-status-pausing,
+.vm-status-poweringoff,
+.vm-status-saving,
+.vm-status-starting,
+.vm-status-restoring,
+.vm-status-underupdate {
+    background-image: url("/content/themes/base/images/progress.gif") !important;
+    padding-left: 20px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    display: inline;
+}
+
+.vm-status-createsuccess,
+.vm-status-running {
+    background-position: 0px 0px;
+}
+
+.vm-status-poweroff {
+    background-position: 0px -16px;
+}
+
+.vm-status-paused {
+    background-position: 0px -32px;
+}
+
+.vm-status-deleted,
+.vm-status-missing,
+.vm-status-removed,
+.vm-status-unsupportedcluster,
+.vm-status-unsupportedsharedfiles,
+.vm-status-updatefailed,
+.vm-status-v2vcreationfailed,
+.vm-status-unsupported,
+.vm-status-incompletevmconfig,
+.vm-status-updatefailed {
+    background-position: 0px -64px;
+}
+
+.vm-status-creationfailed,
+.vm-status-createfailed,
+.vm-status-checkpointfailed,
+.vm-status-customizationfailed,
+.vm-status-templatecreationfailed,
+.vm-status-hostnotresponding,
+.vm-status-unsupportedsharedfiles {
+    background-position: 0px -80px;
+}
+
+.vm-status-pending {
+    background-position: 0px -96px;
+}
+
+.vm-status-saved {
+    background-image: url("/content/themes/base/images/save-icon.png");
+    background-position: left center;
+}
+
+.vm-expiredStatus-NofityIn7Days {
+    font-weight: bold;
+    color: #FF9E13;
+}
+
+.vm-expiredStatus-NofityIn3Days {
+    font-weight: bold;
+    color: #E60013;
+}
+
+.vm-expiredStatus-Removed {
+    font-weight: bold;
+    color: #0084C2;
+}
+
+/* Owner List*/
+
+.groupUsers {
+    width: 670px;
+    height: 520px;
+    overflow-y: auto;
+}
+
+    .groupUsers .user {
+        float: left;
+        width: 300px;
+        padding: 5px 10px 5px 10px;
+    }
+
+    .groupUsers .external-user {
+    }
+
+    .groupUsers .add-external-user {
+    }
+
+    .groupUsers .user-photo {
+        width: 75px;
+        height: 75px;
+        margin-right: 10px;
+        padding: 0px;
+        float: left;
+        text-align: center;
+        line-height: 72px;
+        max-height: 70px;
+        max-width: 70px;
+        margin: 2px;
+    }
+
+    .groupUsers .user-name {
+        font-size: 12px;
+        width: 180px;
+        white-space: normal;
+        padding-left: 5px;
+    }
+
+    .groupUsers .user-display-name {
+        font-weight: bold;
+        font-size: 18px;
+        width: 180px;
+        white-space: normal;
+        padding-left: 5px;
+    }
+
+    .groupUsers .user:hover {
+        background-color: #6AC4EA;
+        color: white;
+        cursor: pointer;
+    }
+
+/*VValidate Styles ---------------------------------------------------------------*/
+.vvalidate-pop {
+    position: absolute;
+    opacity: .95;
+    width: auto;
+    z-index: 4096;
+}
+
+    .vvalidate-pop .pointer {
+        position: absolute;
+        border: 5px transparent solid;
+        border-top-color: #4D4D4D;
+        bottom: -6px;
+        border-left-color: #4D4D4D;
+        left: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .vvalidate-pop .content {
+        background-color: #4D4D4D;
+        color: white;
+        padding: 11px 8px;
+        margin-bottom: 4px;
+    }
+
+.vvalidate-success {
+}
+
+.vvalidate-error {
+    border-color: #FF0000 !important;
+    border-width: 2px !important;
+    background-image: url('/content/themes/base/images/validation-error.gif') !important;
+    background-position: right center !important;
+    background-repeat: no-repeat !important;
+}
+
+.vvalidate-processing {
+    background-image: url('/content/themes/base/images/validation-processing.gif') !important;
+    background-position: right center !important;
+    background-repeat: no-repeat !important;
+}
+
+.vvalidate-warning {
+}
+/*VMDetail Styles --------------------------------------------------------------*/
+.vmdetail {
+    width: 960px;
+}
+
+    .vmdetail .caption {
+        background-color: #75CEE3;
+    }
+
+        .vmdetail .caption .title {
+            width: 100%;
+            text-align: center;
+            font-size: 180%;
+            font-weight: bold;
+            background: #75CEE3;
+            color: white;
+        }
+
+        .vmdetail .caption .detail {
+            width: 100%;
+            text-align: center;
+            font-size: 120%;
+            background: #75CEE3;
+            color: white;
+        }
+
+    .vmdetail .vmdesktop {
+        width: 100%;
+        text-align: center;
+    }
+
+.groupList {
+}
+
+.group-valid {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.group-status {
+    padding-left: 18px !important;
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+
+.group-pending {
+    background-image: url('/content/themes/base/images/group_pending.png');
+}
+
+.group-processing {
+    background-image: url('/content/themes/base/images/progress.gif');
+}
+
+.group-approved {
+    background-image: url('/content/themes/base/images/group_approved.png');
+}
+
+.group-denied {
+    background-image: url('/content/themes/base/images/group_denied.png');
+}
+
+.group-apply {
+    background-image: url('/content/themes/base/images/group_apply.png');
+}
+
+.group-op {
+    cursor: pointer;
+    text-decoration: underline;
+    margin-right: 5px;
+}
+
+.group-removeRole {
+    cursor: pointer;
+    text-decoration: underline;
+    margin-right: 5px;
+}
+
+.group-addRole {
+    text-align: right;
+    display: inline-block;
+    float: right;
+    margin-right: 10px;
+}
+
+    .group-addRole > span {
+        font-size: 15px !important;
+    }
+
+    .group-addRole > div {
+        float: right;
+        margin-right: 10px;
+        width: 32px;
+        height: 32px;
+        display: inline-block;
+        background-image: url("/content/themes/base/images/add.png");
+    }
+
+    .group-addRole > input {
+        height: 20px;
+        font-weight: normal;
+        color: #444;
+        float: left;
+        margin: 0px;
+        font-size: 15px !important;
+    }
+
+.groupList .legend {
+    margin: 0 auto;
+    padding-left: 80px;
+}
+
+    .groupList .legend span {
+        margin-left: 10px;
+        text-decoration: none;
+        cursor: default;
+    }
+
+.groupList .guestentry {
+    margin: 0 auto;
+    padding-top: 5px;
+    padding-left: 60px;
+}
+
+
+/*v-percent bar styles -----------------------------------------------------------*/
+.vpercentBar {
+    padding-top: 30px;
+    position: relative;
+}
+
+    .vpercentBar .title {
+        display: inline-block;
+        margin-left: 10px;
+        margin-right: 10px;
+        width: 80px;
+        font-size: 12px;
+        font-weight: bold;
+        color: #444;
+        text-align: right;
+    }
+
+    .vpercentBar .bar {
+        display: inline-block;
+    }
+
+        .vpercentBar .bar .item {
+            display: inline-block;
+            width: 0px;
+            font-size: 12px;
+            color: #FFF;
+            float: left;
+        }
+
+
+/*v-balloon styles ------------------------------------------------------------*/
+.vballoon {
+    position: absolute;
+    opacity: .95;
+    width: auto;
+}
+
+    .vballoon .pointer-left {
+        position: absolute;
+        border: 5px transparent solid;
+        border-top-color: #4D4D4D;
+        bottom: -6px;
+        border-left-color: #4D4D4D;
+        left: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .vballoon .pointer-right {
+        position: absolute;
+        border: 5px transparent solid;
+        border-top-color: #4D4D4D;
+        bottom: -6px;
+        border-right-color: #4D4D4D;
+        right: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .vballoon .pointer-middle {
+        width: 100%;
+    }
+
+        .vballoon .pointer-middle .left {
+            position: absolute;
+            border: 5px transparent solid;
+            border-top-color: #4D4D4D;
+            bottom: -6px;
+            border-right-color: #4D4D4D;
+            right: 50%;
+            height: 0;
+        }
+
+        .vballoon .pointer-middle .right {
+            position: absolute;
+            border: 5px transparent solid;
+            border-top-color: #4D4D4D;
+            bottom: -6px;
+            border-left-color: #4D4D4D;
+            left: 50%;
+            height: 0;
+        }
+
+    .vballoon .content {
+        color: white;
+        padding: 2px 8px 2px 8px;
+        font-size: 12px;
+        word-break: keep-all;
+        white-space: nowrap;
+    }
+
+/*v-loading styles -----------------------------*/
+.vloading {
+    position: absolute;
+    background-color: rgba(255,255,255,0.8);
+    z-index: 99;
+}
+
+    .vloading .icon-outer {
+        position: absolute;
+    }
+
+        .vloading .icon-outer .icon {
+            width: 128px;
+            height: 132px;
+            background-image: url('/content/themes/base/images/v-loading.gif');
+            background-repeat: no-repeat;
+        }
+
+/*v-chart styles----------------------------*/
+.vchart {
+    position: relative;
+}
+
+    .vchart .caption {
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .vchart canvas {
+    }
+
+    .vchart .chart-data {
+        width: auto;
+        border-collapse: collapse;
+        border: 1px solid #333;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+        position: absolute;
+        right: 0px;
+    }
+
+        .vchart .chart-data .title th {
+            padding: 3px 5px 3px 5px;
+            border-bottom: 2px solid #333;
+            border-right: 1px solid #333;
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+
+            .vchart .chart-data .title th:last-child {
+                text-align: right;
+            }
+
+        .vchart .chart-data tr[vselected="true"] td {
+            background-color: #6AC4EA;
+            color: #FFF !important;
+        }
+
+        .vchart .chart-data tr td {
+            padding: 0.5em;
+            border: 1px dotted #666;
+            text-align: left;
+            cursor: pointer;
+            max-width: 5em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 10px;
+        }
+
+            .vchart .chart-data tr td:last-child {
+                text-align: right;
+            }
+
+        .vchart .chart-data .foot td {
+            border-top: 2px solid #333;
+            cursor: default;
+            border-right: 1px solid #333;
+        }
+
+
+.vline {
+    position: relative;
+}
+
+    .vline .caption {
+        font: 14px/20px "Segoe UI Light";
+        color: #444;
+        white-space: nowrap;
+    }
+
+    .vline .indicator {
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        border-collapse: collapse;
+        border: 1px solid #333;
+        box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+        -moz-box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
+        color: #444;
+    }
+
+        .vline .indicator .title {
+            padding: 3px 5px 3px 5px;
+            border-bottom: 1px dotted #666;
+            text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .vline .indicator .value {
+            text-align: center;
+        }
+
+
+/*Changed JQuery Tab css-----------------------------------*/
+.ui-tabs {
+    position: relative;
+    padding: 0px !important;
+    border: none !important;
+    background-color: transparent !important;
+    zoom: 1;
+}
+    /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
+    .ui-tabs .ui-tabs-nav {
+        margin: 0;
+        padding: .2em .2em 0;
+        background: transparent !important;
+        border: none !important;
+    }
+
+        .ui-tabs .ui-tabs-nav .ui-state-hover > a {
+            background: none !important;
+        }
+
+        .ui-tabs .ui-tabs-nav li {
+            list-style: none;
+            float: left;
+            position: relative;
+            top: 1px;
+            margin: 0 .2em 1px 0;
+            border: none !important;
+            background: none;
+            padding: 0;
+            white-space: nowrap;
+        }
+
+            .ui-tabs .ui-tabs-nav li a {
+                float: left;
+                padding: .5em 1em;
+                text-decoration: none;
+                color: #444;
+                font-size: 12px;
+                text-transform: uppercase;
+            }
+
+            .ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+                margin-bottom: 0;
+                padding-bottom: 1px;
+            }
+
+                .ui-tabs .ui-tabs-nav li.ui-tabs-selected a, .ui-tabs .ui-tabs-nav li.ui-state-disabled a, .ui-tabs .ui-tabs-nav li.ui-state-processing a {
+                    cursor: text;
+                    color: #444;
+                }
+
+            .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a {
+                cursor: pointer;
+                color: #7F7F7F;
+            }
+    /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
+    .ui-tabs .ui-tabs-panel {
+        display: block;
+        border-width: 0;
+        padding: 0 !important;
+        background: none;
+    }
+
+    .ui-tabs .ui-tabs-hide {
+        display: none !important;
+    }
+
+.ui-widget-overlay {
+    background: black !important;
+    opacity: .75 !important;
+    filter: Alpha(Opacity=75) !important /*{opacityOverlay}*/;
+}
+
+.vtree {
+}
+
+    .vtree .vtree-caption {
+        font: 28px/40px "Segoe UI Light";
+        text-transform: lowercase;
+        color: #444;
+        margin: 0;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 10px;
+    }
+
+    .vtree .vtree-body {
+    }
+
+        .vtree .vtree-body > ul {
+            padding-left: 0px !important;
+        }
+
+        .vtree .vtree-body ul {
+            list-style: none;
+            padding-left: 40px;
+        }
+
+    .vtree .vtree-group {
+    }
+
+        .vtree .vtree-group .vtree-checkbox {
+        }
+
+        .vtree .vtree-group .vtree-icon {
+            padding-left: 16px;
+            padding-right: 6px;
+            background-repeat: no-repeat;
+            background-position: left top;
+            cursor: pointer;
+        }
+
+        .vtree .vtree-group .vtree-minus {
+            background-image: url('/content/themes/base/images/vtree-minus.png');
+        }
+
+        .vtree .vtree-group .vtree-plus {
+            background-image: url('/content/themes/base/images/vtree-plus.png');
+        }
+
+        .vtree .vtree-group .vtree-text {
+            cursor: pointer;
+        }
+
+            .vtree .vtree-group .vtree-text:hover {
+                background-color: #6AC4EA !important;
+                color: #FFF !important;
+            }
+
+/*Styles for vslide plugin-------------------------------------*/
+.vslide {
+    position: relative;
+    overflow: hidden;
+}
+
+    .vslide:hover .vslide-toolbar > div {
+        opacity: 0.5 !important;
+    }
+
+    .vslide img {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        max-width: none;
+    }
+
+    .vslide .vslide-present-slide {
+        display: block !important;
+        position: relative !important;
+    }
+
+    .vslide .vslide-blind {
+        display: block;
+        position: absolute;
+        z-index: 5;
+        top: 0;
+    }
+
+    .vslide .vslide-box {
+        display: block;
+        position: absolute;
+        z-index: 3;
+        overflow: hidden;
+    }
+
+        .vslide .vslide-box img {
+            display: block;
+        }
+
+    .vslide .vslide-navbar {
+        position: absolute;
+        right: 10px;
+        z-index: 10;
+        bottom: 5px;
+        opacity: 0.5;
+    }
+
+        .vslide .vslide-navbar:hover {
+            opacity: 1.0;
+        }
+
+        .vslide .vslide-navbar .vslide-navbar-item {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            margin-right: 5px;
+            cursor: pointer;
+            background-color: #3C454F;
+        }
+
+            .vslide .vslide-navbar .vslide-navbar-item:hover {
+                background-color: #EB7515;
+            }
+
+            .vslide .vslide-navbar .vslide-navbar-item[active="active"] {
+                background-color: #EB7515 !important;
+            }
+
+    .vslide .vslide-toolbar {
+    }
+
+        .vslide .vslide-toolbar > div {
+            cursor: pointer;
+            position: absolute;
+            z-index: 10;
+            background-color: #3C454F;
+            background-repeat: no-repeat;
+            width: 50px;
+            height: 50px;
+            opacity: 0;
+            background-image: url('/content/themes/base/images/icons-action-32-sprites.png');
+        }
+
+            .vslide .vslide-toolbar > div:hover {
+                opacity: 1.0 !important;
+            }
+
+        .vslide .vslide-toolbar .vslide-toolbar-prev {
+            background-position: -248px -60px;
+        }
+
+        .vslide .vslide-toolbar .vslide-toolbar-next {
+            background-position: -248px -765px;
+        }
+
+        .vslide .vslide-toolbar .vslide-toolbar-play {
+            background-position: -248px -1342px;
+        }
+
+        .vslide .vslide-toolbar .vslide-toolbar-pause {
+            background-position: -248px -2555px;
+        }
+
+.vtiptext {
+    color: #AAA !important;
+    font-style: italic !important;
+}
+
+.task-status {
+    border: 1px solid #38414a;
+    background-color: gray;
+    position: relative;
+    height: 20px;
+}
+
+    .task-status div {
+        background-color: #669BF2;
+    }
+
+    .task-status span {
+        position: absolute;
+        right: 50%;
+        top: -3px;
+        color: #FFF;
+        font-weight: bold;
+    }
+
+.vxml {
+    position: relative;
+    border: 1px solid #ccc;
+}
+
+    .vxml .vxml-toolbar {
+        position: relative;
+        border-bottom: 1px solid #CCC;
+    }
+
+        .vxml .vxml-toolbar .vxml-toolbar-top {
+            border-bottom: 1px solid #CCC;
+            padding: 0px;
+            margin: 0px;
+        }
+
+            .vxml .vxml-toolbar .vxml-toolbar-top .vxml-toolbar-item {
+                margin: 0px;
+                padding: 5px 20px 5px 20px;
+                display: inline-block;
+                text-transform: uppercase;
+                cursor: default;
+            }
+
+                .vxml .vxml-toolbar .vxml-toolbar-top .vxml-toolbar-item:hover {
+                    color: #0072C6;
+                }
+
+                .vxml .vxml-toolbar .vxml-toolbar-top .vxml-toolbar-item:first-child {
+                    margin-left: 20px;
+                }
+
+                .vxml .vxml-toolbar .vxml-toolbar-top .vxml-toolbar-item[active="active"] {
+                    border: 1px solid #CCC;
+                    border-bottom: none;
+                    background-color: #FFF;
+                    position: relative;
+                    bottom: -1px;
+                    color: #0072C6;
+                    font-weight: bold;
+                }
+
+        .vxml .vxml-toolbar .vxml-toolbar-bottom {
+        }
+
+            .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon {
+                display: inline-block;
+                padding: 5px;
+                width: auto;
+                border-right: 1px solid #CCC;
+            }
+
+            .vxml .vxml-toolbar .vxml-toolbar-bottom table,
+            .vxml .vxml-toolbar .vxml-toolbar-bottom table td {
+                padding: 0px;
+                margin: 0px;
+            }
+
+            .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon .vxml-toolbar-ribbon-item span[disable="disable"] {
+                color: #DAD6DA;
+            }
+
+            .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon .vxml-toolbar-ribbon-item {
+                height: 80px;
+            }
+
+            .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon .vxml-toolbar-ribbon-title {
+                text-align: center;
+                white-space: nowrap;
+                color: #595959;
+                font-size: 11px;
+            }
+
+            .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon span {
+                padding: 1px 4px 1px 4px;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+                .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon span:hover {
+                    background-color: #CDE6F7;
+                }
+
+                .vxml .vxml-toolbar .vxml-toolbar-bottom .vxml-toolbar-ribbon span[disable="disable"]:hover {
+                    background-color: #FFF !important;
+                    cursor: default;
+                }
+
+    .vxml .vxml-body {
+        font-size: 16px;
+        padding-left: 20px;
+        overflow: auto;
+    }
+
+        .vxml .vxml-body .vxml-node {
+            padding-top: 1px;
+        }
+
+            .vxml .vxml-body .vxml-node .vxml-node-handle {
+                background-image: url('/content/themes/base/images/tree-icons.png');
+                background-position: -252px -16px;
+                background-repeat: no-repeat;
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                float: left;
+                position: relative;
+                top: 4px;
+            }
+
+                .vxml .vxml-body .vxml-node .vxml-node-handle[collapse="true"] {
+                    background-position: -64px -16px;
+                }
+
+            .vxml .vxml-body .vxml-node .vxml-node-editor {
+                overflow: hidden;
+            }
+
+                .vxml .vxml-body .vxml-node .vxml-node-editor * {
+                    border: 1px solid #CCC;
+                    padding: 0px;
+                    margin: 0px;
+                    height: 20px;
+                    width: 100%;
+                }
+
+                .vxml .vxml-body .vxml-node .vxml-node-editor input[type="checkbox"] {
+                    width: auto;
+                    border: none;
+                }
+
+            .vxml .vxml-body .vxml-node .vxml-node-summary {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .vxml .vxml-body .vxml-node .vxml-node-body {
+                margin-left: 5px;
+                padding-left: 30px;
+                border-left: 1px dotted #CBCED1;
+            }
+
+            .vxml .vxml-body .vxml-node .vxml-node-display {
+                vertical-align: top;
+                margin-right: 10px;
+                color: #4B9CD7;
+                float: left;
+            }
+
+        .vxml .vxml-body .vxml-node-active {
+            background-color: #E1E1E1;
+        }
+
+    .vxml .vxml-popup {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: none;
+        border: 1px solid #E6E6E6;
+        background-color: #FFF;
+        max-height: 150px;
+        overflow: auto;
+    }
+
+        .vxml .vxml-popup ul {
+            list-style: none;
+            margin-left: 0px;
+            margin: 0px;
+            padding: 5px;
+        }
+
+            .vxml .vxml-popup ul li:hover {
+                background-color: #DCEBFC;
+                cursor: default;
+            }
+
+/*------------Styles for quick create vm-----------------*/
+#quickCreateHVM {
+}
+
+    #quickCreateHVM td {
+        padding: 0.25em 10px 0.25em 0em;
+    }
+
+    #quickCreateHVM span {
+        text-transform: uppercase;
+    }
+
+    #quickCreateHVM input[type="text"] {
+        width: 510px;
+    }
+
+    #quickCreateHVM input[name="ExpireTime"] {
+        width: 188px;
+    }
+
+    #quickCreateHVM select {
+        margin: 5px 0 6px 0;
+        padding: 5px;
+        height: 29px;
+        width: 200px;
+    }
+
+    #quickCreateHVM .buttons {
+        text-align: right;
+    }
+
+        #quickCreateHVM .buttons span {
+            font-size: 20px;
+            position: relative;
+            top: 10px;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+    #quickCreateHVM .imgnameHelp {
+        float: right;
+    }
+
+        #quickCreateHVM .imgnameHelp a {
+            text-transform: uppercase;
+            color: #6AC4EA;
+        }
+
+            #quickCreateHVM .imgnameHelp a:hover {
+                background-color: transparent;
+                color: #FFF;
+            }
+
+div.section {
+    margin: 0 auto;
+    width: 900px;
+    padding-top: 30px;
+}
+
+    div.section h2.label {
+        border: 0;
+        margin-bottom: 0;
+        padding-bottom: 5px;
+        font-family: "Segoe UI Light";
+        text-transform: lowercase;
+        font-size: 20px;
+        font-weight: normal;
+        color: #323232;
+    }
+
+    div.section div.content {
+        border-bottom: 2px solid #88b9e3;
+        border-top: 2px solid #88b9e3;
+        overflow: hidden;
+        padding: 30px 0px 30px 0px;
+    }
+
+.vradio {
+    display: inline-block;
+}
+
+    .vradio .label {
+        display: inline-block;
+        padding-top: 10px;
+        padding-right: 20px;
+        font-family: "Segoe UI Light";
+        text-transform: uppercase;
+        float: left;
+        min-width: 200px;
+        word-wrap: break-word;
+        font-weight: normal;
+        color: #323232;
+    }
+
+    .vradio div.vradio-content {
+        display: inline-block;
+    }
+
+
+        .vradio div.vradio-content ul.buttons {
+            list-style: none;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+
+            .vradio div.vradio-content ul.buttons li {
+                min-width: 46px;
+                line-height: 20px;
+                padding: 5px;
+                text-align: center;
+                text-transform: uppercase;
+                color: #535353;
+                display: inline;
+                float: left;
+                border: 2px solid #ccc;
+                margin-right: -2px;
+                cursor: default;
+            }
+
+                .vradio div.vradio-content ul.buttons li[checked='checked'] {
+                    position: relative;
+                    background-color: #4f9dd7 !important;
+                    border-color: #434343;
+                    color: #fff;
+                }
+
+                .vradio div.vradio-content ul.buttons li:hover {
+                    background-color: #ddd;
+                }
+
+                .vradio div.vradio-content ul.buttons li div {
+                }
+
+        .vradio div.vradio-content ul.inputs {
+            list-style: none;
+            padding-left: 0;
+        }
+
+
+            .vradio div.vradio-content ul.inputs li {
+            }
+
+                .vradio div.vradio-content ul.inputs li span.title {
+                    color: rgb(50, 50, 50);
+                    font-family: 'Segoe UI';
+                    font-size: 12px;
+                }
+
+                .vradio div.vradio-content ul.inputs li input {
+                    border: solid 1px #aaa;
+                    color: rgb(0, 0, 0);
+                    cursor: auto;
+                    display: inline-block;
+                    font-family: 'Segoe UI';
+                    font-size: 13px;
+                    height: 13px;
+                    text-align: start;
+                    width: 30px;
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
+
+                    .vradio div.vradio-content ul.inputs li input[readonly="readonly"] {
+                        background-color: #ccc !important;
+                    }
+
+                .vradio div.vradio-content ul.inputs li span.description {
+                    color: rgb(128, 128, 128);
+                    font-family: 'Segoe UI';
+                    font-size: 12px;
+                }
+
+        .vradio div.vradio-content ul.buttons {
+            list-style: none;
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+
+        .vradio div.vradio-content ul.checkboxs {
+            margin: 0;
+            padding: 0;
+        }
+
+            .vradio div.vradio-content ul.checkboxs li {
+                min-width: 46px;
+                line-height: 20px;
+                padding: 5px;
+                text-align: center;
+                text-transform: uppercase;
+                color: #535353;
+                display: block;
+                cursor: default;
+            }
+
+                .vradio div.vradio-content ul.checkboxs li span {
+                    color: rgb(128, 128, 128);
+                    cursor: default;
+                    font-family: Verdana, Arial, sans-serif;
+                    font-size: 15px;
+                    height: 20px;
+                    line-height: 20px;
+                    list-style-image: none;
+                    list-style-position: outside;
+                    list-style-type: none;
+                    text-align: center;
+                    text-transform: uppercase;
+                    zoom: 1;
+                }
+
+.vbar {
+    position: relative;
+    margin-left: 15px;
+    margin-bottom: 20px;
+}
+
+    .vbar .vbar-summary-text {
+        display: inline-block;
+        margin-left: 30px;
+        color: #525252;
+        font-family: 'Segoe UI Semibold';
+        font-size: 11px;
+        height: 13px;
+        text-transform: uppercase;
+    }
+
+    .vbar .chart {
+        display: inline-block;
+    }
+
+    .vbar .vbar-legend {
+        font-family: "Segoe UI";
+        font-size: 12px;
+        color: #323232;
+        margin-top: 6px;
+    }
+
+    .vbar .vbar-legend-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .vbar .vbar-legend-list-item {
+        margin-bottom: 5px;
+        float: left;
+        line-height: 11px;
+        margin-right: 2%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 13%;
+    }
+
+    .vbar .vbar-legend-lable {
+        color: #434343;
+        font-size: 11px;
+        /*text-transform: uppercase;*/
+        white-space: nowrap;
+        position: relative;
+        display: block;
+        width: 100px;
+    }
+
+    .vbar .vbar-legend-indicator {
+        height: 11px;
+        margin-right: 7px;
+        background-color: #777;
+        display: inline-block;
+        width: 17px;
+        position: absolute;
+    }
+
+    .vbar .vbar-legend-text {
+        margin-left: 24px;
+        vertical-align: text-top;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 80%;
+        overflow: hidden;
+        padding-left: 5px;
+        display: block;
+    }
+
+    .vbar .caption {
+        text-align: Left;
+    }
+
+    .vbar > div > ul {
+        clear: left;
+        padding: 0;
+        list-style: none;
+    }
+
+    .vbar table th {
+        border-right: 1px solid #CCC;
+        color: #323232;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .vbar .vbar-quota {
+        position: relative;
+    }
+
+        .vbar .vbar-quota .vbar-quota-container {
+            height: 17px;
+            padding-top: 15px;
+        }
+
+            .vbar .vbar-quota .vbar-quota-container > div:not(.empty) {
+                width: 100%;
+                height: 17px;
+                position: relative;
+                display: inline-block;
+                color: #FFF;
+                text-align: center;
+            }
+
+    .vbar .empty {
+        text-align: center;
+        font-size: 15px;
+        color: #777;
+    }
+
+
+.summary-table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+    .summary-table td {
+        vertical-align: top;
+    }
+
+    .summary-table .summary-table-td-3 {
+        width: 30%;
+    }
+
+    .summary-table .summary-table-td-7 {
+        width: 70%;
+    }
+
+.summary-panel {
+    padding-left: 15px;
+}
+
+    .summary-panel .summary-h2 {
+        color: #444;
+        display: block;
+        font-family: 'Segoe UI Light';
+        font-size: 20px;
+        font-weight: normal;
+        height: 28px;
+        letter-spacing: normal;
+        margin-bottom: 30px;
+        margin-left: 0px;
+        margin-right: 0px;
+        margin-top: 27px;
+        text-transform: lowercase;
+    }
+
+    .summary-panel .summary-rt {
+        text-align: right;
+    }
+
+    .summary-panel .summary-group {
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .summary-panel .summary-label {
+        color: #525252;
+        display: block;
+        font-family: 'Segoe UI Semibold';
+        font-size: 11px;
+        height: 13px;
+        margin: 0;
+        margin-bottom: 3px;
+        text-transform: uppercase;
+    }
+
+    .summary-panel .summary-up {
+        text-transform: uppercase;
+    }
+
+    .summary-panel .summary-text {
+        color: #333;
+        display: block;
+        font-family: 'Segoe UI';
+        font-size: 12px;
+        height: 15px;
+        margin: 0;
+        word-wrap: break-word;
+    }
+
+        .summary-panel .summary-text > span {
+            padding-left: 5px;
+            padding-right: 5px;
+            color: #2086BF;
+        }
+
+    .summary-panel .summary-link {
+        color: #2086BF;
+        cursor: auto;
+        display: inline;
+        padding: 0;
+        font-family: 'Segoe UI';
+        font-size: 12px;
+        height: auto;
+        text-decoration: none;
+        width: auto;
+        background-color: transparent;
+    }
+
+        .summary-panel .summary-link:hover {
+            text-decoration: underline;
+        }
+
+    .summary-panel .summary-percent {
+        background: #DFDFDF;
+        height: 17px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+        .summary-panel .summary-percent > div {
+            background: #5F9A26;
+            height: 17px;
+        }
+
+        .summary-panel .summary-percent .extra {
+            background: #FC0;
+            height: 17px;
+        }

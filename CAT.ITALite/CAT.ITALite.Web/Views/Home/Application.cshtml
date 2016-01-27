@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Applications";
+}
+<script type="text/javascript">
+    $(function () {
+        var app = {
+            panel: $('.app-panel'),
+            grid: $('.app-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    app.load();
+                });
+                t.add('AssignGroup', 'AssignGroup', 'toolbar-showall', function () {
+                    $('.assign-appToGroup-wizard').load('../Home/AssignAppToGroup');
+                });
+            },
+            initEvent: function () {
+            },
+            load: function () {
+                app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/application/list',
+                    traditional: true,
+                    success: function (d) {
+                        app.bindData(d.result);
+                        app.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        app.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                app.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: 'Applications',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No applications found',
+                    rp: 20,
+                    rowProps: [{ name: 'appName', field: 'RowKey' },{name:'appId',field:'PartitionKey'}],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'App Name', field: 'RowKey', width: 3, primary: true },
+                        { caption: 'App Id', field: 'PartitionKey', width: 2 },
+                        { caption: 'App Roles', field: 'AppRoles', width: 2 },
+                        { caption: 'App Type', field: 'AppType', width: 1 },
+                        { caption: 'HomePage', field: 'HomePage', width: 1 },
+                        { caption: 'Identifier Uris', field: 'IdentifierUris', width: 1 }
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var tr = $(this).parent();
+                        self.location = "../../Home/ApplicationDetail?id=" + tr.attr('appName');
+                    }
+                };
+                //gridSetting.tbodyMaxHeight = window.screen.height * 2 / 3;
+                return gridSetting;
+            },
+            init: function () {
+                app.initEvent();
+                app.grid.vgrid(app.getGridSetting());
+            }
+        };
+        app.init();
+        app.load();
+        app.createToolbar();
+        window.app = app;
+    });
+</script>
+<div class="app-panel">
+    <div class="app-grid"></div>
+</div>
+<div class="assign-appToGroup-wizard">
+</div>
+

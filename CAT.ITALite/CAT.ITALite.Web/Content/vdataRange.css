@@ -1,0 +1,94 @@
+﻿.dateRange {
+    height: 30px;
+    padding-top: 20px;
+    position: relative;
+}
+
+    .dateRange .dateRange-bar {
+        height: 5px;
+        border-radius: 0;
+    }
+
+        .dateRange .dateRange-bar .dateRange-bar-handle {
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .dateRange .dateRange-bar .dateRange-bar-handle-bar {
+            background-image: url(/content/themes/base/images/dateslider_triangle.png);
+            background-position: left;
+            width: 9px;
+            border: none;
+            background-color: rgba(0, 0, 0, 0);
+            cursor: pointer;
+            height: 15px;
+            margin: 0 auto;
+        }
+
+            .dateRange .dateRange-bar .dateRange-bar-handle-bar:hover {
+                background-position-x: 10px;
+            }
+
+        .dateRange .dateRange-bar .dateRange-bar-range {
+            background: none;
+            background-color: #4F9DD7;
+        }
+
+    .dateRange .dateRange-scales {
+        position: relative;
+    }
+
+        .dateRange .dateRange-scales .dateRange-scale {
+        }
+
+
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-text,
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-text-long,
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-line,
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-line-long {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-text {
+                top: -8px;
+                margin-left: -4px;
+                font-size: 13px;
+            }
+
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-line {
+                position: absolute;
+                left: 0;
+                top: -23px;
+                padding-left: 2px;
+                z-index: -1;
+                font-size: 10px;
+                margin-left: -4px;
+            }
+
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-line-long {
+                top: -28px;
+            }
+
+            .dateRange .dateRange-scales .dateRange-scale .dateRange-scale-text-long {
+                top: -40px;
+                font-size: 13px;
+                margin-left: -15px;
+            }
+
+    .dateRange .dateRange-indicator {
+        background-color: #96D1F9;
+        border: 1px solid #62A3E8;
+        font-size: 13px;
+        padding: 2px 3px;
+        position: absolute;
+        left: 0;
+        top: -5px;
+        white-space: nowrap;
+        height: 15px;
+        line-height: 15px;
+        width: 40px;
+        text-align: center;
+    }

@@ -1,0 +1,60 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Unknown Error Occurred</title>
+    <link href="~/Content/Error.css" type="text/css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+    @*TODO: Fix me*@
+    @*@RenderSection("scripts", required: false)*@
+    <script type="text/javascript">
+        $(function () {
+            var body = $('.controller').text() + "\n"
+                    + $('.action').text() + "\n"
+                    + $('.message').text() + "\n"
+                    + $('#stackTrace').text();
+            $('[name="body"]').val(body.substring(0, 1700));
+            $('.mailto').click(function () {
+                $('input[type="submit"]').click();
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-body">
+            <div class="header">
+                <div class="error clearfix"><span class="code"></span><span class="message">Sorry for Unknow Error Occurred.</span></div>
+            </div>
+            <div class="more-details">
+                <div class="error-info clearfix">
+                    <div class="more-info" style="width: auto;">
+                        <div class="summary">
+                            <form name="sendmailForm" action="mailto:vstormsp@microsoft.com" style="display: none;">
+                                <textarea name="subject">Unknown&nbsp;Error</textarea>
+                                <textarea name="body"></textarea>
+                                <input type="submit" />
+                            </form>
+                            <div class="controller"><span class="title">Controller: </span>@Model.ControllerName</div>
+                            <div class="action"><span class="title">Action: </span>@Model.ActionName</div>
+                            <div class="message"><span class="title">Message: </span>@Model.Exception.Message</div>
+                            <div id="stackTrace" style="visibility: hidden; display: none;"><span class="title">Stack Trace:</span>@Model.Exception.StackTrace</div>
+                        </div>
+                        <div class="details">
+                            Please contact
+                            <a class="mailto" href="#">Vstorm Support Team</a> for help, thanks.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
