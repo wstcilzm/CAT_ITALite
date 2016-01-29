@@ -56,11 +56,11 @@
                         { caption: 'Originated From', field: 'OriginatedFrom', width: 1 },
                         { caption: 'Security Enabled', field: 'SecurityEnabled', width: 1 }
                     ],
-                    primaryColumnClick: function (ev) {
-                        ev.stopPropagation();
-                        var tr = $(this).parent();
-                        self.location = "../../Home/ApplicationDetail?id=" + tr.attr('cid');
-                    }
+                    //primaryColumnClick: function (ev) {
+                    //    ev.stopPropagation();
+                    //    var tr = $(this).parent();
+                    //    self.location = "../../Home/ApplicationDetail?id=" + tr.attr('cid');
+                    //}
                 };
                 gridSetting.tbodyMaxHeight = window.screen.height * 2 / 3;
                 return gridSetting;

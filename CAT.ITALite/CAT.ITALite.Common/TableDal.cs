@@ -20,13 +20,20 @@ namespace CAT.ITALite.Common
 
         #region AADInfo
 
-        #endregion
+
         public bool InsertAADInfo(AADInfoEntity Aad)
         {
             var operation = TableOperation.InsertOrReplace(Aad);
             _table.Execute(operation);
             return true;
         }
+        public IEnumerable<AADInfoEntity> RetrieveAADs()
+        {
+            var query = new TableQuery<AADInfoEntity>();
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
+        #endregion
 
         #region Group
 
@@ -40,6 +47,24 @@ namespace CAT.ITALite.Common
         public IEnumerable<GroupEntity> RetrieveGroups()
         {
             var query = new TableQuery<GroupEntity>();
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
+
+        public IEnumerable<GroupEntity> RetrieveGroups(IEnumerable<AppGroupAssignmentEntity> entities)
+        {
+            string filter = string.Empty;
+            foreach(var group in entities)
+            {
+                filter += "PartitionKey eq " + group.RowKey + " or";                    
+            }
+            filter = filter.Remove(filter.LastIndexOf(" or"));
+            //TableQuery<GroupEntity> query = new TableQuery<GroupEntity>().Where(filter);
+            //foreach(var entity in entities)
+            //{
+             //   filter = entity.RowKey;
+           // }
+            var query = new TableQuery<GroupEntity>().Where(filter);
             var result = _table.ExecuteQuery(query);
             return result;
         }

@@ -60,11 +60,11 @@
                         { caption: 'Usage Location', field: 'UsageLocation', width: 1 },
                         { caption: 'User Type', field: 'UserType', type: 'number', width: 1 }
                     ],
-                    primaryColumnClick: function (ev) {
-                        ev.stopPropagation();
-                        var tr = $(this).parent();
-                        self.location = "../../Home/UserDetail?id=" + tr.attr('cid');
-                    }
+                    //primaryColumnClick: function (ev) {
+                    //    ev.stopPropagation();
+                    //    var tr = $(this).parent();
+                    //    self.location = "../../Home/UserDetail?id=" + tr.attr('cid');
+                    //}
                 };
                 return gridSetting;
             },
@@ -134,24 +134,25 @@
 </style>
 <div class="user-panel">
     <div class="user-grid"></div>
+    <div class="userappgroup-details">
+        <h1>Details</h1>
+        <table id="tb-detail">
+            <tr>
+                <th>Name:</th>
+                <th>Detail:</th>
+            </tr>
+            <tr>
+                <td>Group</td>
+                <td>GroupName</td>
+            </tr>
+            <tr>
+                <td>App</td>
+                <td>AppName</td>
+            </tr>
+        </table>
+    </div>
 </div>
 <div class="assign-group-wizard">
 </div>
-<div class="userappgroup-details">
-    <h1>Details</h1>
-    <table id="tb-detail">
-        <tr>
-            <th>Name:</th>
-            <th>Detail:</th>
-        </tr>
-        <tr>
-            <td>Group</td>
-            <td>GroupName</td>
-        </tr>
-        <tr>
-            <td>App</td>
-            <td>AppName</td>
-        </tr>
-    </table>
-</div>
+
 

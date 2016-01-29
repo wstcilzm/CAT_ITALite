@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "AppsGroups";
+}
+
+<h2>AppsGroups</h2>
+<script type="text/javascript">
+    $(function () {
+        var app = {
+            panel: $('.app-panel'),
+            appsGroup:$('.app-group'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    app.load();
+                });
+            },
+            initEvent: function () {
+            },
+            load:function()
+            {
+                app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    traditional: true,
+                    success: function (d) {
+                        app.bindData(d.result);
+                        app.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        app.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                app.appsGroup.vgrid('bindData', data);
+            },
+            appsGroupSetting: function () {
+                var groupGridSetting = {
+                    caption: 'App_Groups',
+                    url: '/Home',
+                    searchAction: 'GetAppsGroups',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No Groups found',
+                    rp: 20,
+                    rowProps: [{ name: 'appId', field: 'PartitionKey' }, { name: 'groupId', field: 'RowKey' }],
+                    orderBy: '',
+                    usePage: false,
+                    filter: false,
+                    checkbox: false,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'App Name', field: 'AppName' , width:2 ,primary:true},
+                        { caption: 'Group Name', field: 'GroupName', width: 2 },
+                        { caption: 'App Id', field: 'PartitionKey', width: 2 },
+                        { caption: 'Group Id', field: 'RowKey', width: 2 },
+                    ]
+                };
+                return groupGridSetting;
+            },
+            init: function () {
+                app.initEvent();
+                app.appsGroup.vgrid(app.appsGroupSetting());
+            }
+        };
+        app.init();
+        app.load();
+        app.createToolbar();
+        window.app = app;
+    });
+</script>
+<div class="app-panel">
+    <div class="app-grid"></div>
+</div>
+<div class="app-group"></div>

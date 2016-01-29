@@ -13,7 +13,7 @@
 
     .vgrid .vgrid-caption {
         font: 28px/40px "Segoe UI Light";
-        text-transform: lowercase;
+        /*text-transform: lowercase;*/
         color: #444;
         margin: 0;
         white-space: nowrap;

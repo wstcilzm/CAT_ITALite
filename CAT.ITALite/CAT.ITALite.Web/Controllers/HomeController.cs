@@ -35,5 +35,10 @@ namespace CAT.ITALite.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult AppsGroups()
+        {
+            return View();
+        }
     }
 }

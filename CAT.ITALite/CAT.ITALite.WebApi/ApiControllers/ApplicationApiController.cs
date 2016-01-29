@@ -3,6 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using CAT.ITALite.Common;
+using CAT.ITALite.Entity;
+using System.Collections.Generic;
 
 namespace CAT.ITALite.WebApi.ApiControllers
 {
@@ -22,9 +24,11 @@ namespace CAT.ITALite.WebApi.ApiControllers
         [Route("{appId}/groups")]
         public async Task<IHttpActionResult> GetGroupsAsync(string appId)
         {
-            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
-            var result = operation.RetrieveGroupsByAppId(appId);
-            return CreateSuccessResult(result);
+            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
+            var result = (IEnumerable<AppGroupAssignmentEntity>)(operation.RetrieveGroupsByAppId(appId));
+            var optGroup = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AADGroups);
+            var final = optGroup.RetrieveGroups(result);
+            return CreateSuccessResult(final);
+            }
         }
     }
-}
