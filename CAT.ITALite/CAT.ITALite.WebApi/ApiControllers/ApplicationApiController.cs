@@ -26,9 +26,9 @@ namespace CAT.ITALite.WebApi.ApiControllers
         {
             var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
             var result = (IEnumerable<AppGroupAssignmentEntity>)(operation.RetrieveGroupsByAppId(appId));
-            var optGroup = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AADGroups);
-            var final = optGroup.RetrieveGroups(result);
-            return CreateSuccessResult(final);
-            }
+            //var optGroup = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AADGroups);
+            //var final = optGroup.RetrieveGroups(result);
+            return CreateSuccessResult(result);
         }
     }
+}

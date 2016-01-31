@@ -1,4 +1,4 @@
-﻿@{ 
+﻿@*@{ 
     Layout = null;
 }
 <script type="text/javascript">
@@ -113,5 +113,141 @@
                 <div id="appTable"></div>
             </div>
         </div>
+    </div>
+</div>*@
+
+
+@{
+    ViewBag.Title = "AssignAppToGroup";
+}
+
+<style type="text/css">
+    .assignToGroup{
+        margin-right:30px;
+        margin-top:10px;
+        float:right;
+        opacity:0.5;
+    }
+    .assignToGroup:hover {
+        opacity:1;
+        cursor: pointer;
+    }
+</style>
+
+
+<script type="text/javascript">
+    $(function () {
+        var apps =@Html.Raw(@ViewBag.apps);
+        var app = {
+            panel: $('.app-panel'),
+            grid:$('.app-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    app.load();
+                });
+            },
+            initEvent: function () {
+            },
+            load:function()
+            {
+                app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                for(var i=0;i<apps.length; i++)
+                {
+                    apps[i].del='<img src="../../Content/images/delete.jpg"/>';
+                }
+                app.bindData(apps);
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    traditional: true,
+                    success: function (d) {
+                        var optionstring = "";
+                        for (var i = 0; i < d.result.length; i++) {
+                            optionstring += "<option value=\"" + d.result[i].PartitionKey + "\">" + d.result[i].RowKey + "</option>";
+                        }
+                        $("#appGroup").html("<option value='Choose'>Choose...</option>" + optionstring);
+                        app.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        app.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                app.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: '',
+                    url: '/Home',
+                    searchAction: '',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No apps selected',
+                    rp: 20,
+                    rowProps: [{ name: 'appId', field: 'PartitionKey' }, { name: 'appName', field: 'RowKey' }],
+                    orderBy: '',
+                    usePage: false,
+                    filter: false,
+                    checkbox: false,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'App Name', field: 'RowKey' , width:2 },
+                        { caption: 'App Id', field: 'PartitionKey', width: 2 },
+                        { caption: 'Remove',field:'del',width:1,primary:true }
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var selectedRow = $(this).parent();
+                        var selectedRowIndex=app.grid.vgrid('rowIndex',selectedRow);
+                        apps.splice(selectedRowIndex,1);
+                        app.grid.vgrid('destroy');
+                        app.init();
+                        app.bindData(apps);
+                    }
+                };
+                return gridSetting;
+            },
+            init: function () {
+                app.initEvent();
+                app.grid.vgrid(app.getGridSetting());
+            }
+        };
+        $('.assignToGroup').click(function() 
+        {
+            var groupId = $("#appGroup").val();
+            for (var i = 0; i < apps.length; i++) {
+                //alert("add app!");
+                $.ajax({
+                    type: 'Get',
+                    url: vstorm.getApiServerUrl() + '/api/assignment/addapptogroup?appId=' + apps[i].PartitionKey + '&groupId=' + groupId,
+                    success: function (r) {
+                        alert("Add apps to group successfully!");
+                    },
+                    error: function (e) {
+                        alert("Add apps failed!");
+                    }
+                });
+            }; 
+        });
+        app.init();
+        app.load();
+        app.createToolbar();
+        window.app = app;
+    });
+</script>
+<div class="app-panel">
+    <div style="margin-left:5px">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div style="margin-left:10px;margin-top:20px">
+            <select id="appGroup" style="width:250px;">
+            </select>
+    </div>
+    <div class="app-grid"></div>
+    <div>
+        <img src="../../Content/images/assign.png" class="assignToGroup" /> 
     </div>
 </div>

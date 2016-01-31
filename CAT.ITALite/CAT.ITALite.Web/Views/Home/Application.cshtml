@@ -13,7 +13,14 @@
                     app.load();
                 });
                 t.add('AssignGroup', 'AssignGroup', 'toolbar-showall', function () {
-                    $('.assign-appToGroup-wizard').load('../Home/AssignAppToGroup');
+                    //$('.assign-appToGroup-wizard').load('../Home/AssignAppToGroup');
+                    var arra = [];
+                    var selectedRows = app.grid.vgrid('selectedRows');
+                    selectedRows.each(function () {
+                        arra.push({ PartitionKey: $(this).attr('appId'), RowKey: $(this).attr('appName') });
+                    });
+                    window.location = "../Home/AssignAppToGroup?apps=" + JSON.stringify(arra);
+                        
                 });
             },
             initEvent: function () {
@@ -34,27 +41,27 @@
                     }
                 });
             },
-            loadAppGroups:function(selectedRow)
-            {
-                $.ajax({
-                    type: "GET",
-                    //url: vstorm.getApiServerUrl() + '/api/application/' + selectedRow.attr('appId') + '/groups',
-                    url: vstorm.getApiServerUrl() + '/api/group/list',
-                    traditional: true,
-                    success: function (d) {
-                        app.appsGroup.vgrid('bindData', d.result);
-                        //app.panel.vloading('hide');
-                        //window.app = app;
-                        if (slideStatus == false) {
-                            app.appsGroup.slideToggle();
-                            slideStatus = true;
-                        }
-                    },
-                    error: function (d) {
-                        alert(d);
-                    }
-                });
-            },
+            //loadAppGroups:function(selectedRow)
+            //{
+            //    $.ajax({
+            //        type: "GET",
+            //        //url: vstorm.getApiServerUrl() + '/api/application/' + selectedRow.attr('appId') + '/groups',
+            //        url: vstorm.getApiServerUrl() + '/api/group/list',
+            //        traditional: true,
+            //        success: function (d) {
+            //            app.appsGroup.vgrid('bindData', d.result);
+            //            //app.panel.vloading('hide');
+            //            //window.app = app;
+            //            if (slideStatus == false) {
+            //                app.appsGroup.slideToggle();
+            //                slideStatus = true;
+            //            }
+            //        },
+            //        error: function (d) {
+            //            alert(d);
+            //        }
+            //    });
+            //},
             bindData: function (data) {
                 app.grid.vgrid('bindData', data);
             },
@@ -84,43 +91,43 @@
                     primaryColumnClick: function (ev) {
                         ev.stopPropagation();
                         var selectedRow = $(this).parent();
-                        window.location = "../../Home/AppsGroups?id=" + selectedRow.attr('appId');
+                        window.location = "../../Home/AppsGroups?appId=" + selectedRow.attr('appId');
                     }
                 };
                 //gridSetting.tbodyMaxHeight = window.screen.height * 2 / 3;
                 return gridSetting;
             },
-            appsGroupSetting: function () {
-                var groupGridSetting = {
-                    caption: 'App_Groups',
-                    url: '/Home',
-                    searchAction: 'GetAppsGroups',
-                    width: layout.contantWidth,
-                    height: 'auto',
-                    noDataMsg: 'No Groups found',
-                    rp: 20,
-                    rowProps: [{ name: 'groupName', field: 'RowKey' }, { name: 'groupId', field: 'PartitionKey' }],
-                    orderBy: '',
-                    usePage: false,
-                    filter: false,
-                    checkbox: true,
-                    scaleWidth: true,
-                    columns: [
-                        { caption: 'Group Name', field: 'RowKey', width: 2, primary: true },
-                        { caption: 'Group Id', field: 'PartitionKey', width: 2 },
-                        { caption: 'Descrption', field: 'Descrption', width: 1 },
-                        { caption: 'Mail NickName', field: 'MailNickName', width: 1 },
-                        { caption: 'Originated From', field: 'OriginatedFrom', width: 1 },
-                        { caption: 'Security Enabled', field: 'SecurityEnabled', width: 1 }
-                    ]
+            //appsGroupSetting: function () {
+            //    var groupGridSetting = {
+            //        caption: 'App_Groups',
+            //        url: '/Home',
+            //        searchAction: 'GetAppsGroups',
+            //        width: layout.contantWidth,
+            //        height: 'auto',
+            //        noDataMsg: 'No Groups found',
+            //        rp: 20,
+            //        rowProps: [{ name: 'groupName', field: 'RowKey' }, { name: 'groupId', field: 'PartitionKey' }],
+            //        orderBy: '',
+            //        usePage: false,
+            //        filter: false,
+            //        checkbox: true,
+            //        scaleWidth: true,
+            //        columns: [
+            //            { caption: 'Group Name', field: 'RowKey', width: 2, primary: true },
+            //            { caption: 'Group Id', field: 'PartitionKey', width: 2 },
+            //            { caption: 'Descrption', field: 'Descrption', width: 1 },
+            //            { caption: 'Mail NickName', field: 'MailNickName', width: 1 },
+            //            { caption: 'Originated From', field: 'OriginatedFrom', width: 1 },
+            //            { caption: 'Security Enabled', field: 'SecurityEnabled', width: 1 }
+            //        ]
 
-                };
-                return groupGridSetting;
-            },
+            //    };
+            //    return groupGridSetting;
+            //},
             init: function () {
                 app.initEvent();
                 app.grid.vgrid(app.getGridSetting());
-                app.appsGroup.vgrid(app.appsGroupSetting());
+                //app.appsGroup.vgrid(app.appsGroupSetting());
             }
         };
         app.init();

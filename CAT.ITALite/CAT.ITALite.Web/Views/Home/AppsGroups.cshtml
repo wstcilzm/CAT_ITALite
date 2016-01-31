@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "AppsGroups";
 }
-
-<h2>AppsGroups</h2>
 <script type="text/javascript">
     $(function () {
         var app = {
@@ -22,7 +20,7 @@
                 app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    url: vstorm.getApiServerUrl() + '/api/application/' +'@ViewBag.appId'+'/groups',
                     traditional: true,
                     success: function (d) {
                         app.bindData(d.result);
@@ -73,6 +71,5 @@
     });
 </script>
 <div class="app-panel">
-    <div class="app-grid"></div>
+    <div class="app-group"></div>
 </div>
-<div class="app-group"></div>

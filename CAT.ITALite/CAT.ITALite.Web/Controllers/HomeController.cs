@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace CAT.ITALite.Web.Controllers
 {
@@ -31,13 +32,15 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
-        public ActionResult AssignAppToGroup()
+        public ActionResult AssignAppToGroup(string apps)
         {
+            ViewBag.apps = apps;
             return View();
         }
 
-        public ActionResult AppsGroups()
+        public ActionResult AppsGroups(string appId)
         {
+            ViewBag.appId = appId;
             return View();
         }
     }
