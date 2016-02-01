@@ -504,6 +504,7 @@
     <Content Include="Views\Home\AssignUserToGroup.cshtml" />
     <Content Include="Views\Home\AssignAppToGroup.cshtml" />
     <Content Include="Views\Home\AppsGroups.cshtml" />
+    <Content Include="Views\Home\UserDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,11 +12,14 @@
                     user.load();
                 });
                 t.add('AssignToGroup', 'AssignToGroup', 'toolbar-showall', function () {
-                    $('.assign-group-wizard').load('../Home/AssignUserToGroup');
+                    var arra = [];
+                    var selectedRows = user.grid.vgrid('selectedRows');
+                    selectedRows.each(function () {
+                        arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
+                    });
+                    window.location = "../Home/AssignUserToGroup?users=" + JSON.stringify(arra);
                 });
             },
-            //initEvent: function () {
-            //},
             load: function () {
                 user.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
                 $.ajax({
@@ -42,7 +45,7 @@
                     url: '/Home',
                     searchAction: 'GetApplications',
                     width: layout.contantWidth,
-                    height: layout.contantHeight * 2 / 3,
+                    height: layout.contantHeight ,//* 2 / 3,
                     noDataMsg: 'No applications found',
                     rp: 20,
                     rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, {name:'displayName',field:'DisplayName'}],
@@ -60,18 +63,17 @@
                         { caption: 'Usage Location', field: 'UsageLocation', width: 1 },
                         { caption: 'User Type', field: 'UserType', type: 'number', width: 1 }
                     ],
-                    //primaryColumnClick: function (ev) {
-                    //    ev.stopPropagation();
-                    //    var tr = $(this).parent();
-                    //    self.location = "../../Home/UserDetail?id=" + tr.attr('cid');
-                    //}
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var tr = $(this).parent();
+                        var userId = tr.attr('userid');
+                        self.location = "../../Home/UserDetail?id=" + userId;
+                    }
                 };
                 return gridSetting;
             },
             init: function () {
-                //app.initEvent();
                 user.grid.vgrid(user.getGridSetting());
-                $(".userappgroup-details").show();
             },
             groupOperate: function (groupId, op, field, msg, params, actionTitle, actionMsgTemplate, callback) {
                 //
@@ -134,23 +136,7 @@
 </style>
 <div class="user-panel">
     <div class="user-grid"></div>
-    <div class="userappgroup-details">
-        <h1>Details</h1>
-        <table id="tb-detail">
-            <tr>
-                <th>Name:</th>
-                <th>Detail:</th>
-            </tr>
-            <tr>
-                <td>Group</td>
-                <td>GroupName</td>
-            </tr>
-            <tr>
-                <td>App</td>
-                <td>AppName</td>
-            </tr>
-        </table>
-    </div>
+    
 </div>
 <div class="assign-group-wizard">
 </div>

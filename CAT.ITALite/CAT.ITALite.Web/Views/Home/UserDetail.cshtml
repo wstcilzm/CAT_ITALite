@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "UserDetail";
+}
+<script type="text/javascript">
+    $(function () {
+        var userDetail = {
+            panel: $('.user-panel'),
+            groupGrid: $('.group-grid'),
+            appGrid : $('.app-grid'),
+            load: function (){
+                userDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/user/{userId}/groups?userId='+'@ViewBag.userID',
+                    traditional: true,
+                    success: function (d) {
+                        userDetail.bindGroupData(d.result);
+                        userDetail.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        userDetail.panel.vloading('hide');
+                    }
+                });
+            },
+            bindGroupData: function (data) {
+                userDetail.groupGrid.vgrid('bindData', data);
+            },
+            bindAppData: function(data){
+                userDetail.appGrid.vgrid('bindData',data);
+            },
+            getAppGridSetting: function () {
+                var gridSetting = {
+                    caption: 'User-Apps',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight *1 / 2,
+                    noDataMsg: 'No applications found',
+                    rp: 20,
+                    //rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, { name: 'displayName', field: 'DisplayName' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'User PrincipleName', field: 'UserPrincipleName', width: 4 },
+                        //{ caption: 'App Name' field:}
+                        { caption: 'Group Name', field: 'GroupName', width: 4 }
+                    ]
+                };
+                return gridSetting;
+            },
+            getGroupGridSetting: function () {
+                var gridSetting = {
+                    caption: 'User-Groups',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight * 1 / 2,
+                    noDataMsg: 'No applications found',
+                    rp: 20,
+                    //rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, { name: 'displayName', field: 'DisplayName' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'User PrincipleName',field:'UserPrincipleName',width:4},
+                        { caption: 'Group Name', field: 'GroupName', width: 2 },
+                        { caption: 'Group ID', field: 'RowKey',width:4},
+                        { caption: 'Updated By', field: 'UpdatedBy', width: 2 }
+                    ]
+                };
+                return gridSetting;
+            },
+
+            init: function () {
+                userDetail.groupGrid.vgrid(userDetail.getGroupGridSetting());
+                userDetail.appGrid.vgrid(userDetail.getAppGridSetting());
+                $(".group-grid").show();
+                $('.app-grid').show();
+            },
+        };
+        userDetail.init();
+        userDetail.load();
+        //userDetail.createToolbar();
+        window.userDetail = userDetail;
+    });
+
+</script>
+
+<div class="user-panel">
+    <div class="group-grid"></div>
+    <div class="app-grid"></div>
+</div>

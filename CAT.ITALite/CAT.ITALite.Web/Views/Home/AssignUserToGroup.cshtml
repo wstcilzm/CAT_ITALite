@@ -1,4 +1,4 @@
-﻿@{
+﻿@*@{
     Layout = null;
 }
 <script type="text/javascript">
@@ -127,4 +127,141 @@
         <div id="selectedTable">
         </div>
     </div>
+</div>*@
+
+
+@{
+    ViewBag.Title = "AssignUserToGroup";
+}
+
+<style type="text/css">
+    .assignToGroup {
+        margin-right: 30px;
+        margin-top: 10px;
+        float: right;
+        opacity: 0.5;
+    }
+
+        .assignToGroup:hover {
+            opacity: 1;
+            cursor: pointer;
+        }
+</style>
+
+
+<script type="text/javascript">
+    $(function () {
+        var users =@Html.Raw(@ViewBag.users);
+        var user = {
+            panel: $('.user-panel'),
+            grid:$('.user-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    user.load();
+                });
+            },
+            initEvent: function () {
+            },
+            load:function()
+            {
+                user.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                for(var i=0;i<users.length; i++)
+                {
+                    users[i].del='<img src="../../Content/images/delete.jpg"/>';
+                }
+                user.bindData(users);
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    traditional: true,
+                    success: function (d) {
+                        var optionstring = "";
+                        for (var i = 0; i < d.result.length; i++) {
+                            optionstring += "<option value=\"" + d.result[i].PartitionKey + "\">" + d.result[i].RowKey + "</option>";
+                        }
+                        $("#userGroup").html("<option value='Choose'>Choose...</option>" + optionstring);
+                        user.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        user.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                user.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: '',
+                    url: '/Home',
+                    searchAction: '',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No users selected',
+                    rp: 20,
+                    rowProps: [{ name: 'userId', field: 'PartitionKey' }, { name: 'userName', field: 'RowKey' }],
+                    orderBy: '',
+                    usePage: false,
+                    filter: false,
+                    checkbox: false,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'User Name', field: 'RowKey' , width:2 },
+                        { caption: 'User Id', field: 'PartitionKey', width: 2 },
+                        { caption: 'Remove',field:'del',width:1,primary:true }
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var selectedRow = $(this).parent();
+                        var selectedRowIndex=user.grid.vgrid('rowIndex',selectedRow);
+                        users.splice(selectedRowIndex,1);
+                        user.grid.vgrid('destroy');
+                        user.init();
+                        user.bindData(users);
+                    }
+                };
+                return gridSetting;
+            },
+            init: function () {
+                //user.initEvent();
+                user.grid.vgrid(user.getGridSetting());
+            }
+        };
+        $('.assignToGroup').click(function()
+        {
+            var groupId = $("#userGroup").val();
+            for (var i = 0; i < users.length; i++) {
+                //alert("add app!");
+                $.ajax({
+                    type: 'Get',
+                    url: vstorm.getApiServerUrl() + '/api/assignment/addusertogroup?userId=' + users[i].PartitionKey + '&groupId=' + groupId,
+                    success: function (r) {
+                        alert("Add users to group successfully!");
+                    },
+                    error: function (e) {
+                        alert("Add users failed!");
+                    }
+                });
+            };
+        });
+        user.init();
+        user.load();
+        user.createToolbar();
+        window.user = user;
+    });
+</script>
+<div class="user-panel">
+    <div style="margin-left:5px">
+        <h3>@ViewBag.Title</h3>
+    </div>
+    <div style="margin-left:10px;margin-top:20px">
+        <select id="userGroup" style="width:250px;"></select>
+    </div>
+    <div class="user-grid"></div>
+    <div>
+        <img src="../../Content/images/assign.png" class="assignToGroup" />
+    </div>
 </div>
+

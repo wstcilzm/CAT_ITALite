@@ -27,8 +27,9 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
-        public ActionResult AssignUserToGroup()
+        public ActionResult AssignUserToGroup(string users)
         {
+            ViewBag.users = users;
             return View();
         }
 
@@ -41,6 +42,12 @@ namespace CAT.ITALite.Web.Controllers
         public ActionResult AppsGroups(string appId)
         {
             ViewBag.appId = appId;
+            return View();
+        }
+
+        public ActionResult UserDetail(string id)
+        {
+            ViewBag.userID = id;
             return View();
         }
     }
