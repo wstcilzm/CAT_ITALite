@@ -6,7 +6,13 @@
         var userDetail = {
             panel: $('.user-panel'),
             groupGrid: $('.group-grid'),
-            appGrid : $('.app-grid'),
+            appGrid: $('.app-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    userDetail.load();
+                });
+            },
             load: function (){
                 userDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
                 $.ajax({
@@ -15,6 +21,46 @@
                     traditional: true,
                     success: function (d) {
                         userDetail.bindGroupData(d.result);
+                        var groups = "";
+                        for (var i = 0; i < d.result.length; i++) {
+                            var group = d.result[i];
+                            groups += group.UserPrincipleName + "," + group.RowKey + ";";
+                        }
+                        groups = groups.substring(0, groups.length - 1);
+                        $.ajax({
+                            type: "GET",
+                            url: vstorm.getApiServerUrl() + 'api/user/' + groups + '/apps',
+                            traditional: true,
+                            success:function(f)
+                            {
+                                userDetail.bindAppData(f.result);
+                            }
+                        })
+
+                        //var userApps = new Array();
+                        //for (var i = 0; i < d.result.length; i++) {
+                        //    var group = d.result[i];
+                        //    var UserPrincipleName = group.UserPrincipleName;
+                        //    $.ajax({
+                        //        type: "GET",
+                        //        url: vstorm.getApiServerUrl() + '/api/group/' + group.RowKey + '/applications',
+                        //        traditional: true,
+                        //        success: function (tempData) {
+                        //            for (var j = 0; j < tempData.result.length; j++) {
+                        //                var u = tempData.result[j];
+                        //                var app = new Object();
+                        //                app.UserPrincipleName = UserPrincipleName;
+                        //                app.AppName = u.AppName;
+                        //                app.AppID = u.PartitionKey;
+                        //                app.OperationType = u.OperationTypes;
+                        //                app.Groupname = u.GroupName
+                        //                app.GroupID = u.RowKey;
+                        //                userApps.push(app);
+                        //            };
+                        //            userDetail.bindAppData(userApps);
+                        //        }
+                        //    });
+                        //};
                         userDetail.panel.vloading('hide');
                     },
                     error: function (d) {
@@ -22,6 +68,8 @@
                         userDetail.panel.vloading('hide');
                     }
                 });
+                //another Ajax to get user-App Info
+                
             },
             bindGroupData: function (data) {
                 userDetail.groupGrid.vgrid('bindData', data);
@@ -46,8 +94,11 @@
                     scaleWidth: true,
                     columns: [
                         { caption: 'User PrincipleName', field: 'UserPrincipleName', width: 4 },
-                        //{ caption: 'App Name' field:}
-                        { caption: 'Group Name', field: 'GroupName', width: 4 }
+                        { caption: 'App Name', field: 'AppName', width: 4 },
+                        { caption: 'App ID', field: 'PartitionKey', width: 4 },
+                        { caption: 'OperationType', field: 'OperationType', width: 2 },
+                        { caption: 'Group Name', field: 'GroupName', width: 2 },
+                        { caption: 'Group ID', field: 'RowKey', width: 4 }
                     ]
                 };
                 return gridSetting;
@@ -59,7 +110,7 @@
                     searchAction: 'GetApplications',
                     width: layout.contantWidth,
                     height: layout.contantHeight * 1 / 2,
-                    noDataMsg: 'No applications found',
+                    noDataMsg: 'No groups found',
                     rp: 20,
                     //rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, { name: 'displayName', field: 'DisplayName' }],
                     orderBy: 'Homepage',
@@ -86,7 +137,7 @@
         };
         userDetail.init();
         userDetail.load();
-        //userDetail.createToolbar();
+        userDetail.createToolbar();
         window.userDetail = userDetail;
     });
 

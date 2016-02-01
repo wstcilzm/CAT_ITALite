@@ -196,7 +196,27 @@ namespace CAT.ITALite.Common
             var result = _table.ExecuteQuery(query);
             return result;
         }
+        
+        public IEnumerable<UserGroupAppEntity> RetrieveUserGroupApplications(string groupId,string userPrincipleName)
+        {
+            //var query = new TableQuery<UserGroupAppEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, groupId));
+            //IEnumerable<UserGroupAppEntity> result = _table.ExecuteQuery(query);
+            //foreach(UserGroupAppEntity obj in result)
+            //{
+            //    obj.UserPrincipleName = userPrincipleName;
+            //}
+            List<UserGroupAppEntity> list = new List<UserGroupAppEntity>();
+            var query = new TableQuery<AppGroupAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, groupId));
+            IEnumerable<AppGroupAssignmentEntity> result = _table.ExecuteQuery(query);
+            foreach (AppGroupAssignmentEntity obj in result)
+            {
+                UserGroupAppEntity entity = new UserGroupAppEntity(obj);
 
+                entity.UserPrincipleName = userPrincipleName;
+                list.Add(entity);
+            }
+            return list;
+        }
 
         public bool RemoveAppAssignment(string appId,string groupId)
         {

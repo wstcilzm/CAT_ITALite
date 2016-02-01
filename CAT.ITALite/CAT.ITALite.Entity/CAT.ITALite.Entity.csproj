@@ -74,6 +74,7 @@
     <Compile Include="UserEntity.cs" />
     <Compile Include="AppEntity.cs" />
     <Compile Include="GroupEntity.cs" />
+    <Compile Include="UserGroupAppEntity.cs" />
     <Compile Include="UserGroupAssignmentsEntity.cs" />
     <Compile Include="AppGroupAssignmentEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
