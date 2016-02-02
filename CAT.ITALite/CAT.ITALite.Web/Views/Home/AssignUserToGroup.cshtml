@@ -232,6 +232,11 @@
         $('.assignToGroup').click(function()
         {
             var groupId = $("#userGroup").val();
+            if(groupId=='Choose')
+            {
+                alert('Please choose your group');
+                return;
+            }
             for (var i = 0; i < users.length; i++) {
                 //alert("add app!");
                 $.ajax({
