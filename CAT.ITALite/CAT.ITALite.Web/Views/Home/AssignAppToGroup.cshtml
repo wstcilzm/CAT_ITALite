@@ -218,6 +218,11 @@
         $('.assignToGroup').click(function() 
         {
             var groupId = $("#appGroup").val();
+            if(groupId=='Choose')
+            {
+                alert('Please choose your group');
+                return;
+            }
             for (var i = 0; i < apps.length; i++) {
                 //alert("add app!");
                 $.ajax({
