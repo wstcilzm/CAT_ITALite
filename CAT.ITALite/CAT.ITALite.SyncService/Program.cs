@@ -123,9 +123,9 @@ namespace CAT.ITALite.SyncService
             #endregion
 
 
-            RetrieveUsers(activeDirectoryClient);
-            RetrieveGroups(activeDirectoryClient);
-            RetrieveApps(activeDirectoryClient);
+            //RetrieveUsers(activeDirectoryClient);
+            //RetrieveGroups(activeDirectoryClient);
+            //RetrieveApps(activeDirectoryClient);
 
             PortalSimulator();
 

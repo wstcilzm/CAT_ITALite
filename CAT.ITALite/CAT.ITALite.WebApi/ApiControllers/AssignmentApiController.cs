@@ -31,11 +31,19 @@ namespace CAT.ITALite.WebApi.ApiControllers
 
         [HttpGet]
         [Route("addapptogroup")]
-        public async Task<IHttpActionResult> AssignAppToGroupAsync(string appId, string groupId)
+        public async Task<IHttpActionResult> AssignAppToGroupAsync(string appId, string groupId,string appName,string groupName)
         {
+            //var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
+            //var agse = new AppGroupAssignmentEntity(appId.ToString(), groupId.ToString());
+            //var result = operation.InsertEntity(agse);
+            //return CreateSuccessResult(result);
             var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
-            var agse = new AppGroupAssignmentEntity(appId.ToString(), groupId.ToString());
-            var result = operation.InsertEntity(agse);
+            var appGroupAssignment = new AppGroupAssignmentEntity(appId, groupId);
+            appGroupAssignment.AppName = appName;
+            appGroupAssignment.GroupName = groupName;
+            appGroupAssignment.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            appGroupAssignment.OperationTypes = OperationTypes.Read.ToString();
+            var result=operation.InsertEntity(appGroupAssignment);
             return CreateSuccessResult(result);
         }
 

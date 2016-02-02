@@ -138,6 +138,8 @@
 <script type="text/javascript">
     $(function () {
         var apps =@Html.Raw(@ViewBag.apps);
+        var groupInfos;
+        var isRemoving=false;
         var app = {
             panel: $('.app-panel'),
             grid:$('.app-grid'),
@@ -154,7 +156,7 @@
                 app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 for(var i=0;i<apps.length; i++)
                 {
-                    apps[i].del='<img src="../../Content/images/delete.jpg"/>';
+                    apps[i].del='<a href="#" onclick="app.verifyRemove('+i+');return false;">remove</a>';
                 }
                 app.bindData(apps);
                 $.ajax({
@@ -174,6 +176,41 @@
                         app.panel.vloading('hide');
                     }
                 });
+            },
+            verifyRemove: function(index)
+            {
+                //ev.stopPropagation();
+                if(isRemoving==true)
+                {
+                    return;
+                }
+                isRemoving=true;
+                apps[index].del='<a href="#" onclick="app.yRemove('+index+');return false;">yes</a> &nbsp; <a href="#" onclick="app.nRemove('+index+');return false;">no</a>';
+                app.grid.vgrid('destroy');
+                app.init();
+                app.bindData(apps);
+            },
+            yRemove: function(index)
+            {
+                //ev.stopPropagation();
+                apps.splice(index,1);
+                for(var i=0;i<apps.length; i++)
+                {
+                    apps[i].del='<a href="#" onclick="app.verifyRemove('+i+');return false;">remove</a>';
+                }
+                app.grid.vgrid('destroy');
+                app.init();
+                app.bindData(apps); 
+                isRemoving=false;
+            },
+            nRemove:function(index)
+            {
+                //ev.stopPropagation();
+                apps[index].del='<a href="#" onclick="app.verifyRemove('+index+');return false;">remove</a>';
+                app.grid.vgrid('destroy');
+                app.init();
+                app.bindData(apps);
+                isRemoving=false;
             },
             bindData: function (data) {
                 app.grid.vgrid('bindData', data);
@@ -196,17 +233,17 @@
                     columns: [
                         { caption: 'App Name', field: 'RowKey' , width:2 },
                         { caption: 'App Id', field: 'PartitionKey', width: 2 },
-                        { caption: 'Remove',field:'del',width:1,primary:true }
-                    ],
-                    primaryColumnClick: function (ev) {
-                        ev.stopPropagation();
-                        var selectedRow = $(this).parent();
-                        var selectedRowIndex=app.grid.vgrid('rowIndex',selectedRow);
-                        apps.splice(selectedRowIndex,1);
-                        app.grid.vgrid('destroy');
-                        app.init();
-                        app.bindData(apps);
-                    }
+                        { caption: '',field:'del',width:1}
+                    ]
+                    //primaryColumnClick: function (ev) {
+                    //    ev.stopPropagation();
+                    //    var selectedRow = $(this).parent();
+                    //    var selectedRowIndex=app.grid.vgrid('rowIndex',selectedRow);
+                    //    apps.splice(selectedRowIndex,1);
+                    //    app.grid.vgrid('destroy');
+                    //    app.init();
+                    //    app.bindData(apps);
+                    //}
                 };
                 return gridSetting;
             },
@@ -227,7 +264,7 @@
                 //alert("add app!");
                 $.ajax({
                     type: 'Get',
-                    url: vstorm.getApiServerUrl() + '/api/assignment/addapptogroup?appId=' + apps[i].PartitionKey + '&groupId=' + groupId,
+                    url: vstorm.getApiServerUrl() + '/api/assignment/addapptogroup?appId=' + apps[i].PartitionKey +'&appName='+apps[i].RowKey+ '&groupId=' + $("#appGroup").val()+'&groupName='+ $("#appGroup").find("option:selected").text(),
                     success: function (r) {
                         alert("Add apps to group successfully!");
                     },
@@ -236,6 +273,8 @@
                     }
                 });
             }; 
+            //history.back(-1);
+            window.location = '../../Home/Application';
         });
         app.init();
         app.load();
@@ -247,12 +286,13 @@
     <div style="margin-left:5px">
         <h3>@ViewBag.Title</h3>
     </div>
-    <div style="margin-left:10px;margin-top:20px">
+    <div style="margin-left:5px;margin-top:20px">
             <select id="appGroup" style="width:250px;">
             </select>
     </div>
-    <div class="app-grid"></div>
+    <div class="app-grid" style="margin-left:5px"></div>
     <div>
         <img src="../../Content/images/assign.png" class="assignToGroup" /> 
+        @*<a href=""  onclick="">submit</a>*@
     </div>
 </div>
