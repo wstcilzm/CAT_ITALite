@@ -41,10 +41,13 @@ namespace CAT.ITALite.WebApi.ApiControllers
 
         [HttpGet]
         [Route("addusertogroup")]
-        public async Task<IHttpActionResult> AssignUserToGroupAsync(string userId, string groupId)
+        public async Task<IHttpActionResult> AssignUserToGroupAsync(string userId, string groupId,string groupName)
         {
             var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
             var ugae = new UserGroupAssignmentsEntity(userId, groupId);
+            ugae.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";
+            ugae.GroupName = groupName;
+            ugae.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
             var result = operation.InsertEntity(ugae);
             var resultUser = operation.RetrieveUserByUserId(userId);
             return CreateSuccessResult(resultUser);
