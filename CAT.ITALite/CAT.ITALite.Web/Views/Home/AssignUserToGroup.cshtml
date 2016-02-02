@@ -232,6 +232,7 @@
         $('.assignToGroup').click(function()
         {
             var groupId = $("#userGroup").val();
+            var groupName=$("#userGroup option:selected").text();
             if(groupId=='Choose')
             {
                 alert('Please choose your group');
@@ -241,7 +242,7 @@
                 //alert("add app!");
                 $.ajax({
                     type: 'Get',
-                    url: vstorm.getApiServerUrl() + '/api/assignment/addusertogroup?userId=' + users[i].PartitionKey + '&groupId=' + groupId,
+                    url: vstorm.getApiServerUrl() + '/api/assignment/addusertogroup?userId=' + users[i].PartitionKey + '&groupId=' + groupId + '&groupName='+groupName,
                     success: function (r) {
                         alert("Add users to group successfully!");
                     },
