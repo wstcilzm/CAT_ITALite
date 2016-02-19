@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Users";
+    ViewBag.Title = "User";
 }
 <script type="text/javascript">
     $(function () {
@@ -11,7 +11,7 @@
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
                     user.load();
                 });
-                t.add('AssignToGroup', 'AssignToGroup', 'toolbar-showall', function () {
+                t.add('AssignToGroup', 'AssignToGroup', 'toolbar-longword', function () {
                     var arra = [];
                     var selectedRows = user.grid.vgrid('selectedRows');
                     selectedRows.each(function () {
@@ -19,6 +19,35 @@
                     });
                     window.location = "../Home/AssignUserToGroup?users=" + JSON.stringify(arra);
                 });
+                
+                t.add('AddUser', 'AddUser', 'toolbar-add', function () {
+                    //$(document).mask().click(function(){$(document).unmask()});
+                    $('.assign-group-wizard').load('../Home/AddUser');
+                });
+
+                t.add('DelUser', 'DelUser', 'toolbar-delete', function () {
+                    var selectedRows = user.grid.vgrid('selectedRows');
+                    if (selectedRows.length < 1)
+                    {
+                        alert('Please Choose the User you want Delete!');
+                        return;
+                    }
+                    deleteUser();
+                });
+                
+                function deleteUser()
+                {
+                    layout.confirm('Remove this user?', yesToDeleteUser, null);
+                }
+
+                function yesToDeleteUser() {
+                    //var arra = [];
+                    //var selectedRows = user.grid.vgrid('selectedRows');
+                    //selectedRows.each(function () {
+                    //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
+                    //});
+                    alert('delete users done!');
+                };
             },
             load: function () {
                 user.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
@@ -111,6 +140,9 @@
                 } else {
                     layout.action.error(actionId, actionMsgTemplate.error.format(tr.attr('userid')), data.Message);
                 }
+            },
+            unShowMask: function () {
+                $('#mask').hide();
             }
         };
 
@@ -120,6 +152,7 @@
         window.user = user;
     });
 </script>
+
 <style>
     #tb-detail {
         text-align: left;
@@ -133,6 +166,19 @@
             align-content: center;
             width: 300px;
         }
+
+    .mask {
+        background-color: #777;
+        filter: alpha(opacity=60);
+        opacity: 0.5;
+        display: none;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+    }
 </style>
 <div class="user-panel">
     <div class="user-grid"></div>

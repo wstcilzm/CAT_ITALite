@@ -945,7 +945,7 @@ tr.pager td {
             .vshell .eyebow-small .user .summary {
                 background-color: #3C454F;
                 padding-left: 30px;
-                padding-right: 10px;
+                padding-right: 40px;
             }
 
                 .vshell .eyebow-small .user .summary:hover {
@@ -1319,7 +1319,7 @@ confirmbar-item:hover {
         .command-title .tools button {
             font-size: 9px;
             padding-top: 25px;
-            background-repeat: no-repeat;
+            background-repeat:no-repeat;
             min-width: 60px;
         }
 
@@ -1487,6 +1487,16 @@ confirmbar-item:hover {
             .command-title .tools button.toolbar-showall {
                 background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
                 background-position: -242px -2305px;
+            }
+
+            .command-title .tools button.toolbar-longword {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -226px -2305px;
+            }
+
+            .command-title .tools button.toolbar-middlongword {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -233px -2305px;
             }
 
     .command-title #command-subtoolbar {

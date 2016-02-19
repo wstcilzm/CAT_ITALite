@@ -1,0 +1,115 @@
+﻿@{
+    ViewBag.Title = "Role";
+}
+
+<style type="text/css">
+    a{
+text-decoration:none;
+}
+</style>
+
+<script type="text/javascript">
+    $(function () {
+        var role = {
+            panel: $('.role-panel'),
+            grid: $('.role-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    role.load();
+                });
+            },
+            initEvent: function () {
+            },
+            load: function () {
+                role.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/role/list',
+                    traditional: true,
+                    success: function (d) {
+                        role.bindData(d.result);
+                        role.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        role.panel.vloading('hide');
+                    }
+                });
+            },
+            
+            bindData: function (data) {
+                role.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: '',
+                    url: '/Home',
+                    searchAction: 'GetRoles',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No AdminRoles found',
+                    rp: 20,
+                    rowProps: [{ name: 'roleName', field: 'RowKey' },{name:'roleId',field:'PartitionKey'}],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Role Name', field: 'RowKey', width: 2, primary: true },
+                        { caption: 'Role Id', field: 'PartitionKey', width: 3 },
+                        { caption: 'Description', field: 'Description', width: 4 },
+                        { caption: 'IsSystem', field: 'IsSystem', width: 1 },
+                        { caption: 'RoleDisabled', field: 'RoleDisabled', width: 1 }
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var selectedRow = $(this).parent();
+                        window.location = "../../Home/RolesUsers?roleId=" + selectedRow.attr('roleId');
+                    }
+                };
+                return gridSetting;
+            },
+            
+            init: function () {
+                role.initEvent();
+                role.grid.vgrid(role.getGridSetting());
+            }
+        };
+        role.init();
+        role.load();
+        role.createToolbar();
+        window.role = role;
+        
+    });
+
+    
+</script>
+
+    <ul id="roleTab" class="nav nav-tabs" style="margin-top:10px;font-size:large">
+        <li class="active"><a href="#adminRole" data-toggle="tab">AAD AdminRole</a></li>
+        <li><a href="#rbacRole" data-toggle="tab">RBAC Role</a></li>
+    </ul>
+<div id="roleTabContent" class="tab-content">
+   
+        <div class="tab-pane active role-panel" id="adminRole">
+            
+                <div class="role-grid"></div>
+            
+        </div>
+        <div class="tab-pane" id="rbacRole">
+            <div></div>
+        </div>
+   
+</div>
+
+<script>
+   $(function () {
+       $('#roleTab a').click(function (e) {
+           e.preventDefault()
+           $(this).tab('show')
+       })
+      
+   });
+</script>

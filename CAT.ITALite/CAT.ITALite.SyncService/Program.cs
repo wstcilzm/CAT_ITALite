@@ -21,7 +21,10 @@ namespace CAT.ITALite.SyncService
         public static TableDal appTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AADApps);
         public static TableDal groupTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AADGroups);
         public static TableDal aadTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AADInfo);
-
+        public static TableDal adminRoleTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AADAdminRoles);
+        public static TableDal userGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
+        public static TableDal appGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
+        public static TableDal userAdminRoleAssignmentOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserAdminRoleAssignments);
 
         static void Main(string[] args)
         {
@@ -124,10 +127,12 @@ namespace CAT.ITALite.SyncService
 
 
             //RetrieveUsers(activeDirectoryClient);
+            //ParseUserMembership();
             //RetrieveGroups(activeDirectoryClient);
             //RetrieveApps(activeDirectoryClient);
+            //RetrieveAdminRoles(activeDirectoryClient);
 
-            PortalSimulator();
+            //PortalSimulator();
 
 
             InvokingITA testITACore = new InvokingITA();
@@ -139,9 +144,12 @@ namespace CAT.ITALite.SyncService
 
         }
 
+
+        public static List<IUser> AllUsers = new List<IUser>();
         static void RetrieveUsers(ActiveDirectoryClient activeDirectoryClient)
         {
 
+            AllUsers.Clear();
             IUserCollection userCollection = activeDirectoryClient.Users;
 
             IPagedCollection<IUser> searchResults = activeDirectoryClient.Users.OrderBy(user => user.DisplayName).ExecuteAsync().Result;
@@ -153,6 +161,7 @@ namespace CAT.ITALite.SyncService
                 int count = 1;
                 do
                 {
+                    AllUsers.AddRange(usersList);
                     Console.WriteLine("===={0}===", count++);
                     usersList = searchResults.CurrentPage.ToList();
                     newUserList = usersList;
@@ -294,11 +303,89 @@ namespace CAT.ITALite.SyncService
             Console.WriteLine();
         }
 
+        static void RetrieveAdminRoles(ActiveDirectoryClient activeDirectoryClient)
+        {
+            //*********************************************************************
+            // Get All Roles
+            //*********************************************************************
+            List<IDirectoryRole> foundRoles = null;
+            try
+            {
+                foundRoles = activeDirectoryClient.DirectoryRoles.ExecuteAsync().Result.CurrentPage.ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nError getting Roles {0} {1}", e.Message,
+                    e.InnerException != null ? e.InnerException.Message : "");
+            }
+
+            if (foundRoles != null && foundRoles.Count > 0)
+            {
+                foreach (IDirectoryRole role in foundRoles)
+                {
+                    Console.WriteLine("\n Found Role: {0} {1} {2} ", role.DisplayName, role.Description, role.ObjectId);
+
+                    var newAdminRole = new AdminRoleEntity(role.ObjectId, role.DisplayName);
+                    newAdminRole.Description = role.Description;
+                    newAdminRole.IsSystem = (bool)role.IsSystem;
+                    newAdminRole.RoleDisabled = (bool)role.RoleDisabled;
+                    //newAdminRole.MembersCount = role.Members.CurrentPage.Count;
+                    adminRoleTableOper.InsertEntity(newAdminRole);
+                }
+            }
+
+        }
+
+        static void ParseUserMembership()
+        {
+            //*********************************************************************
+            // get the User's Group and Role membership, getting the complete set of objects
+            //*********************************************************************
+            foreach (IUser retrievedUser in AllUsers)
+            {
+                
+                IUserFetcher retrievedUserFetcher = (User)retrievedUser;
+                try
+                {
+                    IPagedCollection<IDirectoryObject> pagedCollection = retrievedUserFetcher.MemberOf.ExecuteAsync().Result;
+                    do
+                    {
+                        //Console.WriteLine("\n {0} is a member of the following Group and Roles (IDs)", retrievedUser.DisplayName);
+                        List<IDirectoryObject> directoryObjects = pagedCollection.CurrentPage.ToList();
+                        foreach (IDirectoryObject directoryObject in directoryObjects)
+                        {
+                            if (directoryObject is Group)
+                            {
+                                Group group = directoryObject as Group;
+                                var userGroupAssignment = new UserGroupAssignmentsEntity(retrievedUser.ObjectId, group.ObjectId);
+                                userGroupAssignment.UserPrincipleName = retrievedUser.UserPrincipalName;
+                                userGroupAssignment.GroupName = group.DisplayName;
+                                userGroupAssignmentOperation.InsertEntity(userGroupAssignment);
+
+                            }
+                            if (directoryObject is DirectoryRole)
+                            {
+                                DirectoryRole role = directoryObject as DirectoryRole;
+                                var userAdminRoleAssignment = new UserAdminRoleAssignmentEntity(retrievedUser.ObjectId, role.ObjectId);
+                                userAdminRoleAssignment.UserPrincipleName = retrievedUser.UserPrincipalName;
+                                userAdminRoleAssignment.AdminRoleName = role.DisplayName;
+                                userAdminRoleAssignmentOper.InsertEntity(userAdminRoleAssignment);
+                            }
+                        }
+                        pagedCollection = pagedCollection.GetNextPageAsync().Result;
+                    } while (pagedCollection != null);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("\nError getting user's groups and roles memberships. {0} {1}", e.Message, e.InnerException != null ? e.InnerException.Message : "");
+                }
+            }
+        }
+
+
 
         public static void PortalSimulator()
         {
-            TableDal userGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
-            TableDal appGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
 
             var userGroupAssignment = new UserGroupAssignmentsEntity("8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "f8541113-c54b-4eab-af59-77b0eeef3617");
             userGroupAssignment.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";

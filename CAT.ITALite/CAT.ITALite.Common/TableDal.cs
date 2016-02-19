@@ -113,6 +113,23 @@ namespace CAT.ITALite.Common
 
         #endregion
 
+        #region AdminRole
+        public bool InsertEntity(AdminRoleEntity adminRole)
+        {
+            var operation = TableOperation.InsertOrReplace(adminRole);
+            _table.Execute(operation);
+            return true;
+        }
+        
+        public IEnumerable<AdminRoleEntity> RetrieveAdminRoles()
+        {
+            var query = new TableQuery<AdminRoleEntity>();
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
+
+        #endregion
+
         #region UserGroupAssignment
 
         public bool InsertEntity(UserGroupAssignmentsEntity assignment)
@@ -237,5 +254,23 @@ namespace CAT.ITALite.Common
         }
 
         #endregion
+
+        #region UserAdminRoleAssignment
+
+        public bool InsertEntity(UserAdminRoleAssignmentEntity assignment)
+        {
+            var operation = TableOperation.InsertOrReplace(assignment);
+            _table.Execute(operation);
+            return true;
+        }
+
+        public IEnumerable<UserAdminRoleAssignmentEntity> RetrieveUsersByRoleId(string roleId)
+        {
+            var query = new TableQuery<UserAdminRoleAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, roleId));
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
+        #endregion
+
     }
 }

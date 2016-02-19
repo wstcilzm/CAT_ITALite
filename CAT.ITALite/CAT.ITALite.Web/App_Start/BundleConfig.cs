@@ -25,6 +25,7 @@ namespace CAT.ITALite.Web
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/js").Include(
+                        "~/Scripts/bootstrap.min.js",
                         "~/Scripts/menu.js",
                         "~/Scripts/vutils.js",
                         "~/Scripts/vextends.js",
@@ -48,6 +49,7 @@ namespace CAT.ITALite.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         //"~/Content/christmas.css",
+                        "~/Content/bootstrap.min.css",
                         "~/Content/site.css",
                         "~/Content/vdropdown.css",
                         "~/Content/vlinechart.css",

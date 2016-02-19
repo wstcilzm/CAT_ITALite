@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "RolesUsers";
+}
+
+<script type="text/javascript">
+    $(function () {
+        var user = {
+            panel: $('.user-panel'),
+            rolesUser: $('.role-user'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    user.load();
+                });
+            },
+            initEvent: function () {
+            },
+            load:function()
+            {
+                user.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/role/' + '@ViewBag.roleId' + '/users',
+                    traditional: true,
+                    success: function (d) {
+                        user.bindData(d.result);
+                        user.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        user.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                user.rolesUser.vgrid('bindData', data);
+            },
+            rolesUserSetting: function () {
+                var userGridSetting = {
+                    caption: 'Role_Users',
+                    url: '/Home',
+                    searchAction: 'GetRolesUsers',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No Users found',
+                    rp: 20,
+                    rowProps: [{ name: 'userId', field: 'PartitionKey' }, { name: 'roleId', field: 'RowKey' }],
+                    orderBy: '',
+                    usePage: false,
+                    filter: false,
+                    checkbox: false,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'UserPrinciple Name', field: 'UserPrincipleName' , width:3 ,primary:true},
+                        { caption: 'AdminRole Name', field: 'AdminRoleName', width: 2 },
+                        { caption: 'User Id', field: 'PartitionKey', width: 2 },
+                        { caption: 'AdminRole Id', field: 'RowKey', width: 2 },
+                    ]
+                };
+                return userGridSetting;
+            },
+            init: function () {
+                user.initEvent();
+                user.rolesUser.vgrid(user.rolesUserSetting());
+            }
+        };
+        user.init();
+        user.load();
+        user.createToolbar();
+        window.roleUsers = user;
+    });
+</script>
+<div class="user-panel">
+    <div class="role-user" style="padding-left:10px"></div>
+</div>
+
+

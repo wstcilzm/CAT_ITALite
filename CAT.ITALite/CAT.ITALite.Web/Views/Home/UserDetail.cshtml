@@ -3,7 +3,11 @@
 }
 <script type="text/javascript">
     $(function () {
+        var isRemoving = false;
         var userDetail = {
+            groupid :null,
+            groupname :null,
+            userid : null,
             panel: $('.user-panel'),
             groupGrid: $('.group-grid'),
             appGrid: $('.app-grid'),
@@ -13,54 +17,35 @@
                     userDetail.load();
                 });
             },
-            load: function (){
+            load: function () {
                 userDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
                     url: vstorm.getApiServerUrl() + '/api/user/{userId}/groups?userId='+'@ViewBag.userID',
                     traditional: true,
                     success: function (d) {
-                        userDetail.bindGroupData(d.result);
                         var groups = "";
+                        window.userGroups = d.result;
                         for (var i = 0; i < d.result.length; i++) {
                             var group = d.result[i];
+                            group.del = '<a href="#" onclick="userDetail.verifyRemove(' + i + ');return false;">remove</a>';
+                            group.GroupLevel = 1;
                             groups += group.UserPrincipleName + "," + group.RowKey + ";";
                         }
-                        groups = groups.substring(0, groups.length - 1);
-                        $.ajax({
-                            type: "GET",
-                            url: vstorm.getApiServerUrl() + 'api/user/' + groups + '/apps',
-                            traditional: true,
-                            success:function(f)
-                            {
-                                userDetail.bindAppData(f.result);
-                            }
-                        })
-
-                        //var userApps = new Array();
-                        //for (var i = 0; i < d.result.length; i++) {
-                        //    var group = d.result[i];
-                        //    var UserPrincipleName = group.UserPrincipleName;
-                        //    $.ajax({
-                        //        type: "GET",
-                        //        url: vstorm.getApiServerUrl() + '/api/group/' + group.RowKey + '/applications',
-                        //        traditional: true,
-                        //        success: function (tempData) {
-                        //            for (var j = 0; j < tempData.result.length; j++) {
-                        //                var u = tempData.result[j];
-                        //                var app = new Object();
-                        //                app.UserPrincipleName = UserPrincipleName;
-                        //                app.AppName = u.AppName;
-                        //                app.AppID = u.PartitionKey;
-                        //                app.OperationType = u.OperationTypes;
-                        //                app.Groupname = u.GroupName
-                        //                app.GroupID = u.RowKey;
-                        //                userApps.push(app);
-                        //            };
-                        //            userDetail.bindAppData(userApps);
-                        //        }
-                        //    });
-                        //};
+                        userDetail.bindGroupData(d.result);
+                        if (d.result.length > 0) {
+                            groups = groups.substring(0, groups.length - 1);
+                            $.ajax({
+                                type: "GET",
+                                url: vstorm.getApiServerUrl() + 'api/user/' + groups + '/apps',
+                                traditional: true,
+                                success: function (f) {
+                                    userDetail.bindAppData(f.result);
+                                }
+                            })
+                        }
+                        else
+                            userDetail.bindAppData(d.result);
                         userDetail.panel.vloading('hide');
                     },
                     error: function (d) {
@@ -68,14 +53,62 @@
                         userDetail.panel.vloading('hide');
                     }
                 });
-                //another Ajax to get user-App Info
-                
             },
             bindGroupData: function (data) {
                 userDetail.groupGrid.vgrid('bindData', data);
             },
             bindAppData: function(data){
                 userDetail.appGrid.vgrid('bindData',data);
+            },
+            yesToRemove: function()
+            {
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + 'api/assignment/removeuserfromgroup?userId='+userid+'&groupId='+groupid,
+                    traditional: true,
+                    success: function () {
+                        userDetail.load();
+                    }
+                })
+            },
+            remove: function (index) {
+                groupid = userGroups[index].RowKey;
+                groupname = userGroups[index].GroupName;
+                userid = userGroups[index].PartitionKey;
+                layout.confirm('Remove User From '+groupname+'?', userDetail.yesToRemove, null);
+            },
+            verifyRemove: function (index) {
+                if (isRemoving == true) {
+                    return;
+                }
+                isRemoving = true;
+                //groupid = userGroups[index].RowKey;
+                //groupname = userGroups[index].GroupName;
+                //userid = userGroups[index].PartitionKey;
+                userGroups[index].del = '<a href="#" onclick="userDetail.yRemove(' + index + ');return false;">yes</a> &nbsp; <a href="#" onclick="userDetail.nRemove(' + index + ');return false;">no</a>';
+                userDetail.groupGrid.vgrid('destroy');
+                userDetail.init();
+                userDetail.bindGroupData(userGroups);
+            },
+            yRemove: function (index) {
+                userDetail.groupGrid.vgrid('destroy');
+                userDetail.appGrid.vgrid('destroy');
+                userDetail.init();
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + 'api/assignment/removeuserfromgroup?userId=' + userGroups[index].PartitionKey + '&groupId=' + userGroups[index].RowKey,
+                    traditional: true,
+                    success: function () {
+                        userDetail.load();
+                    }
+                })
+            },
+            nRemove: function (index) {
+                userGroups[index].del = '<a href="#" onclick="userDetail.verifyRemove(' + index + ');return false;">remove</a>';
+                userDetail.groupGrid.vgrid('destroy');
+                userDetail.init();
+                userDetail.bindGroupData(users);
+                isRemoving = false;
             },
             getAppGridSetting: function () {
                 var gridSetting = {
@@ -122,7 +155,9 @@
                         { caption: 'User PrincipleName',field:'UserPrincipleName',width:4},
                         { caption: 'Group Name', field: 'GroupName', width: 2 },
                         { caption: 'Group ID', field: 'RowKey',width:4},
-                        { caption: 'Updated By', field: 'UpdatedBy', width: 2 }
+                        { caption: 'Updated By', field: 'UpdatedBy', width: 2 },
+                        { caption: 'Group Level', field: 'GroupLevel', width: 2 },
+                        { caption: 'Remove', field: 'del', width: 2 }
                     ]
                 };
                 return gridSetting;

@@ -8,7 +8,7 @@ namespace CAT.ITALite.Web.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-
+            //comments
             return View();
         }
 
@@ -23,6 +23,21 @@ namespace CAT.ITALite.Web.Controllers
         }
 
         public ActionResult User()
+        {
+            return View();
+        }
+
+        public ActionResult AddUser()
+        {
+            return View();
+        }
+
+        public ActionResult AddGroup()
+        {
+            return View();
+        }
+
+        public ActionResult Role()
         {
             return View();
         }
@@ -48,6 +63,12 @@ namespace CAT.ITALite.Web.Controllers
         public ActionResult UserDetail(string id)
         {
             ViewBag.userID = id;
+            return View();
+        }
+
+        public ActionResult RolesUsers(string roleId)
+        {
+            ViewBag.roleId = roleId;
             return View();
         }
     }

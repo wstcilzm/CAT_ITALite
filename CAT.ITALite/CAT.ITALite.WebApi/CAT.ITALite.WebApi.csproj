@@ -219,6 +219,7 @@
     <Compile Include="ApiControllers\AADApiController.cs" />
     <Compile Include="ApiControllers\ApiControllerBase.cs" />
     <Compile Include="ApiControllers\AssignmentApiController.cs" />
+    <Compile Include="ApiControllers\RoleApiController.cs" />
     <Compile Include="ApiControllers\UserApiController.cs" />
     <Compile Include="ApiControllers\GroupApiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -338,6 +339,7 @@
     <Folder Include="Views\AADApi\" />
     <Folder Include="Views\Application\" />
     <Folder Include="Views\ITAAuthen\" />
+    <Folder Include="Views\RoleApi\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

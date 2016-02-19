@@ -7,6 +7,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using CAT.ITALite.Common;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using System.Threading;
+using System.Net;
 
 namespace testClientConsole
 {
@@ -14,7 +17,9 @@ namespace testClientConsole
     {
         static void Main(string[] args)
         {
-            callRESTAPI();
+            callChinaAzureREST();
+
+            //callRESTAPI();
             Console.Read();
         }
 
@@ -42,5 +47,124 @@ namespace testClientConsole
                 AuthData outputData = JsonConvert.DeserializeObject<AuthData>(result);
             }
         }
+
+        static void callChinaAzureREST()
+        {
+            CallServiceManagementApi();
+        }
+
+
+        private static string GetAuthorizationHeader()
+        {
+            AuthenticationResult result = null;
+
+            var context = new AuthenticationContext("https://login.chinacloudapi.cn/82a8b6cc-3dcc-4661-8efb-d4e3ff10d28e");
+
+            var thread = new Thread(() =>
+            {
+                result = context.AcquireToken(
+                  "https://management.core.chinacloudapi.cn/",
+                  "6f173395-839b-4139-a41d-6a566cf847a9",
+                  new Uri("http://localhost/11"));
+            });
+
+
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Name = "AquireTokenThread";
+            thread.Start();
+            thread.Join();
+
+            if (result == null)
+            {
+                throw new InvalidOperationException("Failed to obtain the JWT token");
+            }
+
+            string token = result.AccessToken;
+            return token;
+        }
+
+        public static string GetAuthorizationHeader2()
+        {
+            //
+            string _aadTenantDomain = "cciccat.partner.onmschina.cn";
+            _aadTenantDomain = "cciccat.com";
+            string _aadClientId = "9adbfe5e-2252-4d26-a3ad-68bbd1e25963"; 
+
+            AuthenticationResult result = null;
+            var context = new AuthenticationContext("https://login.chinacloudapi.cn/" + _aadTenantDomain);
+
+
+
+            // If you wanted to show a credential dialog, do this: 
+            //result = context.AcquireToken( 
+            //    "https://management.core.windows.net/", 
+            //    _aadClientId, 
+            //      new Uri("http://localhost"), PromptBehavior.Auto);
+
+            // Directly specify the username and password. 
+            var credential = new UserCredential(
+                "jianw@cciccat.com",
+                "microsoft@123");
+            result = context.AcquireToken(
+                "https://management.core.chinacloudapi.cn/",
+                _aadClientId,
+                    credential);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Failed to obtain the JWT token");
+            }
+
+            string token = result.AccessToken;
+            return token; 
+
+        }
+
+        private static async Task CallServiceManagementApi()
+        {
+            string _subscriptionId = "03042fd8-7b09-4c73-9217-0dcea66ede69";
+            var client = new HttpClient();
+            var header = GetAuthorizationHeader2();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+            client.DefaultRequestHeaders.Add("x-ms-version", "2009-10-01");
+
+            try
+            {
+                var result = await
+                    client.GetStringAsync(
+                        String.Format(
+                            "https://management.core.chinacloudapi.cn/{0}/services/hostedservices",
+                            _subscriptionId));
+                Console.WriteLine(result);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        public static async Task CallAzureResourceManagerApi()
+        {
+            string _subscriptionId = "03042fd8-7b09-4c73-9217-0dcea66ede69";
+            var client = new HttpClient();
+            var header = GetAuthorizationHeader();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var result = await
+                client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/resourcegroups?api-version=2014-04-01-preview",
+                        _subscriptionId));
+                Console.WriteLine(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
     }
 }

@@ -23,4 +23,19 @@ namespace CAT.ITALite.Entity
         public string GroupName { set; get; }
         public string UpdatedBy { set; get; }
     }
+
+    public class UserAdminRoleAssignmentEntity : TableEntity
+    {
+        public UserAdminRoleAssignmentEntity()
+        { }
+
+        public UserAdminRoleAssignmentEntity(string userObjectId, string adminRoleObejectId)
+        {
+            this.PartitionKey = userObjectId;
+            this.RowKey = adminRoleObejectId;
+        }
+
+        public string UserPrincipleName { set; get; }
+        public string AdminRoleName { set; get; }
+    }
 }

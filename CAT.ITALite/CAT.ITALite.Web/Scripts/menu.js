@@ -18,5 +18,11 @@
         "caption": "User",
         "url": "/Home/User",
         "icon": "local-vm"
+    },
+    {
+        "caption": "Role",
+        "url": "/Home/Role",
+        "icon":"local-vm"
     }
+
 ]

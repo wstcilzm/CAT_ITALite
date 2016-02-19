@@ -23,4 +23,21 @@ namespace CAT.ITALite.Entity
         public bool SecurityEnabled { get; set; }
         public string OriginatedFrom { get; set; }
     }
+
+    public class AdminRoleEntity : TableEntity
+    {
+        public AdminRoleEntity()
+        { }
+
+        public AdminRoleEntity(string objectId, string roleName)
+        {
+            this.PartitionKey = objectId;
+            this.RowKey = roleName;
+        }
+
+        public string Description { get; set; }
+        public bool IsSystem { get; set; }
+        public bool RoleDisabled { get; set; }
+        //public int MembersCount { get; set; }
+    }
 }
