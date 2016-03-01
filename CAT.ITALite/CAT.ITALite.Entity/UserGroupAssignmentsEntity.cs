@@ -38,4 +38,28 @@ namespace CAT.ITALite.Entity
         public string UserPrincipleName { set; get; }
         public string AdminRoleName { set; get; }
     }
+
+    public class UserRBACRoleAssignmentEntity : TableEntity
+    {
+        public UserRBACRoleAssignmentEntity() { }
+
+        public UserRBACRoleAssignmentEntity(string userObjectId, string rbacRoleBackendName)
+        {
+            this.PartitionKey = userObjectId;
+            this.RowKey = rbacRoleBackendName;
+        }
+
+        public string RoleDefinitionId { set; get; }
+        public string Scope { set; get; }
+        public string CreatedOn { get; set; }
+        public string UpdatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
+        public string AssignmentID { get; set; }
+        public string Type { set; get; }
+        public string AssignmentName { set; get; }
+
+
+    }
+
 }

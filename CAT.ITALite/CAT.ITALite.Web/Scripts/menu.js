@@ -5,24 +5,34 @@
         "icon": "home"
     },
     {
-        "caption": "Application",
+        "caption": "AAD Apps",
         "url": "/Home/Application",
         "icon": "local-vm"
     },
     {
-        "caption": "Group",
+        "caption": "AAD Groups",
         "url": "/Home/Group",
-        "icon": "local-vm"
+        "icon": "group"
     },
     {
-        "caption": "User",
+        "caption": "AAD Users",
         "url": "/Home/User",
-        "icon": "local-vm"
+        "icon": "user"
     },
     {
-        "caption": "Role",
+        "caption": "Roles",
         "url": "/Home/Role",
         "icon":"local-vm"
+    },
+    {
+        "caption": "ARM Resources",
+        "url": "/Home/ResourceGroups",
+        "icon": "group"
+    },
+    {
+        "caption": "Setting",
+        "url": "/Home/Setting",
+        "icon": "setting"
     }
 
 ]

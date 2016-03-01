@@ -397,76 +397,63 @@
                     disableDescription: 'This feature is not enable, please contact group admin to enable it on Administrator page Feature tab',
                     menus: [
                         {
-                            feature: 'Local VM',
-                            text: 'Hyper-V VM',
+                            feature: 'AAD Apps',
+                            text: 'AAD APP',
                             css: 'item-hyperv-vm',
-                            description: 'Create virtual machines running on Lab Windows Hyper-V Servers.',
+                            description: 'Create an AAD APP.',
                             menus: [{
                                 text: 'Custom Create', css: 'item-customcreate',
-                                description: 'Create virtual machine follow a wizard.',
+                                description: 'Create an AAD APP follow a wizard.',
                                 handler: function () {
                                     popupCreationView('../../VM/CreateHyperVVM');
                                 }
                             },
                                 {
                                     text: 'Quick Create', css: 'item-quickcreate',
-                                    description: 'Quick create virtual machine.',
+                                    description: 'Quick create an AAD APP.',
                                     url: '../../VM/QuickCreateHyperVVM',
                                 }
                             ]
                         },
                         {
-                            feature: 'Azure VM',
-                            text: 'Azure VM',
-                            css: 'item-azure-vm',
-                            description: 'Upload virtual machine images to Windows Azure.',
+                            feature: 'AAD Groups',
+                            text: 'AAD GROUP',
+                            css: 'item-hyperv-vm',
+                            description: 'Create an AAD GROUP.',
                             menus: [{
-                                text: 'Azure VHD Upload', css: 'item-azurevhdupload',
-                                description: 'Create Azure virtual machine follow a wizard.',
+                                text: 'Custom Create', css: 'item-customcreate',
+                                description: 'Create an AAD GROUP follow a wizard.',
                                 handler: function () {
-                                    popupCreationView('../../AzureVM/Create');
+                                    popupCreationView('../Home/AddGroup');
                                 }
                             },
-                               {
-                                   text: 'Azure VM Creation', css: 'item-azurevmcreate',
-                                   description: 'Create virtual machine on Azure.',
-                                   handler: function () {
-                                       popupCreationView('../../AzureVM/AzureVMCreation');
-                                   }
-                               },
-                               {
-                                   text: 'Azure Template Creation', css: 'item-azurevmcreate',
-                                   description: 'Create template of azure deployment.',
-                                   handler: function () {
-                                       $(layout.contant).vloading('show');
-                                       $('#vmCreator').load('../../AzureVM/AzureVMCreation', { id: 0 }, function () {
-                                           $(layout.contant).vloading('hide');
-                                           $('#templateName', '#azureVMCreationWizard').val(0).attr('disabled', true);
-                                           $('#SaveAsTemplate', '#azureVMCreationWizard').attr('checked', true).attr('disabled', true);
-                                           $('#TemplateName', '#azureVMCreationWizard').show();
-                                       });
-                                       layout.collapseCmdPanel();
-                                   }
-                               }
+                                {
+                                    text: 'Quick Create', css: 'item-quickcreate',
+                                    description: 'Quick create an AAD GROUP.',
+                                    url: '../Home/QuickCreateAADGroup',
+                                }
                             ]
                         },
                         {
-                            feature: 'Lab Environment',
-                            text: 'Lab Environment', css: 'item-lab-env',
-                            description: 'Create a bench of virtual machines with flexible configuration',
-                            handler: function () {
-                                popupCreationView('../../VM/CreateLabEnvironmentView');
-                            }
+                            feature: 'AAD Users',
+                            text: 'AAD USER',
+                            css: 'item-hyperv-vm',
+                            description: 'Create an AAD User.',
+                            menus: [{
+                                text: 'Custom Create', css: 'item-customcreate',
+                                description: 'Create an AAD User follow a wizard.',
+                                handler: function () {
+                                    popupCreationView('../Home/AddUser');
+                                }
+                            },
+                                {
+                                    text: 'Quick Create', css: 'item-quickcreate',
+                                    description: 'Quick create an AAD User.',
+                                    url: '../Home/QuickCreateAADUser',
+                                }
+                            ]
                         },
-                        {
-                            feature: 'SQL Server',
-                            text: 'SQL Server',
-                            css: 'item-lab-env',
-                            description: 'Create a sql db.',
-                            handler: function () {
-                                popupCreationView('../../SQL/CreateDBView');
-                            }
-                        }
+                        
                     ]
                 });
             });

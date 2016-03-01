@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "RMResourceGroups";
+}
+
+<script type="text/javascript">
+    $(function () {
+        var resourceGroup = {
+            panel: $('.res-panel'),
+            grid: $('.res-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    resourceGroup.load();
+                });
+            },
+
+            load: function () {
+                resourceGroup.panel.css({ 'min-height': layout.contantHeight , 'max-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/RMResource/listGroups',
+                    traditional: true,
+                    success: function (d) {
+                        resourceGroup.bindData(d.result);
+                        resourceGroup.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        resourceGroup.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                resourceGroup.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: 'ResourceGroups',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight,
+                    noDataMsg: 'No resources found',
+                    rp: 20,
+                    rowProps: [{ name: 'groupName', field: 'PartitionKey' }, { name: 'groupID', field: 'resourceGroupID' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Group Name', field: 'PartitionKey', width: 2, primary: true },
+                        { caption: 'Location', field: 'RowKey', width: 2 },
+                        { caption: 'Group ID', field: 'resourceGroupID', width: 6},
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var tr = $(this).parent();
+                        var groupID = tr.attr('groupName');
+                        self.location = "../../Home/Resource?groupID=" + groupID;
+                    }
+                };
+                return gridSetting;
+            },
+            init: function () {
+                resourceGroup.grid.vgrid(resourceGroup.getGridSetting());
+            },
+        };
+        resourceGroup.init();
+        resourceGroup.load();
+        resourceGroup.createToolbar();
+        window.resourceGroup = resourceGroup;
+    });
+
+</script>
+<div class="res-panel">
+    <div class="res-grid"></div>
+
+</div>

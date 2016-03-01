@@ -33,6 +33,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr4.Runtime.net45">
+      <HintPath>..\References\Antlr4.Runtime.net45.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Authorization">
+      <HintPath>..\References\Microsoft.IdentityModel.Authorization.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IT.Security.Core">
       <HintPath>..\References\Microsoft.IT.Security.Core.dll</HintPath>
     </Reference>

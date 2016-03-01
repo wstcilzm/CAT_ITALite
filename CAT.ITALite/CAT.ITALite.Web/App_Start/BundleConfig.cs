@@ -49,7 +49,7 @@ namespace CAT.ITALite.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         //"~/Content/christmas.css",
-                        "~/Content/bootstrap.min.css",
+                        
                         "~/Content/site.css",
                         "~/Content/vdropdown.css",
                         "~/Content/vlinechart.css",
@@ -57,6 +57,7 @@ namespace CAT.ITALite.Web
                         "~/Content/vwizard.css",
                         "~/Content/vdataRange.css",
                         "~/Content/themes/base/jquery.ui.all.css",
+                        "~/Content/tabContainer.css",
                         "~/Content/screen.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

@@ -62,6 +62,11 @@
             init: function () {
                 app.initEvent();
                 app.appsGroup.vgrid(app.appsGroupSetting());
+                $(".vgrid-caption").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
+                $('.BackBtnStyle').on("click", function (event) {
+                    event.preventDefault();
+                    history.back(-1);
+                });
             }
         };
         app.init();

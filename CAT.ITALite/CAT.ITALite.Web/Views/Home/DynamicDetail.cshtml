@@ -1,0 +1,70 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script>
+    $(function () {
+        var assignment = {
+            wizard: $('.assign-wizard'),
+            panel: $('.assign-panel'),
+            init: function () {
+                var wizardSetting = {
+                    width: 600,
+                    height: 800,
+                    showNavButtons: true,
+                    showCloseButton: true,
+                    onCreate: function () {
+                    },
+                    finish: function () {                      
+                    }
+                };
+                assignment.wizard.vwizard(wizardSetting).vwizard('open');
+            }
+        };
+        assignment.init();
+    });
+</script>
+
+
+<style>
+    .assign-wizard textarea,
+    .assign-wizard input, select, span {
+        margin: 0 50px 0 50px;
+        display: block;
+    }
+
+    #cbgroup {
+    }
+
+    #selectedTable {
+    }
+
+        #selectedTable table {
+            margin: 0px 0px 0px 55px;
+        }
+
+        #selectedTable td {
+            border: 1px solid black;
+            width: 200px;
+            padding: 10px;
+        }
+</style>
+
+
+<div class="assign-wizard">
+    <div class="assign-panel">
+        <div class="editor-caption" style="margin-left:20px">Detail</div>
+        <div id="cbDetail">
+        </div>
+    </div>
+</div>
+
+<script>
+    var params=@Html.Raw(@ViewBag.param);
+    for(var item in params)
+    {
+        $("#cbDetail").append("<p><span>" + item + "</span></p>");
+        $("#cbDetail").append("<p><span>" + params[item] + "</span></p>");
+    }
+</script>

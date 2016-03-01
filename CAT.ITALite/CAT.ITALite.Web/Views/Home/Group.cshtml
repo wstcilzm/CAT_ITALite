@@ -18,14 +18,17 @@
                 t.add('DelGroup', 'DelGroup', 'toolbar-delete', function () {
                     var selectedRows = app.grid.vgrid('selectedRows');
                     if (selectedRows.length < 1) {
-                        alert('Please Choose the Group you want Delete!');
+                        var errorId = 1;
+                        var title = 'Must selecte items for delete!';
+                        layout.action.create(errorId, { title: title });
+                        layout.action.warning(errorId, 'At least one item must be selected!');
                         return;
                     }
                     deleteGroup();
                 });
 
                 function deleteGroup() {
-                    layout.confirm('Remove this Group?', yesToDeleteGroup, null);
+                    layout.confirm('Remove the selected Groups?', yesToDeleteGroup, null);
                 }
 
                 function yesToDeleteGroup() {
@@ -34,7 +37,10 @@
                     //selectedRows.each(function () {
                     //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
                     //});
-                    alert('delete Group done!');
+                    var succId = 0;
+                    var title="Delete Successful！";
+                    layout.action.create(succId, { title: title });
+                    layout.action.success(succId,'delete group.....');
                 };
             },
             initEvent: function () {
@@ -67,7 +73,7 @@
                     height: 'auto',
                     noDataMsg: 'No applications found',
                     rp: 20,
-                    rowProps: [{ name: 'cid', field: 'id' }],
+                    rowProps: [{ name: 'groupID', field: 'PartitionKey' }],
                     orderBy: 'Homepage',
                     usePage: false,
                     filter: true,
@@ -81,11 +87,11 @@
                         { caption: 'Originated From', field: 'OriginatedFrom', width: 1 },
                         { caption: 'Security Enabled', field: 'SecurityEnabled', width: 1 }
                     ],
-                    //primaryColumnClick: function (ev) {
-                    //    ev.stopPropagation();
-                    //    var tr = $(this).parent();
-                    //    self.location = "../../Home/ApplicationDetail?id=" + tr.attr('cid');
-                    //}
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var tr = $(this).parent();
+                        self.location = "../../Home/GroupDetail?id=" + tr.attr('groupID');
+                    }
                 };
                 gridSetting.tbodyMaxHeight = window.screen.height * 2 / 3;
                 return gridSetting;

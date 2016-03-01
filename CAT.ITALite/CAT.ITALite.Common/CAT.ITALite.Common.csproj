@@ -45,6 +45,9 @@
       <HintPath>..\packages\Microsoft.Data.Services.Client.5.7.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.IdentityModel.Authorization">
+      <HintPath>..\References\Microsoft.IdentityModel.Authorization.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IT.Core">
       <HintPath>..\References\Microsoft.IT.Core.dll</HintPath>
     </Reference>

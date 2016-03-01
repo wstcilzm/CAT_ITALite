@@ -9,7 +9,23 @@ text-decoration:none;
 </style>
 
 <script type="text/javascript">
+    function getCookie(name)
+    {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+
+    }
+
     $(function () {
+        var adminRoleDetail;
+        var rbacRoleDetail;
+        var activeTab;
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            activeTab = $(e.target).text();
+        });
         var role = {
             panel: $('.role-panel'),
             grid: $('.role-grid'),
@@ -17,6 +33,28 @@ text-decoration:none;
                 var t = layout.toolbar;
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
                     role.load();
+                });
+                t.add('Detail', 'Detail', 'toolbar-showDetail', function (param) {
+                    var selectedRows;
+                    var rowIndex = -1;
+                    var jData;
+                    if (activeTab == "RBAC Role")
+                    {
+                        selectedRows = rbac.grid.vgrid('selectedRows');
+                        rowIndex = rbac.grid.vgrid('rowIndex', rbac.grid.vgrid('selectedRows'));
+                        jData = rbacRoleDetail[rowIndex];
+                    }
+                    else
+                    {
+                        selectedRows = role.grid.vgrid('selectedRows');
+                        rowIndex = role.grid.vgrid('rowIndex', role.grid.vgrid('selectedRows'));
+                        jData = adminRoleDetail[rowIndex];
+                    }
+                    if (selectedRows.length > 1 || selectedRows == 0) {
+                        alert("please select one row!");
+                        return;
+                    }
+                    $('.assign-detail-wizard').load('../Home/DynamicDetail?param=' + window.encodeURIComponent(JSON.stringify(jData)));
                 });
             },
             initEvent: function () {
@@ -40,6 +78,7 @@ text-decoration:none;
             
             bindData: function (data) {
                 role.grid.vgrid('bindData', data);
+                adminRoleDetail = data;
             },
             getGridSetting: function () {
                 var gridSetting = {
@@ -77,10 +116,79 @@ text-decoration:none;
                 role.grid.vgrid(role.getGridSetting());
             }
         };
+        var rbac = {
+            panel: $('.rbac-panel'),
+            grid: $('.rbac-grid'),
+            load: function () {
+                //rbac.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/role/rbac/list',
+                    traditional: true,
+                    success: function (d) {
+                        rbac.bindData(d.result);
+                        rbac.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        rbac.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                rbac.grid.vgrid('bindData', data);
+                rbacRoleDetail = data;
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: '',
+                    url: '/Home',
+                    searchAction: 'GetRBac',
+                    width: layout.contantWidth,
+                    height: 'auto',
+                    noDataMsg: 'No RBacRoles found',
+                    rp: 20,
+                    rowProps: [{ name: 'roleName', field: 'RowKey' }, { name: 'roleId', field: 'PartitionKey' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Role Name', field: 'RowKey', width: 1, primary: true },
+                        { caption: 'TypeProperty', field: 'TypeProperty', width: 1 },
+                        { caption: 'AssignableScopes', field: 'AssignableScopes', width: 1 },
+                        { caption: 'Permissions', field: 'Permissions', width:2 },
+                        {caption: 'Update Time',field:'UpdatedOn',width:1}
+                    ],
+                    primaryColumnClick: function (ev) {
+                        ev.stopPropagation();
+                        var selectedRow = $(this).parent();
+                        window.location = "../../Home/RBACRoleUsers?roleId=" + selectedRow.attr('roleId') +"&roleName="+selectedRow.attr('roleName');
+                    }
+                };
+                return gridSetting;
+            },
+
+            init: function () {
+                rbac.grid.vgrid(rbac.getGridSetting());
+            }
+        }     
         role.init();
         role.load();
         role.createToolbar();
         window.role = role;
+        rbac.init();
+        rbac.load();
+        window.rbac = rbac;
+        if (getCookie('RoleTabIndex') == 1)
+        {
+            $('#roleTab li:eq(1) a').tab('show');
+        }
+        else
+        {
+            $('#roleTab li:eq(0) a').tab('show');
+        }
         
     });
 
@@ -98,17 +206,20 @@ text-decoration:none;
                 <div class="role-grid"></div>
             
         </div>
-        <div class="tab-pane" id="rbacRole">
-            <div></div>
+        <div class="tab-pane rbac-panel" id="rbacRole">
+            <div class="rbac-grid"></div>
         </div>
    
+</div>
+
+<div class="assign-detail-wizard">
 </div>
 
 <script>
    $(function () {
        $('#roleTab a').click(function (e) {
-           e.preventDefault()
-           $(this).tab('show')
+           e.preventDefault();
+           $(this).tab('show');
        })
       
    });

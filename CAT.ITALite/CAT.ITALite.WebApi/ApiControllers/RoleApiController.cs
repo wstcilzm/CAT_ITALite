@@ -29,5 +29,24 @@ namespace CAT.ITALite.WebApi.ApiControllers
             var result = (IEnumerable<UserAdminRoleAssignmentEntity>)(operation.RetrieveUsersByRoleId(roleId));
             return CreateSuccessResult(result);
         }
+        
+        [HttpGet]
+        [Route("rbac/list")]
+        public async Task<IHttpActionResult> GetRbacRolesAsync()
+        {
+            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.RBACRoles);
+            var result = operation.RetrieveRbacRoles();
+            return CreateSuccessResult(result);
+        }
+
+        [HttpGet]
+        [Route("rbac/{roleId}/users")]
+        public async Task<IHttpActionResult> GetRbacRolesUsersAsync(string roleId)
+        {
+            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.UserRBACRoleAssignments);
+            var result = operation.RetrieveUsersByRbacRoleId(roleId);
+            return CreateSuccessResult(result);
+        }
+
     }
 }

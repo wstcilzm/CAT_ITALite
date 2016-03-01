@@ -29,7 +29,10 @@
                     var selectedRows = user.grid.vgrid('selectedRows');
                     if (selectedRows.length < 1)
                     {
-                        alert('Please Choose the User you want Delete!');
+                        var errorId = 1;
+                        var title = 'Must selecte items for delete!';
+                        layout.action.create(errorId, { title: title });
+                        layout.action.warning(errorId, 'At least one item must be selected!');
                         return;
                     }
                     deleteUser();
@@ -46,11 +49,14 @@
                     //selectedRows.each(function () {
                     //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
                     //});
-                    alert('delete users done!');
+                    var succId = 0;
+                    var title = "Delete Successful！";
+                    layout.action.create(succId, { title: title });
+                    layout.action.success(succId, 'delete user.....');
                 };
             },
             load: function () {
-                user.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
+                user.panel.css({ 'min-height': layout.contantHeight , 'max-height': layout.contantHeight  }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
                     url: vstorm.getApiServerUrl() + '/api/user/list',
@@ -85,12 +91,12 @@
                     scaleWidth: true,
                     columns: [
                         { caption: 'User Name', field: 'RowKey', width: 4, primary: true },
+                        { caption: 'Display Name', field: 'DisplayName', width: 1.5 },
+                        { caption: 'Account Enabled', field: 'AccountEnabled', width: 1.5 },
+                        { caption: 'Mail Nickname', field: 'MailNickname', width: 1.5 },
+                        { caption: 'Usage Location', field: 'UsageLocation', width: 1.5 },
+                        { caption: 'User Type', field: 'UserType', type: 'number', width: 1 },
                         { caption: 'User Id', field: 'PartitionKey', width: 2 },
-                        { caption: 'Display Name', field: 'DisplayName', width: 2 },
-                        { caption: 'Account Enabled', field: 'AccountEnabled', width: 1 },
-                        { caption: 'Mail Nickname', field: 'MailNickname', width: 1 },
-                        { caption: 'Usage Location', field: 'UsageLocation', width: 1 },
-                        { caption: 'User Type', field: 'UserType', type: 'number', width: 1 }
                     ],
                     primaryColumnClick: function (ev) {
                         ev.stopPropagation();
@@ -145,11 +151,12 @@
                 $('#mask').hide();
             }
         };
-
-        user.init();
-        user.load();
-        user.createToolbar();
-        window.user = user;
+        if (!window.user) {
+            user.init();
+            user.load();
+            user.createToolbar();
+            window.user = user;
+        }
     });
 </script>
 

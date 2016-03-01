@@ -49,11 +49,11 @@ namespace CAT.ITALite.WebApi.ApiControllers
 
         [HttpGet]
         [Route("addusertogroup")]
-        public async Task<IHttpActionResult> AssignUserToGroupAsync(string userId, string groupId,string groupName)
+        public async Task<IHttpActionResult> AssignUserToGroupAsync(string userId,string userName ,string groupId,string groupName)
         {
             var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
             var ugae = new UserGroupAssignmentsEntity(userId, groupId);
-            ugae.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";
+            ugae.UserPrincipleName = userName;
             ugae.GroupName = groupName;
             ugae.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
             var result = operation.InsertEntity(ugae);

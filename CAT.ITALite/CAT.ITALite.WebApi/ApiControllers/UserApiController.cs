@@ -30,19 +30,21 @@ namespace CAT.ITALite.WebApi.ApiControllers
         [Route("{groups}/apps")]
         public async Task<IHttpActionResult> GetAppsAsync(string groups)
         {
-            string[] PrincipleName_GroupID_arry = groups.Split(';');
-            foreach (string str in PrincipleName_GroupID_arry)
-            {
-                string[] PrincipleName_Group = str.Split(',');
-                string PrincipleName = PrincipleName_Group[0];
-                string GroupID = PrincipleName_Group[1];
                 var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
-                var result = operation.RetrieveUserGroupApplications(GroupID, PrincipleName);
+                var result = operation.RetrieveUserGroupApplications(groups);
                 return CreateSuccessResult(result);
-            }
-            return CreateErrorResult(0, "error Parameters ");
         }
-               
+
+        [HttpGet]
+        [Route("{userId}")]
+        public async Task<IHttpActionResult> GetUsersAsync(string userId)
+        {
+            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AADUsers);
+            var result = operation.RetrieveUserByUserId(userId);
+            return CreateSuccessResult(result);
+        }
+
+
     }
     
 }

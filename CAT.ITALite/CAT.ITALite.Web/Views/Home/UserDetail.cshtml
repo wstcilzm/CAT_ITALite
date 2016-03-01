@@ -30,17 +30,19 @@
                             var group = d.result[i];
                             group.del = '<a href="#" onclick="userDetail.verifyRemove(' + i + ');return false;">remove</a>';
                             group.GroupLevel = 1;
-                            groups += group.UserPrincipleName + "," + group.RowKey + ";";
+                            //groups += group.UserPrincipleName + "," + group.RowKey + ";";
+                            groups += group.RowKey + "," ;
                         }
                         userDetail.bindGroupData(d.result);
                         if (d.result.length > 0) {
-                            groups = groups.substring(0, groups.length - 1);
+                            groups += d.result[0].UserPrincipleName; //groups : ID1,ID2...IDN,UserPrincipleName; 
                             $.ajax({
                                 type: "GET",
                                 url: vstorm.getApiServerUrl() + 'api/user/' + groups + '/apps',
                                 traditional: true,
                                 success: function (f) {
                                     userDetail.bindAppData(f.result);
+                                    userDetail.panel.vloading('hide');
                                 }
                             })
                         }
@@ -107,7 +109,7 @@
                 userGroups[index].del = '<a href="#" onclick="userDetail.verifyRemove(' + index + ');return false;">remove</a>';
                 userDetail.groupGrid.vgrid('destroy');
                 userDetail.init();
-                userDetail.bindGroupData(users);
+                userDetail.bindGroupData(userGroups);
                 isRemoving = false;
             },
             getAppGridSetting: function () {
@@ -138,7 +140,7 @@
             },
             getGroupGridSetting: function () {
                 var gridSetting = {
-                    caption: 'User-Groups',
+                    caption: 'User-Groups <img src="../../Content/images/back.png" class="BackBtnStyle" />',
                     url: '/Home',
                     searchAction: 'GetApplications',
                     width: layout.contantWidth,
@@ -168,6 +170,11 @@
                 userDetail.appGrid.vgrid(userDetail.getAppGridSetting());
                 $(".group-grid").show();
                 $('.app-grid').show();
+                //$(".group-grid").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
+                $('.BackBtnStyle').on("click", function (event) {
+                    event.preventDefault();
+                    history.back(-1);
+                });
             },
         };
         userDetail.init();

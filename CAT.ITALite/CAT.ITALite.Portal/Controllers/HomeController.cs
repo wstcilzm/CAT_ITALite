@@ -6,7 +6,8 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace CAT.ITALite.Portal.Controllers
-{
+{   
+    
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -16,7 +17,7 @@ namespace CAT.ITALite.Portal.Controllers
             return View();
         }
 
-        [Authorize]
+        [ITAAuthorize]
         public ActionResult About()
         {
             ViewBag.Name = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;

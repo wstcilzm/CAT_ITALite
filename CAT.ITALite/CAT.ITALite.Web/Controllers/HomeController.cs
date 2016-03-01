@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace CAT.ITALite.Web.Controllers
 {
+    //[ITALiteAuthorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -22,12 +23,28 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
+        public ActionResult QuickCreateAADGroup()
+        {
+            return View();
+        }
+
+        public ActionResult GroupDetail(string id)
+        {
+            ViewBag.groupID = id;
+            return View();
+        }
+
         public ActionResult User()
         {
             return View();
         }
 
         public ActionResult AddUser()
+        {
+            return View();
+        }
+
+        public ActionResult QuickCreateAADUser()
         {
             return View();
         }
@@ -69,6 +86,34 @@ namespace CAT.ITALite.Web.Controllers
         public ActionResult RolesUsers(string roleId)
         {
             ViewBag.roleId = roleId;
+            return View();
+        }
+
+        public ActionResult RBACRoleUsers(string roleId,string roleName)
+        {
+            ViewBag.roleId = roleId;
+            ViewBag.roleName = roleName;
+            return View();
+        }
+
+        public ActionResult ResourceGroups()
+        {
+            return View();
+        }
+        public ActionResult Resource(string groupID)
+        {
+            ViewBag.groupID = groupID;
+            return View();
+        }
+
+        public ActionResult Setting()
+        {
+            return View();
+        }
+
+        public ActionResult DynamicDetail(string param)
+        {
+          ViewBag.param = param;
             return View();
         }
     }

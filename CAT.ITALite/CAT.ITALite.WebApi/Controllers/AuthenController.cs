@@ -23,7 +23,7 @@ namespace CAT.ITALite.WebApi.Controllers
                 ViewBag.GivenName = ClaimsPrincipal.Current.FindFirst(ClaimTypes.GivenName).Value;
                 ViewBag.Surname = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Surname).Value;
                 ViewBag.UPN = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Upn).Value;
-
+                
                 AuthData newUser = new AuthData();
                 newUser.userPrincipleName = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Upn).Value;
                 newUser.userObjectID = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;

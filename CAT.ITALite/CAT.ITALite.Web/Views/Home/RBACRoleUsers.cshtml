@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "RolesUsers";
+    ViewBag.Title = "RBACRoleUsers";
 }
 
 <script type="text/javascript">
@@ -21,7 +21,7 @@
                 user.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/role/' + '@ViewBag.roleId' + '/users',
+                    url: vstorm.getApiServerUrl() + '/api/role/rbac/' + '@ViewBag.roleId' + '/users',
                     traditional: true,
                     success: function (d) {
                         user.bindData(d.result);
@@ -34,13 +34,34 @@
                 });
             },
             bindData: function (data) {
-                user.rolesUser.vgrid('bindData', data);
+                var newData = new Array();
+                for (i = 0; i < data.length;i++)
+                {
+                    var str = new Object();
+                    str.roleName = '@ViewBag.roleName';
+                    str.userName='User not found';
+                    str.Type = data[i].Type;
+                    str.Scope = data[i].Scope;
+                    str.UpdatedOn = data[i].UpdatedOn;
+                    $.ajax({
+                        type: "GET",
+                        url: vstorm.getApiServerUrl() + '/api/user/' + data[i].PartitionKey,
+                        traditional: true,
+                        success: function (d) {
+                            str.userName=d.result.DisplayName;
+                        },
+                        error: function (d) {
+                        }
+                    });
+                    newData[i] = str;
+                }
+                user.rolesUser.vgrid('bindData', newData);
             },
             rolesUserSetting: function () {
                 var userGridSetting = {
-                    caption: 'Role_Users',
+                    caption: 'RbacRole_Users',
                     url: '/Home',
-                    searchAction: 'GetRolesUsers',
+                    searchAction: 'GetRbacRolesUsers',
                     width: layout.contantWidth,
                     height: 'auto',
                     noDataMsg: 'No Users found',
@@ -52,10 +73,11 @@
                     checkbox: false,
                     scaleWidth: true,
                     columns: [
-                        { caption: 'UserPrinciple Name', field: 'UserPrincipleName' , width:3 ,primary:true},
-                        { caption: 'AdminRole Name', field: 'AdminRoleName', width: 2 },
-                        { caption: 'User Id', field: 'PartitionKey', width: 2 },
-                        { caption: 'AdminRole Id', field: 'RowKey', width: 2 },
+                        { caption: 'User Name', field: 'userName', width: 1, primary: true },
+                        { caption: 'Role Name', field: 'roleName', width: 1},
+                        { caption: 'Type', field: 'Type', width: 2 },
+                        { caption: 'Scope', field: 'Scope', width: 2 },
+                        { caption: 'UpdatedOn', field: 'UpdatedOn', width: 2 }
                     ]
                 };
                 return userGridSetting;
@@ -66,7 +88,7 @@
                 $(".vgrid-caption").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
                 $('.BackBtnStyle').on("click", function (event) {
                     event.preventDefault();
-                    history.back(-1);
+                    history.back();
                 });              
             }
         };
@@ -76,13 +98,10 @@
         user.load();
         user.createToolbar();
         window.roleUsers = user;
-        document.cookie = "RoleTabIndex=0";
+        document.cookie = "RoleTabIndex=1";
     });
 </script>
 <div class="user-panel">
     <div class="role-user" style="padding-left:10px"></div>
 </div>
-
-    
-
 

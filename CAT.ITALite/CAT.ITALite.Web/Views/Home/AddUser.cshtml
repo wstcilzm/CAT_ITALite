@@ -31,6 +31,11 @@
                         //        }
                         //    });
                         //};
+                        var succId = 0;
+                        var title = "Create AAD User Successful！";
+                        layout.action.create(succId, { title: title });
+                        layout.action.success(succId, 'Create AAD User done');
+                        return true;
                     }
                 };
                 assignment.wizard.vwizard(wizardSetting).vwizard('open');
@@ -57,7 +62,7 @@
 </script>
 <style>
     .assign-wizard textarea,
-    .assign-wizard input, select, span {
+    .assign-wizard input, select,label{
         margin: 0 50px 0 50px;
         display: block;
     }
@@ -83,7 +88,7 @@
         <div class="editor-caption" style="margin-left:20px">ADD USER</div>
         <div id="cbgroup">
             <p>
-                <span><strong>UserType</strong></span>
+                <label><strong>USER TYPE</strong></label>
             </p>
             <p>
                 <select id="UserType" style="width:250px;">
@@ -91,19 +96,19 @@
                 </select>
             </p>
 
-            <p><span><strong>USER NAME</strong></span></p>
+            <p><label><strong>USER NAME</strong></label></p>
             <input id="preUserName" type="text" style="width:150px;float:left;border-color:black;height:10px;margin-right:1px;" />
             <label style="float:left;margin-left:1px;margin-right:1px;">@@</label>
             <select id="sufUserName" style="width:200px;margin-left:1px;"><option value=""></option></select>
 
-            <p><span><strong>DISPLAY NAME</strong></span></p>
+            <p><label><strong>DISPLAY NAME</strong></label></p>
             <input id="displayName" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
 
-            <p><span><strong>MAILNICK NAME</strong></span></p>
+            <p><label><strong>MAILNICK NAME</strong></label></p>
             <input id="mailnickName" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
 
             <p>
-                <span><strong>USAGE LOCATION</strong></span>
+                <label><strong>USAGE LOCATION</strong></label>
             </p>
             <p>
                 <select id="usageLocation" style="width:250px;">

@@ -31,6 +31,11 @@
                         //        }
                         //    });
                         //};
+                        var succId = 0;
+                        var title = "Create AAD Group Successful！";
+                        layout.action.create(succId, { title: title });
+                        layout.action.success(succId, 'Create AAD Group done');
+                        return true;
                     }
                 };
                 assignment.wizard.vwizard(wizardSetting).vwizard('open');
@@ -57,7 +62,7 @@
 </script>
 <style>
     .assign-wizard textarea,
-    .assign-wizard input, select, span {
+    .assign-wizard input, select, label {
         margin: 0 50px 0 50px;
         display: block;
     }
@@ -83,20 +88,20 @@
         <div class="editor-caption" style="margin-left:20px">ADD GROUP</div>
         <div id="cbgroup">
 
-            <p><span><strong>GROUP NAME</strong></span></p>
+            <p><label><strong>GROUP NAME</strong></label></p>
             <input id="groupName" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
 
-            <p><span><strong>DESCRIPTION</strong></span></p>
+            <p><label><strong>DESCRIPTION</strong></label></p>
             <input id="Description" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
 
-            <p><span><strong>MAILNICK NAME</strong></span></p>
+            <p><label><strong>MAILNICK NAME</strong></label></p>
             <input id="mailnickName" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
 
-            <p><span><strong>Originated FROM</strong></span></p>
+            <p><label><strong>ORIGINATED FROM</strong></label></p>
             <input id="mailnickName" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
 
             <p>
-                <span><strong>SECURITY ENABLED</strong></span>
+                <label><strong>SECURITY ENABLED</strong></label>
             </p>
             <p>
                 <select id="securityEnabled" style="width:250px;">

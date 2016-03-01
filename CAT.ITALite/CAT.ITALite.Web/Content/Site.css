@@ -3259,3 +3259,17 @@ div.section {
             background: #FC0;
             height: 17px;
         }
+
+
+.BackBtnStyle
+{
+    float:right;
+    margin-right:35px;
+    margin-top:5px;
+    opacity:0.5;
+}
+
+.BackBtnStyle:hover {
+    opacity:1;
+    cursor: pointer;
+}

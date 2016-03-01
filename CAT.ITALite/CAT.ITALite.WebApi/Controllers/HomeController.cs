@@ -15,9 +15,15 @@ namespace CAT.ITALite.WebApi.Controllers
             }
 
             //for temp before next coding work.
-            Response.Redirect("http://localhost:33162/?BK=" + Guid.NewGuid().ToString());
+            //Response.Redirect("http://localhost:33162/?BK=" + Guid.NewGuid().ToString());
 
             return View();
         }
+
+        public string Test()
+        {
+            return "Hello, ITALite Auth Center!";
+        }
+
     }
 }

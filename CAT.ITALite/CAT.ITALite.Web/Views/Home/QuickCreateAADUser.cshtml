@@ -1,0 +1,79 @@
+﻿@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        var quick = {
+            panel: $('#quickCreateHVM'),
+            button: $('#btnQuickCreate'),
+            validate: function () {
+                return $('input,select', this.panel).vvalidate('validate') == 'success';
+            },
+            getVMParams: function () {
+                var params = {};
+                $('input[name],select[name]', this.panel).each(function () {
+                    var t = $(this);
+                    params[t.attr('name')] = t.val();
+                });
+                return params;
+            },
+            initEvent: function () {
+                var actionID = 'quickCreate', title = 'Quick Create AAD USER';
+                this.button.click(function () {
+                    layout.collapseCmdPanel();
+                    layout.action.create(actionID, { title: title });
+                    layout.action.success(actionID, 'Successfully Create Group！');
+                    return;
+                });
+            }
+        };
+        quick.initEvent();
+    })
+</script>
+<div id="quickCreateHVM">
+    <table>
+        <tr>
+            <td>
+                <div><span>USER NAME:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="userName" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div><span>DISPLAY NAME:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="DisplayName" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>MAILNICK NAME:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="ImageName" />
+                </div>
+            </td>
+        </tr>
+
+
+
+        <tr>
+            <td colspan="4" class="buttons">
+                <span>
+                    Create AAD USER
+                </span>
+                <button id="btnQuickCreate" class="button button-ok"></button>
+            </td>
+        </tr>
+    </table>
+</div>

@@ -10,6 +10,34 @@ namespace CAT.ITALite.SyncService
 {
     internal class AuthenticationHelper
     {
+        public static string GetAuthorizationHeader()
+        {
+            //
+            string _aadTenantDomain = "cciccat.partner.onmschina.cn";
+            //_aadTenantDomain = "cciccat.com";
+            string _aadClientId = "9adbfe5e-2252-4d26-a3ad-68bbd1e25963";
+
+            AuthenticationResult result = null;
+            var context = new AuthenticationContext("https://login.chinacloudapi.cn/" + _aadTenantDomain);
+
+            // Directly specify the username and password. 
+            var credential = new UserCredential(
+                "jianw@cciccat.partner.onmschina.cn",
+                "User@123");
+            result = context.AcquireToken(
+                "https://management.core.chinacloudapi.cn/",
+                _aadClientId,
+                    credential);
+            if (result == null)
+            {
+                throw new InvalidOperationException("Failed to obtain the JWT token");
+            }
+
+            string token = result.AccessToken;
+            return token;
+
+        }
+
         public static string TokenForUser;
 
         /// <summary>

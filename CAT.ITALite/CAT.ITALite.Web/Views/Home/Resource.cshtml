@@ -1,0 +1,90 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "RMResource";
+}
+
+<script type="text/javascript">
+    $(function () {
+        var resource = {
+            panel: $('.res-panel'),
+            grid: $('.res-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    resource.load();
+                });
+            },
+
+            load: function () {
+                resource.panel.css({ 'min-height': layout.contantHeight , 'max-height': layout.contantHeight }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + '/api/RMResource/{groupId}/resources?groupId='+'@ViewBag.groupID',
+                    traditional: true,
+                    success: function (d) {
+                        resource.bindData(d.result);
+                        resource.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        resource.panel.vloading('hide');
+                    }
+                });
+            },
+            bindData: function (data) {
+                resource.grid.vgrid('bindData', data);
+            },
+            getGridSetting: function () {
+                var gridSetting = {
+                    caption: 'Resources',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight,
+                    noDataMsg: 'No resources found',
+                    rp: 20,
+                    rowProps: [{ name: 'resName', field: 'RowKey' }, { name: 'resId', field: 'PartitionKey' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Group Name', field: 'PartitionKey', width: 1.5 },
+                        { caption: 'Resource Name', field: 'resourceName', width: 1.5 },
+                        { caption: 'Resource Location', field: 'resourceLocation', width: 2 },
+                        { caption: 'Resource Type', field: 'resourceType', width: 2 },
+                        { caption: 'Resource Id', field: 'resourceID', width: 4 },
+                        
+                        //{ caption: 'Usage Location', field: 'UsageLocation', width: 1 },
+                        //{ caption: 'User Type', field: 'UserType', type: 'number', width: 1 }
+                    ]
+                    //primaryColumnClick: function (ev) {
+                    //    ev.stopPropagation();
+                    //    var tr = $(this).parent();
+                    //    var userId = tr.attr('userid');
+                    //    self.location = "../../Home/UserDetail?id=" + userId;
+                    //}
+                };
+                return gridSetting;
+            },
+            init: function () {
+                resource.grid.vgrid(resource.getGridSetting());
+                $(".vgrid-caption").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
+                $('.BackBtnStyle').on("click", function (event) {
+                    event.preventDefault();
+                    history.back(-1);
+                });
+            },
+        };
+        resource.init();
+        resource.load();
+        resource.createToolbar();
+        window.resource = resource;
+    });
+
+</script>
+<div class="res-panel">
+    <div class="res-grid"></div>
+
+</div>

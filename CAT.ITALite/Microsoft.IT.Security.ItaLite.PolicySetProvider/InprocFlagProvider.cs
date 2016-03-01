@@ -7,9 +7,31 @@ using Microsoft.IT.Security.Core;
 using Microsoft.IT.Security.Core.DataEntities;
 using Microsoft.IT.Security.Enforcement.DataEntities;
 using Microsoft.IT.Security.Enforcement.DataProviders;
+using Microsoft.IdentityModel.Authorization;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Authorization.Aad;
 
 namespace Microsoft.IT.Security.ItaLite.PolicySetProvider
 {
+    public class AadProvider
+    {
+        public static bool CheckAccess(List<RoleDefinition> roleDefinitions, List<RoleAssignment> roleAssigments, string user, string resource, string action)
+        {
+            List<Claim> claims = new List<Claim>(1);
+            claims.Add(new Claim("oid", user));
+            ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(claims));
+
+            ResourceInfo resourceInfo = new ResourceInfo("/" + resource);
+            ActionInfo actionInfo = new ActionInfo("/"+ resource + "/" + action);            
+            
+            DefaultPolicyProvider policyProvider = new DefaultPolicyProvider(roleDefinitions, roleAssigments);
+
+            AadAuthorizationEngine engine = new AadAuthorizationEngine(policyProvider);
+
+            return engine.CheckAccess(claimsPrincipal, resourceInfo, actionInfo);
+        }
+    }
+
     /// <summary>
     /// Policy provider for ITA lite to supply the const policy PDP needs without reading from DB
     /// </summary>

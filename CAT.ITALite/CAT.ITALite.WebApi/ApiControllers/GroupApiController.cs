@@ -28,9 +28,11 @@ namespace CAT.ITALite.WebApi.ApiControllers
 
         [HttpGet]
         [Route("{groupId}/users")]
-        public async Task<IHttpActionResult> GetUsersAsync(int userId)
+        public async Task<IHttpActionResult> GetUsersAsync(string groupId)
         {
-            return CreateSuccessResult(null);
+            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
+            var result = operation.RetrieveUserGroupAssignments(groupId);
+            return CreateSuccessResult(result);
         }
     }
 }

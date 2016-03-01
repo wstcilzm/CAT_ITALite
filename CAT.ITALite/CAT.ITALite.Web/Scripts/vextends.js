@@ -1628,14 +1628,15 @@
                     li.addClass('disable');
                 }
                 li.hover(function (ev) {
-                    if (!g.contentPanel.is(':visible')) {
-                        if (disable) {
-                            g.infoPanel.text(g.disableDescription);
-                        } else {
-                            g.infoPanel.text(menu.description);
-                        }
-                        g.infoPanel.show();
+                    if (g.contentPanel.is(':visible')) {
+                        g.contentPanel.hide();
                     }
+                    if (disable) {
+                        g.infoPanel.text(g.disableDescription);
+                    } else {
+                        g.infoPanel.text(menu.description);
+                    }
+                    g.infoPanel.show();
                 }, function (ev) {
                     g.infoPanel.hide();
                 }).click(function (ev) {

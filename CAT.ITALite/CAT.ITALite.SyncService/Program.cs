@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using CAT.ITALite.Common;
 using System.Configuration;
 using CAT.ITALite.Entity;
+using Newtonsoft.Json.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 
 namespace CAT.ITALite.SyncService
@@ -25,6 +28,10 @@ namespace CAT.ITALite.SyncService
         public static TableDal userGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
         public static TableDal appGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
         public static TableDal userAdminRoleAssignmentOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserAdminRoleAssignments);
+        public static TableDal rbacRoleTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RBACRoles);
+        public static TableDal rbacRoleAssignmentTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserRBACRoleAssignments);
+        public static TableDal rmResourceOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RMResources);
+        public static TableDal rmResourceGroupOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RMResourceGroups);
 
         static void Main(string[] args)
         {
@@ -55,22 +62,65 @@ namespace CAT.ITALite.SyncService
 
             #endregion
 
-            #region TenantDetails
+            CleanTableStorages();
+            RetrieveAADInfo(activeDirectoryClient);
+            RetrieveUsers(activeDirectoryClient);
+            RetrieveGroups(activeDirectoryClient);
+            RetrieveApps(activeDirectoryClient);
+            RetrieveAdminRoles(activeDirectoryClient);
+            ParseUserMembership();
+            RetrieveRBACRoles();
+            ParseRBACRoleAssignments();
+            RetrieveResourceGroups();
+            RetrieveRMResources();
 
-            //*********************************************************************
-            // Get Tenant Details
-            // Note: update the string TenantId with your TenantId.
-            // This can be retrieved from the login Federation Metadata end point:             
-            // https://login.windows.net/GraphDir1.onmicrosoft.com/FederationMetadata/2007-06/FederationMetadata.xml
-            //  Replace "GraphDir1.onMicrosoft.com" with any domain owned by your organization
-            // The returned value from the first xml node "EntityDescriptor", will have a STS URL
-            // containing your TenantId e.g. "https://sts.windows.net/4fd2b2f2-ea27-4fe5-a8f3-7b1a7c975f34/" is returned for GraphDir1.onMicrosoft.com
-            //*********************************************************************
+
+            PortalSimulator();
+            Console.WriteLine("ITALite initialization is done!");
+            
+            InvokingITA testITACore = new InvokingITA();
+            Console.WriteLine(testITACore.AccessControl(true));
+            Console.WriteLine(testITACore.AccessControl(false));
+            
+            TestItaLite();
+
+            Console.WriteLine("TestItaLite done!");
+            Console.Read();
+        }
+
+
+        static void CleanTableStorages()
+        {
+            Console.WriteLine("Start to delete all history tables ?");
+            if (Console.ReadLine() == "yes")
+            {
+                userTableOper.CleanTable();
+                appTableOper.CleanTable();
+                groupTableOper.CleanTable();
+                aadTableOper.CleanTable();
+                adminRoleTableOper.CleanTable();
+                userGroupAssignmentOperation.CleanTable();
+                appGroupAssignmentOperation.CleanTable();
+                userAdminRoleAssignmentOper.CleanTable();
+                rbacRoleTableOper.CleanTable();
+                rbacRoleAssignmentTableOper.CleanTable();
+                rmResourceOper.CleanTable();
+                rmResourceGroupOper.CleanTable();
+                Console.WriteLine("All history tables are deleted.");
+                System.Threading.Thread.Sleep(5000);
+                Environment.Exit(0);
+               
+            }
+        }
+
+
+        static void RetrieveAADInfo(ActiveDirectoryClient activeDirectoryClient)
+        {
+            Console.WriteLine("Start to sync AADInfo ...");
             VerifiedDomain initialDomain = new VerifiedDomain();
             VerifiedDomain defaultDomain = new VerifiedDomain();
             AADInfoEntity aadInfo = null;
             ITenantDetail tenant = null;
-            Console.WriteLine("\n Retrieving Tenant Details");
             try
             {
                 List<ITenantDetail> tenantsList = activeDirectoryClient.TenantDetails
@@ -93,13 +143,10 @@ namespace CAT.ITALite.SyncService
             else
             {
                 TenantDetail tenantDetail = (TenantDetail)tenant;                
-                Console.WriteLine("Tenant Display Name: " + tenantDetail.DisplayName);
 
                 // Get the Tenant's Verified Domains 
                 initialDomain = tenantDetail.VerifiedDomains.First(x => x.Initial.HasValue && x.Initial.Value);
-                Console.WriteLine("Initial Domain Name: " + initialDomain.Name);
                 defaultDomain = tenantDetail.VerifiedDomains.First(x => x.@default.HasValue && x.@default.Value);
-                Console.WriteLine("Default Domain Name: " + defaultDomain.Name);
                 aadInfo = new AADInfoEntity(tenantDetail.ObjectId, initialDomain.Name);
                 aadInfo.DefaultDomainName = defaultDomain.Name;
                 aadInfo.ObjectType = tenantDetail.ObjectType;
@@ -107,7 +154,6 @@ namespace CAT.ITALite.SyncService
                 // Get Tenant's Tech Contacts
                 foreach (string techContact in tenantDetail.TechnicalNotificationMails)
                 {
-                    Console.WriteLine("Tenant Tech Contact: " + techContact);
                     aadInfo.TechContacts += techContact + ";";
                 }
                 foreach (string marketContact in tenantDetail.MarketingNotificationEmails)
@@ -122,33 +168,13 @@ namespace CAT.ITALite.SyncService
                 aadInfo.Street = tenantDetail.Street;
                 aadTableOper.InsertAADInfo(aadInfo);
             }
-
-            #endregion
-
-
-            //RetrieveUsers(activeDirectoryClient);
-            //ParseUserMembership();
-            //RetrieveGroups(activeDirectoryClient);
-            //RetrieveApps(activeDirectoryClient);
-            //RetrieveAdminRoles(activeDirectoryClient);
-
-            //PortalSimulator();
-
-
-            InvokingITA testITACore = new InvokingITA();
-            Console.WriteLine(testITACore.AccessControl(true));
-            Console.WriteLine(testITACore.AccessControl(false));
-
-            Console.WriteLine("done!");
-            Console.Read();
-
         }
 
 
         public static List<IUser> AllUsers = new List<IUser>();
         static void RetrieveUsers(ActiveDirectoryClient activeDirectoryClient)
         {
-
+            Console.WriteLine("Start to sync AAD Users ...");
             AllUsers.Clear();
             IUserCollection userCollection = activeDirectoryClient.Users;
 
@@ -167,7 +193,7 @@ namespace CAT.ITALite.SyncService
                     newUserList = usersList;
                     foreach (IUser user in usersList)
                     {
-                        Console.WriteLine("User DisplayName: {0} UPN: {1}", user.DisplayName, user.UserPrincipalName);
+                        //Console.WriteLine("User DisplayName: {0} UPN: {1}", user.DisplayName, user.UserPrincipalName);
 
                         var newUser = new UserEntity(user.ObjectId, user.UserPrincipalName.Contains("#EXT#") ? user.UserPrincipalName.Replace("#EXT#", "_") : user.UserPrincipalName);
                         newUser.DisplayName = user.DisplayName;
@@ -180,12 +206,12 @@ namespace CAT.ITALite.SyncService
                     }
                     searchResults = searchResults.GetNextPageAsync().Result;
                 } while (searchResults != null);  // && searchResults.MorePagesAvailable
-                Console.WriteLine();
             }
         }
 
         static void RetrieveGroups(ActiveDirectoryClient activeDirectoryClient)
         {
+            Console.WriteLine("Start to sync AAD groups ...");
             List<IGroup> foundGroups = null;
             try
             {
@@ -199,7 +225,7 @@ namespace CAT.ITALite.SyncService
             {
                 foreach (IGroup group in foundGroups)
                 {
-                    Console.WriteLine("Group Name: {0}   GroupObjectId: {1}", group.DisplayName, group.ObjectId);
+                    //Console.WriteLine("Group Name: {0}   GroupObjectId: {1}", group.DisplayName, group.ObjectId);
 
                     var newGroup = new GroupEntity(group.ObjectId, group.DisplayName);
                     newGroup.Descrption = group.Description;
@@ -208,15 +234,12 @@ namespace CAT.ITALite.SyncService
                     newGroup.OriginatedFrom = "AAD";
                     groupTableOper.InsertEntity(newGroup);
 
-                    //Console.WriteLine("Group details ...");
-                    //RetrieveGroupMembers(activeDirectoryClient, group as Group);
                 }
             }
             else
             {
                 Console.WriteLine("Group Not Found");
             }
-            Console.WriteLine();
         }
 
         static void RetrieveGroupMembers(ActiveDirectoryClient activeDirectoryClient, Group targetAADGroup)
@@ -243,19 +266,16 @@ namespace CAT.ITALite.SyncService
                             if (member is User)
                             {
                                 User user = member as User;
-                                Console.WriteLine("User DisplayName: {0}  UPN: {1}",
-                                    user.DisplayName,
-                                    user.UserPrincipalName);
                             }
                             if (member is Group)
                             {
                                 Group group = member as Group;
-                                Console.WriteLine("Group DisplayName: {0}", group.DisplayName);
+                                //Console.WriteLine("Group DisplayName: {0}", group.DisplayName);
                             }
                             if (member is Contact)
                             {
                                 Contact contact = member as Contact;
-                                Console.WriteLine("Contact DisplayName: {0}", contact.DisplayName);
+                                //Console.WriteLine("Contact DisplayName: {0}", contact.DisplayName);
                             }
                         }
                         members = members.GetNextPageAsync().Result;
@@ -272,6 +292,7 @@ namespace CAT.ITALite.SyncService
 
         static void RetrieveApps(ActiveDirectoryClient activeDirectoryClient)
         {
+            Console.WriteLine("Start to sync AAD Apps ...");
             IPagedCollection<IApplication> applications = null;
             try
             {
@@ -288,8 +309,6 @@ namespace CAT.ITALite.SyncService
                     List<IApplication> appsList = applications.CurrentPage.ToList();
                     foreach (IApplication app in appsList)
                     {
-                        Console.WriteLine("Application AppId: {0}  Name: {1}", app.AppId, app.DisplayName);
-
                         var newApp = new AppEntity(app.AppId, app.DisplayName);
                         newApp.AppRoles = app.AppRoles.Count;
                         newApp.AppType = app.ObjectType;
@@ -300,14 +319,11 @@ namespace CAT.ITALite.SyncService
                     applications = applications.GetNextPageAsync().Result;
                 } while (applications != null);
             }
-            Console.WriteLine();
         }
 
         static void RetrieveAdminRoles(ActiveDirectoryClient activeDirectoryClient)
         {
-            //*********************************************************************
-            // Get All Roles
-            //*********************************************************************
+            Console.WriteLine("Start to sync AAD Roles ...");
             List<IDirectoryRole> foundRoles = null;
             try
             {
@@ -323,7 +339,7 @@ namespace CAT.ITALite.SyncService
             {
                 foreach (IDirectoryRole role in foundRoles)
                 {
-                    Console.WriteLine("\n Found Role: {0} {1} {2} ", role.DisplayName, role.Description, role.ObjectId);
+                    //Console.WriteLine("\n Found Role: {0} {1} {2} ", role.DisplayName, role.Description, role.ObjectId);
 
                     var newAdminRole = new AdminRoleEntity(role.ObjectId, role.DisplayName);
                     newAdminRole.Description = role.Description;
@@ -338,12 +354,10 @@ namespace CAT.ITALite.SyncService
 
         static void ParseUserMembership()
         {
-            //*********************************************************************
-            // get the User's Group and Role membership, getting the complete set of objects
-            //*********************************************************************
+            Console.WriteLine("Start to sync AAD memberships ...");
             foreach (IUser retrievedUser in AllUsers)
             {
-                
+
                 IUserFetcher retrievedUserFetcher = (User)retrievedUser;
                 try
                 {
@@ -382,10 +396,214 @@ namespace CAT.ITALite.SyncService
             }
         }
 
+        static void RetrieveRBACRoles()
+        {
+            Console.WriteLine("Start to sync RBAC roles ...");
+            string _subscriptionId = ConfigurationSettings.AppSettings["azureSubscriptionID"];
+            var client = new HttpClient();
+            var header = AuthenticationHelper.GetAuthorizationHeader();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
 
+            try
+            {
+                var myTask = client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/providers/Microsoft.Authorization/roleDefinitions?api-version=2015-07-01&filter=atScopeAndBelow()",
+                        _subscriptionId));
+                var result = myTask.Result;
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;
+                while (jTk != null)
+                {
+                    var rbacRole = new RBACRoleEntity(jTk["properties"]["roleName"].ToString(), jTk["name"].ToString());
+                    rbacRole.RoleID = jTk["id"].ToString();
+                    rbacRole.TypeProperty = jTk["properties"]["type"].ToString();
+                    rbacRole.Description = jTk["properties"]["description"].ToString();
+                    rbacRole.AssignableScopes = jTk["properties"]["assignableScopes"].ToString();
+                    rbacRole.CreatedOn = jTk["properties"]["createdOn"].ToString();
+                    rbacRole.UpdatedOn = jTk["properties"]["updatedOn"].ToString();
+                    rbacRole.CreatedBy = jTk["properties"]["createdBy"].ToString();
+                    rbacRole.UpdatedBy = jTk["properties"]["updatedBy"].ToString();
+                    rbacRole.Type = jTk["type"].ToString();
+                    rbacRole.Permissions = jTk["properties"]["permissions"].ToString();
+                    rbacRoleTableOper.InsertEntity(rbacRole);
+
+                    jTk = jTk.Next;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        static void ParseRBACRoleAssignments()
+        {
+            Console.WriteLine("Start to sync RBAC assignments ...");
+            string _subscriptionId = ConfigurationSettings.AppSettings["azureSubscriptionID"];
+            var client = new HttpClient();
+            var header = AuthenticationHelper.GetAuthorizationHeader();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var myTask = client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/providers/Microsoft.Authorization/roleAssignments?api-version=2015-07-01&filter=atScope()",
+                        _subscriptionId));
+                var result = myTask.Result;
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;
+                while (jTk != null)
+                {
+                    string roleDefinitionId = jTk["properties"]["roleDefinitionId"].ToString(); //  /subscriptions/-----/providers/.../roleDefinitions/rolebackendidname
+                    string[] items = roleDefinitionId.Split('/');
+                    string roleBackendIDName = items[items.Count() - 1];
+
+                    var rbacRoleAssignment = new UserRBACRoleAssignmentEntity(jTk["properties"]["principalId"].ToString(), roleBackendIDName);
+                    rbacRoleAssignment.RoleDefinitionId = roleDefinitionId;
+                    rbacRoleAssignment.Scope = jTk["properties"]["scope"].ToString();
+                    rbacRoleAssignment.CreatedOn = jTk["properties"]["createdOn"].ToString();
+                    rbacRoleAssignment.UpdatedOn = jTk["properties"]["updatedOn"].ToString();
+                    rbacRoleAssignment.CreatedBy = jTk["properties"]["createdBy"].ToString();
+                    rbacRoleAssignment.UpdatedBy = jTk["properties"]["updatedBy"].ToString();
+                    rbacRoleAssignment.AssignmentID = jTk["id"].ToString();
+                    rbacRoleAssignment.Type = jTk["type"].ToString();
+                    rbacRoleAssignment.AssignmentName = jTk["name"].ToString();
+                    rbacRoleAssignmentTableOper.InsertEntity(rbacRoleAssignment);
+
+                    jTk = jTk.Next;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        static void RetrieveResourceGroups()
+        {
+            Console.WriteLine("Start to sync RM resource groups ...");
+            string _subscriptionId = ConfigurationSettings.AppSettings["azureSubscriptionID"];
+            var client = new HttpClient();
+            var header = AuthenticationHelper.GetAuthorizationHeader();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var myTask = client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/resourcegroups?api-version=2015-01-01",
+                        _subscriptionId));
+                var result = myTask.Result;
+
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;
+
+                while (jTk != null)
+                {
+                    var rmResourceGroup = new RMResourceGroupEntiry(jTk["name"].ToString(), jTk["location"].ToString());
+                    rmResourceGroup.resourceGroupID = jTk["id"].ToString();
+                    if (jTk["tags"] != null)
+                    {
+                        rmResourceGroup.tags = jTk["tags"].ToString();
+                    }
+                    rmResourceGroup.properties = jTk["properties"].ToString();
+                    rmResourceGroupOper.InsertEntity(rmResourceGroup);
+
+                    jTk = jTk.Next;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }  
+        }
+
+        static void RetrieveRMResources()
+        {
+            Console.WriteLine("Start to sync RM resources ...");
+            string _subscriptionId = ConfigurationSettings.AppSettings["azureSubscriptionID"];
+            var client = new HttpClient();
+            var header = AuthenticationHelper.GetAuthorizationHeader();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var myTask = client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/resources?api-version=2015-01-01",
+                        _subscriptionId));
+                var result = myTask.Result;
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;
+
+                while (jTk != null)
+                {
+                    string resourceId = jTk["id"].ToString(); //  /subscriptions/03042fd8-7b09-4c73-9217-0dcea66ede69/resourceGroups/Ambercs/providers/Microsoft.ClassicCompute/domainNames/Ambercs
+                    string[] items = resourceId.Split('/');
+                    string resourceGroupName = "";
+                    string resourceType = "";
+                    for(int i=0; i<items.Count() - 1;i++)
+                    {
+                        if(items[i]=="resourceGroups")
+                        {
+                            resourceGroupName = items[i+1];
+                        }
+                        if(items[i]=="providers")
+                        {
+                            resourceType = items[i+1] + "."+items[i+2];
+                            break;
+                        }
+                    }
+
+                    var rmResource = new RMResourceEntity(resourceGroupName, resourceType);
+                    rmResource.resourceID = resourceId;
+                    rmResource.resourceName = jTk["name"].ToString();
+                    rmResource.resourceType = jTk["type"].ToString();
+                    rmResource.resourceLocation = jTk["location"].ToString();
+                    rmResourceOper.InsertEntity(rmResource);
+
+                    jTk = jTk.Next;
+        }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }  
+        }
 
         public static void PortalSimulator()
         {
+            Console.WriteLine("Start to insert simulation data ?");
+            if (Console.ReadLine()=="yes")
+            {
+            var userGroupAssignment = new UserGroupAssignmentsEntity("8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "f8541113-c54b-4eab-af59-77b0eeef3617");
+                userGroupAssignment.UserPrincipleName = "admin@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignment.GroupName = "MyGroup";
+            userGroupAssignment.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignmentOperation.InsertEntity(userGroupAssignment);
+
+            var appGroupAssignment = new AppGroupAssignmentEntity("1a7249e7-fa56-4c47-83de-5048097bc510", "f8541113-c54b-4eab-af59-77b0eeef3617");
+            appGroupAssignment.AppName = "Console App for Azure AD";
+            appGroupAssignment.GroupName = "MyGroup";
+            appGroupAssignment.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            appGroupAssignment.OperationTypes = OperationTypes.Read.ToString();
+            appGroupAssignmentOperation.InsertEntity(appGroupAssignment);
+            }
+
+        }
+
+        public static void TestItaLite()
+        {
+            TableDal userGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserGroupAssignments);
+            TableDal appGroupAssignmentOperation = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.AppGroupAssignments);
 
             var userGroupAssignment = new UserGroupAssignmentsEntity("8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "f8541113-c54b-4eab-af59-77b0eeef3617");
             userGroupAssignment.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";
@@ -399,6 +617,49 @@ namespace CAT.ITALite.SyncService
             appGroupAssignment.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
             appGroupAssignment.OperationTypes = OperationTypes.Read.ToString();
             appGroupAssignmentOperation.InsertEntity(appGroupAssignment);
+
+            InvokingITA testITACore = new InvokingITA();
+            // true
+            Console.WriteLine(testITACore.AccessControl(new List<UserGroupAssignmentsEntity>() { userGroupAssignment }, new List<AppGroupAssignmentEntity>() { appGroupAssignment }, "8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "1a7249e7-fa56-4c47-83de-5048097bc510"));
+            // false
+            Console.WriteLine(testITACore.AccessControl(new List<UserGroupAssignmentsEntity>() { userGroupAssignment }, new List<AppGroupAssignmentEntity>() { appGroupAssignment }, "8734cc8a-2e67-4a9f-b1aa-3306a5e62760_", "1a7249e7-fa56-4c47-83de-5048097bc510"));
+            // false
+            Console.WriteLine(testITACore.AccessControl(new List<UserGroupAssignmentsEntity>() { userGroupAssignment }, new List<AppGroupAssignmentEntity>() { appGroupAssignment }, "8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "1a7249e7-fa56-4c47-83de-5048097bc510_"));
+
+
+            var userGroupAssignment2 = new UserGroupAssignmentsEntity("8734cc8a-2e67-4a9f-b1aa-3306a5e62760_", "f8541113-c54b-4eab-af59-77b0eeef3617");
+            userGroupAssignment2.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignment2.GroupName = "MyGroup";
+            userGroupAssignment2.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignmentOperation.InsertEntity(userGroupAssignment2);
+
+            // true
+            Console.WriteLine(testITACore.AccessControl(new List<UserGroupAssignmentsEntity>() { userGroupAssignment, userGroupAssignment2 }, new List<AppGroupAssignmentEntity>() { appGroupAssignment }, "8734cc8a-2e67-4a9f-b1aa-3306a5e62760_", "1a7249e7-fa56-4c47-83de-5048097bc510"));
+
+            var appGroupAssignment2 = new AppGroupAssignmentEntity("1a7249e7-fa56-4c47-83de-5048097bc510_", "f8541113-c54b-4eab-af59-77b0eeef3617_");
+            appGroupAssignment2.AppName = "Console App for Azure AD_";
+            appGroupAssignment2.GroupName = "MyGroup";
+            appGroupAssignment2.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            appGroupAssignment2.OperationTypes = OperationTypes.Read.ToString();
+            appGroupAssignmentOperation.InsertEntity(appGroupAssignment2);
+
+            var userGroupAssignment31 = new UserGroupAssignmentsEntity("8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "f8541113-c54b-4eab-af59-77b0eeef3617_");
+            userGroupAssignment2.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignment2.GroupName = "MyGroup";
+            userGroupAssignment2.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignmentOperation.InsertEntity(userGroupAssignment2);
+
+            var userGroupAssignment32 = new UserGroupAssignmentsEntity("8734cc8a-2e67-4a9f-b1aa-3306a5e62760_", "f8541113-c54b-4eab-af59-77b0eeef3617_");
+            userGroupAssignment2.UserPrincipleName = "testuu@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignment2.GroupName = "MyGroup";
+            userGroupAssignment2.UpdatedBy = "admin@jianwmfatest.partner.onmschina.cn";
+            userGroupAssignmentOperation.InsertEntity(userGroupAssignment2);
+
+            // true
+            Console.WriteLine(testITACore.AccessControl(new List<UserGroupAssignmentsEntity>() { userGroupAssignment, userGroupAssignment2, userGroupAssignment31 }, new List<AppGroupAssignmentEntity>() { appGroupAssignment, appGroupAssignment2 }, "8734cc8a-2e67-4a9f-b1aa-3306a5e62760", "1a7249e7-fa56-4c47-83de-5048097bc510_"));
+
+            // true
+            Console.WriteLine(testITACore.AccessControl(new List<UserGroupAssignmentsEntity>() { userGroupAssignment, userGroupAssignment2, userGroupAssignment32 }, new List<AppGroupAssignmentEntity>() { appGroupAssignment, appGroupAssignment2 }, "8734cc8a-2e67-4a9f-b1aa-3306a5e62760_", "1a7249e7-fa56-4c47-83de-5048097bc510_"));
 
         }
     }

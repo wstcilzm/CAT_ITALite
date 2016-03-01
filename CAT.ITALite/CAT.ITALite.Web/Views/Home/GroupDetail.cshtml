@@ -1,0 +1,127 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "GroupDetail";
+}
+
+<script type="text/javascript">
+    $(function () {
+        var isRemoving = false;
+        var groupDetail = {
+            panel: $('.group-panel'),
+            userGrid: $('.user-grid'),
+            appGrid: $('.app-grid'),
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
+                    groupDetail.load();
+                });
+            },
+            load: function () {
+                groupDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + 'api/group/' + '@ViewBag.groupID' + '/users',
+                    traditional: true,
+                    success: function (d) {
+                        groupDetail.bindUserData(d.result);
+                        groupDetail.panel.vloading('hide');
+                    },
+                    error: function (d) {
+                        alert(d);
+                        groupDetail.panel.vloading('hide');
+                    }
+                });
+
+                $.ajax({
+                    type: "GET",
+                    url: vstorm.getApiServerUrl() + 'api/group/' + '@ViewBag.groupID' + '/applications',
+                    traditional: true,
+                    success: function (f) {
+                        groupDetail.bindAppData(f.result);
+                        groupDetail.panel.vloading('hide');
+                    },
+                    error: function (f) {
+                        alert(d);
+                        groupDetail.panel.vloading('hide');
+                    }
+                })
+            },
+            bindUserData: function (data) {
+                groupDetail.userGrid.vgrid('bindData', data);
+            },
+            bindAppData: function(data){
+                groupDetail.appGrid.vgrid('bindData',data);
+            },
+            getAppGridSetting: function () {
+                var gridSetting = {
+                    caption: 'Group-Apps',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight *1 / 2,
+                    noDataMsg: 'No applications found',
+                    rp: 20,
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: false,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Group Name', field: 'GroupName', width: 2 },
+                        { caption: 'App Name', field: 'AppName', width: 4 },
+                        { caption: 'OperationType', field: 'OperationTypes', width: 2 },
+                        { caption: 'Updated By', field: 'UpdatedBy', width: 4 },
+                        { caption: 'App ID', field: 'PartitionKey', width: 4 },
+                        { caption: 'Group ID', field: 'RowKey', width: 4 }
+                    ]
+                };
+                return gridSetting;
+            },
+            getUserGridSetting: function () {
+                var gridSetting = {
+                    caption: 'Group-Users <img src="../../Content/images/back.png" class="BackBtnStyle" />',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight * 1 / 2,
+                    noDataMsg: 'No users found',
+                    rp: 20,
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: false,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Group Name', field: 'GroupName', width: 2 },
+                        { caption: 'User PrincipleName', field: 'UserPrincipleName', width: 4 },
+                        { caption: 'Updated By', field: 'UpdatedBy', width: 2 },
+                        { caption: 'Group ID', field: 'RowKey', width: 4 },
+                        { caption: 'User ID', field: 'PartitionKey', width: 4 },
+                    ]
+                };
+                return gridSetting;
+            },
+
+            init: function () {
+                groupDetail.userGrid.vgrid(groupDetail.getUserGridSetting());
+                groupDetail.appGrid.vgrid(groupDetail.getAppGridSetting());
+                $(".user-grid").show();
+                $('.app-grid').show();
+                $('.BackBtnStyle').on("click", function (event) {
+                    event.preventDefault();
+                    history.back(-1);
+                });
+            },
+        };
+        groupDetail.init();
+        groupDetail.load();
+        groupDetail.createToolbar();        
+        window.groupDetail = groupDetail;
+    });
+
+</script>
+
+<div class="group-panel">
+    <div class="user-grid"></div>
+    <div class="app-grid"></div>
+</div>

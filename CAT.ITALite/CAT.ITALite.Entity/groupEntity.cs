@@ -40,4 +40,45 @@ namespace CAT.ITALite.Entity
         public bool RoleDisabled { get; set; }
         //public int MembersCount { get; set; }
     }
+
+    public class RBACRoleEntity : TableEntity
+    {
+        public RBACRoleEntity() { }
+
+        public RBACRoleEntity(string roleName, string backendName)
+        {
+            this.RowKey = roleName;
+            this.PartitionKey = backendName;
+        }
+
+        public string RoleID { get; set; }
+        public string TypeProperty { get; set; }
+        public string Description { get; set; }
+        public string AssignableScopes { get; set; }
+        public string Permissions { get; set; }
+        public string CreatedOn { get; set; }
+        public string UpdatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
+        public string Type { get; set; }
+
+    }
+
+    public class RMResourceGroupEntiry : TableEntity
+    {
+        public RMResourceGroupEntiry()
+        { }
+
+        public RMResourceGroupEntiry(string resourceGroupName, string location)
+        {
+            this.PartitionKey = resourceGroupName;
+            this.RowKey = location;
+        }
+
+        public string resourceGroupID { set; get; }
+        public string resourceGroupName { set; get; }
+        public string tags { set; get; }
+        public string properties { set; get; }
+    }
+
 }

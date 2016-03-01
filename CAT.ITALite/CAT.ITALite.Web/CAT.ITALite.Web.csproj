@@ -214,6 +214,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ITALiteAuthorize.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -238,9 +239,11 @@
     <Content Include="Content\christmas.css" />
     <Content Include="Content\Error.css" />
     <Content Include="Content\images\assign.png" />
+    <Content Include="Content\images\back.png" />
     <Content Include="Content\images\delete.jpg" />
     <Content Include="Content\screen.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\tabContainer.css" />
     <Content Include="Content\themes\base\images\add.png" />
     <Content Include="Content\themes\base\images\All.png" />
     <Content Include="Content\themes\base\images\azure\common.png" />
@@ -509,6 +512,14 @@
     <Content Include="Views\Home\AddGroup.cshtml" />
     <Content Include="Views\Home\Role.cshtml" />
     <Content Include="Views\Home\RolesUsers.cshtml" />
+    <Content Include="Views\Home\RBACRoleUsers.cshtml" />
+    <Content Include="Views\Home\Resource.cshtml" />
+    <Content Include="Views\Home\Setting.cshtml" />
+    <Content Include="Views\Home\ResourceGroups.cshtml" />
+    <Content Include="Views\Home\DynamicDetail.cshtml" />
+    <Content Include="Views\Home\GroupDetail.cshtml" />
+    <Content Include="Views\Home\QuickCreateAADGroup.cshtml" />
+    <Content Include="Views\Home\QuickCreateAADUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

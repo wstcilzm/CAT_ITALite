@@ -25,7 +25,7 @@
                 </div>
                 <div class="user">
                     <div class="summary">
-                        <div class="name">Admin@ITALite.com</div>
+                        <div class="name">@HttpContext.Current.User.Identity.Name</div><!--Admin@ITALite.com-->
                         <div class="photo" style="background:url(@{@PortalConfig.CurrentUser.PhotoUrl});
                              background-size: 30px; background-position:center">
                         </div>
@@ -50,7 +50,8 @@
                 </div>
                 <div class="command">
                     <div class="command-title">
-                        <button class="open disable" type="button" disabled>NEW</button>
+                        @*<button class="open disable" type="button" disabled>NEW</button>*@
+                        <button class="open" type="button">NEW</button>
                         <div id="command-toolbar" class="tools">
                         </div>
                         <div id="command-subtoolbar"></div>

@@ -10,6 +10,7 @@ using CAT.ITALite.Common;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System.Threading;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace testClientConsole
 {
@@ -17,7 +18,9 @@ namespace testClientConsole
     {
         static void Main(string[] args)
         {
-            callChinaAzureREST();
+
+            GetRMResources();
+            //callChinaAzureREST();
 
             //callRESTAPI();
             Console.Read();
@@ -50,7 +53,10 @@ namespace testClientConsole
 
         static void callChinaAzureREST()
         {
-            CallServiceManagementApi();
+            GetRMAssignments();
+            //GetRMRoles();
+            //CallAzureResourceManagerApi();
+            //CallServiceManagementApi();
         }
 
 
@@ -148,7 +154,7 @@ namespace testClientConsole
         {
             string _subscriptionId = "03042fd8-7b09-4c73-9217-0dcea66ede69";
             var client = new HttpClient();
-            var header = GetAuthorizationHeader();
+            var header = GetAuthorizationHeader2();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
 
             try
@@ -165,6 +171,114 @@ namespace testClientConsole
                 Console.WriteLine(ex.ToString());
             }
         }
+
+
+        public static async Task GetRMRoles()
+        {
+            string _subscriptionId = "03042fd8-7b09-4c73-9217-0dcea66ede69";
+            var client = new HttpClient();
+            var header = GetAuthorizationHeader2();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var result = await
+                client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/providers/Microsoft.Authorization/roleDefinitions?api-version=2015-07-01&filter=atScopeAndBelow()",
+                        _subscriptionId));
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;       
+                while(jTk!=null)
+                {
+                    Console.WriteLine("===" + jTk["properties"]["roleName"].ToString() + "===");
+                    Console.WriteLine(jTk["properties"]["type"].ToString());
+                    Console.WriteLine(jTk["properties"]["description"].ToString());
+                    Console.WriteLine(jTk["properties"]["createdOn"].ToString());
+                    Console.WriteLine(jTk["properties"]["updatedOn"].ToString());
+                    Console.WriteLine(jTk["properties"]["createdBy"].ToString());
+                    Console.WriteLine(jTk["properties"]["updatedBy"].ToString());
+                    Console.WriteLine(jTk["id"].ToString());
+                    Console.WriteLine(jTk["name"].ToString());
+                    Console.WriteLine(jTk["type"].ToString());
+                    Console.WriteLine(jTk["properties"]["permissions"].ToString());
+
+                    jTk = jTk.Next;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }     
+        }
+
+
+        public static async Task GetRMAssignments()
+        {
+            string _subscriptionId = "03042fd8-7b09-4c73-9217-0dcea66ede69";
+            var client = new HttpClient();
+            var header = GetAuthorizationHeader2();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var result = await
+                client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/providers/Microsoft.Authorization/roleAssignments?api-version=2015-07-01&filter=atScope()",
+                        _subscriptionId));
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;
+                while (jTk != null)
+                {
+                    Console.WriteLine("===" + jTk["properties"]["roleDefinitionId"].ToString() + "===");
+                    Console.WriteLine(jTk["properties"]["principalId"].ToString());
+                    Console.WriteLine(jTk["properties"]["scope"].ToString());
+                    Console.WriteLine(jTk["properties"]["createdOn"].ToString());
+                    Console.WriteLine(jTk["properties"]["updatedOn"].ToString());
+                    Console.WriteLine(jTk["properties"]["createdBy"].ToString());
+                    Console.WriteLine(jTk["properties"]["updatedBy"].ToString());
+                    Console.WriteLine(jTk["id"].ToString());
+                    Console.WriteLine(jTk["type"].ToString());
+                    Console.WriteLine(jTk["name"].ToString());
+
+                    jTk = jTk.Next;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }   
+        }
+
+        public static async Task GetRMResources()
+        {
+            string _subscriptionId = "03042fd8-7b09-4c73-9217-0dcea66ede69";
+            var client = new HttpClient();
+            var header = GetAuthorizationHeader2();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", header);
+
+            try
+            {
+                var result = await
+                client.GetStringAsync(
+                    String.Format(
+                        "https://management.chinacloudapi.cn/subscriptions/{0}/resources?api-version=2015-01-01",
+                        _subscriptionId));
+
+                JObject jObj = JObject.Parse(result);
+                JToken jTk = jObj.GetValue("value").First;
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }   
+        }
+
 
     }
 }
