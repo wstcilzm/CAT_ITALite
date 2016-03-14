@@ -21,7 +21,7 @@
                 userDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/user/{userId}/groups?userId='+'@ViewBag.userID',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/{userId}/groups?userId='+'@ViewBag.userID',
                     traditional: true,
                     success: function (d) {
                         var groups = "";
@@ -30,6 +30,9 @@
                             var group = d.result[i];
                             group.del = '<a href="#" onclick="userDetail.verifyRemove(' + i + ');return false;">remove</a>';
                             group.GroupLevel = 1;
+                            var groupID = group.RowKey;
+                            var groupName = group.GroupName;
+                            d.result[i].GroupName = '<a href="#" onclick="userDetail.linkToGroupInfo(' + '\'' + groupID + '\');return false;">' + groupName + '</a>';
                             //groups += group.UserPrincipleName + "," + group.RowKey + ";";
                             groups += group.RowKey + "," ;
                         }
@@ -38,9 +41,16 @@
                             groups += d.result[0].UserPrincipleName; //groups : ID1,ID2...IDN,UserPrincipleName; 
                             $.ajax({
                                 type: "GET",
-                                url: vstorm.getApiServerUrl() + 'api/user/' + groups + '/apps',
+                                url: ' @CommonHelper.GetWebAPiUrl()' + 'api/user/' + groups + '/apps',
                                 traditional: true,
                                 success: function (f) {
+                                    if (f.result) {
+                                        for (var i = 0; i < f.result.length; i++) {
+                                            var appName = f.result[i].AppName;
+                                            var appID = f.result[i].PartitionKey.toString();
+                                            f.result[i].AppName = '<a href="#" onclick="userDetail.linkToAppInfo(' + '\'' + appID + '\');return false;">' + appName + '</a>';
+                                        }
+                                    }
                                     userDetail.bindAppData(f.result);
                                     userDetail.panel.vloading('hide');
                                 }
@@ -66,7 +76,7 @@
             {
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + 'api/assignment/removeuserfromgroup?userId='+userid+'&groupId='+groupid,
+                    url: ' @CommonHelper.GetWebAPiUrl()' + 'api/assignment/removeuserfromgroup?userId='+userid+'&groupId='+groupid,
                     traditional: true,
                     success: function () {
                         userDetail.load();
@@ -98,7 +108,7 @@
                 userDetail.init();
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + 'api/assignment/removeuserfromgroup?userId=' + userGroups[index].PartitionKey + '&groupId=' + userGroups[index].RowKey,
+                    url: ' @CommonHelper.GetWebAPiUrl()' + 'api/assignment/removeuserfromgroup?userId=' + userGroups[index].PartitionKey + '&groupId=' + userGroups[index].RowKey,
                     traditional: true,
                     success: function () {
                         userDetail.load();
@@ -176,6 +186,12 @@
                     history.back(-1);
                 });
             },
+            linkToAppInfo: function (appID) {
+                window.location = "../../Home/AppsGroups?appId=" + appID;
+            },
+            linkToGroupInfo: function (groupID) {
+                self.location = "../../Home/GroupDetail?id=" + groupID;
+            }
         };
         userDetail.init();
         userDetail.load();

@@ -22,6 +22,12 @@
                     window.location = "../Home/AssignAppToGroup?apps=" + JSON.stringify(arra);
                         
                 });
+                if ('@ViewBag.apps' != "") {
+                    var actionID = 'assignApp', title = 'Assign app To Group.';
+                    layout.collapseCmdPanel();
+                    layout.action.create(actionID, { title: title });
+                    layout.action.success(actionID, 'Add apps to group successful ！');
+                }
             },
             initEvent: function () {
             },
@@ -29,7 +35,7 @@
                 app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/application/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/application/list',
                     traditional: true,
                     success: function (d) {
                         app.bindData(d.result);
@@ -45,8 +51,8 @@
             //{
             //    $.ajax({
             //        type: "GET",
-            //        //url: vstorm.getApiServerUrl() + '/api/application/' + selectedRow.attr('appId') + '/groups',
-            //        url: vstorm.getApiServerUrl() + '/api/group/list',
+            //        //url: ' @CommonHelper.GetWebAPiUrl()' + '/api/application/' + selectedRow.attr('appId') + '/groups',
+            //        url: ' @CommonHelper.GetWebAPiUrl()' + '/api/group/list',
             //        traditional: true,
             //        success: function (d) {
             //            app.appsGroup.vgrid('bindData', d.result);

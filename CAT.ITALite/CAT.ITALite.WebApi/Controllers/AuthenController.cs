@@ -7,11 +7,12 @@ using CAT.ITALite.Common;
 namespace CAT.ITALite.WebApi.Controllers
 {
 
-    [Authorize]
+    
     public class AuthenController : Controller
     {
         public static Dictionary<string,AuthData> IDsDic = new Dictionary<string,AuthData>();
 
+        [Authorize]
         // GET: Authen
         public string Index()
         {
@@ -44,5 +45,15 @@ namespace CAT.ITALite.WebApi.Controllers
             
         }
 
+        [Authorize]
+        public ActionResult test()
+        {
+            //return "Authenticated! Welcome to ITALite.";
+
+            return View();
+        }
+
     }
+
+
 }

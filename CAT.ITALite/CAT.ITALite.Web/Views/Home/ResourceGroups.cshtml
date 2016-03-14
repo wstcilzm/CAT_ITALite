@@ -13,13 +13,42 @@
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
                     resourceGroup.load();
                 });
+
+                t.add('DelGroup', 'DelGroup', 'toolbar-delete', function () {
+                    var selectedRows = resourceGroup.grid.vgrid('selectedRows');
+                    if (selectedRows.length < 1) {
+                        var errorId = 1;
+                        var title = 'Must selecte items for delete!';
+                        layout.action.create(errorId, { title: title });
+                        layout.action.warning(errorId, 'At least one item must be selected!');
+                        return;
+                    }
+                    deleteGroup();
+                });
+                function deleteGroup() {
+                    layout.confirm('Remove this Group?', yesToDeleteGroup, null);
+                }
+
+                function yesToDeleteGroup() {
+                    //var arra = [];
+                    //var selectedRows = user.grid.vgrid('selectedRows');
+                    //selectedRows.each(function () {
+                    //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
+                    //});
+                    var succId = 0;
+                    var title = "Operation was denied due to insufficient privilege, please contact admin of the ITALite！";
+                    layout.action.create(succId, { title: title });
+                    layout.action.error(succId, 'delete Group.....');
+                };
             },
+
+
 
             load: function () {
                 resourceGroup.panel.css({ 'min-height': layout.contantHeight , 'max-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/RMResource/listGroups',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/RMResource/listGroups',
                     traditional: true,
                     success: function (d) {
                         resourceGroup.bindData(d.result);
@@ -58,7 +87,8 @@
                         ev.stopPropagation();
                         var tr = $(this).parent();
                         var groupID = tr.attr('groupName');
-                        self.location = "../../Home/Resource?groupID=" + groupID;
+                        var resGroupID = tr.attr('groupID');
+                        self.location = "../../Home/Resource?groupID=" + groupID+'&resGroupID='+resGroupID;
                     }
                 };
                 return gridSetting;

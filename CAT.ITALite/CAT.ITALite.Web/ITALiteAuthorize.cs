@@ -11,6 +11,8 @@ using System.Web.Security;
 
 namespace CAT.ITALite.Web
 {
+
+
     public class ITALiteAuthorize : System.Web.Mvc.AuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -37,11 +39,11 @@ namespace CAT.ITALite.Web
         protected override void HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext filterContext)
         {
             string AK = HttpContext.Current.Request.QueryString["AK"];
-            string Uri = HttpContext.Current.Request.Url.AbsoluteUri;
+            string Uri = System.Configuration.ConfigurationManager.AppSettings["ReturnRelyingUri"];
 
             if (string.IsNullOrEmpty(AK))
             {
-                string authServerUri = "http://localhost:33042/authen/index?Uri=" + Uri + "ITALiteAuth/ITALogon";           
+                string authServerUri = System.Configuration.ConfigurationManager.AppSettings["AuthenServer"] + "authen/index?Uri=" + Uri + "ITALiteAuth/ITALogon";           
                 filterContext.Result = new RedirectResult(authServerUri);
             }
         }
@@ -56,15 +58,16 @@ namespace CAT.ITALite.Web
 
                 ITALogonModel serializeModel = JsonConvert.DeserializeObject<ITALogonModel>(authTicket.UserData);
                 ITALitePrincipal newUser = new ITALitePrincipal(authTicket.Name);
-                newUser.UserID = serializeModel.ObjectId;
-                newUser.UserSurName = serializeModel.Surname;
-                newUser.UserGivenName = serializeModel.GivenName;
-
-                HttpContext.Current.User = newUser;
+                if (null != newUser && null != serializeModel)
+                {
+                    newUser.UserID = serializeModel.ObjectId;
+                    newUser.UserSurName = serializeModel.Surname;
+                    newUser.UserGivenName = serializeModel.GivenName;
+                    HttpContext.Current.User = newUser;
+                }
             }
         }
     }
-
 
     public class ITALiteAuthController : Controller
     {
@@ -79,7 +82,7 @@ namespace CAT.ITALite.Web
                 {
                     using (var client = new HttpClient())
                     {
-                        client.BaseAddress = new Uri("http://localhost:33042/");
+                        client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["AuthenServer"]);
                         client.DefaultRequestHeaders.Accept.Clear();
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -119,10 +122,31 @@ namespace CAT.ITALite.Web
                         }
 
                     }
-                }                
+                }
             }
             return "hello, world.";
         }
+
+        [ITALiteAuthorize]
+        public string ITALogout()
+        {
+            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,"null",DateTime.Now,DateTime.Now.AddDays(-1),false,"null");
+            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+
+            string returnUri = System.Configuration.ConfigurationManager.AppSettings["ReturnRelyingUri"] + "ITALiteAuth/ITALite";
+            Response.Redirect(System.Configuration.ConfigurationManager.AppSettings["AuthenServer"] + "Account/SignOut?Uri=" + returnUri);
+
+            return "Welcome to ITALite.";
+        }
+
+        public string ITALite()
+        {
+            Response.Redirect("~/Views/WebForm/ITALiteInfo.html");
+            return "Hello, ITALite.";
+        }
+
     }
 
 

@@ -674,8 +674,8 @@
         hide: function () {
             return this.each(function () {
                 var t = $(this);
-                var data = t.data('vaction');
-                var g = data.setting;
+                //var data = t.data('vaction');
+                //var g = data.setting;
                 //t.animate({ 'height': '0px' }, g.timmer);
                 t.hide();
             });
@@ -1632,9 +1632,9 @@
                         g.contentPanel.hide();
                     }
                     if (disable) {
-                        g.infoPanel.text(g.disableDescription);
+                        g.infoPanel.html(g.disableDescription);
                     } else {
-                        g.infoPanel.text(menu.description);
+                        g.infoPanel.html(menu.description);
                     }
                     g.infoPanel.show();
                 }, function (ev) {

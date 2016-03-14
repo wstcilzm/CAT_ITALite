@@ -44,7 +44,7 @@
                 user.bindData(users);
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/group/list',
                     traditional: true,
                     success: function (d) {
                         var optionstring = "";
@@ -143,26 +143,33 @@
         };
         $('.assignToGroup').click(function()
         {
+            var actionID = 'assignUser', title = 'Assign User To Group.';
+            layout.collapseCmdPanel();
+            layout.action.create(actionID, { title: title });
+            var userArr='';
             var groupId = $("#userGroup").val();
             var groupName=$("#userGroup option:selected").text();
             if(groupId=='Choose')
             {
-                alert('Please choose your group');
+                layout.action.error(actionID, 'Please choose a group ！');
                 return;
             }
             for (var i = 0; i < users.length; i++) {
+                userArr+=users[i].RowKey+';';
                 $.ajax({
                     type: 'Get',
-                    url: vstorm.getApiServerUrl() + '/api/assignment/addusertogroup?userId=' + users[i].PartitionKey + '&userName='+users[i].RowKey+ '&groupId=' + groupId + '&groupName='+groupName,
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/assignment/addusertogroup?userId=' + users[i].PartitionKey + '&userName='+users[i].RowKey+ '&groupId=' + groupId + '&groupName='+groupName,
                     success: function (r) {
-                        alert("Add users to group successfully!");
+                        
+                        //alert("Add users to group successfully!");
                     },
                     error: function (e) {
-                        alert("Add users failed!");
+                        //alert("Add users failed!");
                     }
                 });
             };
-            window.location = '../../Home/User';
+            layout.action.success(actionID, 'Add users to group successful ！');
+            window.location = '../../Home/User?users='+userArr;
         });
         user.init();
         user.load();

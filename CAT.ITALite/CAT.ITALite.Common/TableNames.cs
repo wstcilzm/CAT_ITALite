@@ -14,7 +14,9 @@ namespace CAT.ITALite.Common
         public static string UserAdminRoleAssignments = ConfigurationManager.AppSettings["tableNamePrefix"] + "UserAdminRoleAssignments";
         public static string RBACRoles = ConfigurationManager.AppSettings["tableNamePrefix"] + "RBACRoles";
         public static string UserRBACRoleAssignments = ConfigurationManager.AppSettings["tableNamePrefix"] + "UserRBACRoleAssignments";
+        public static string RGRBACRoleAssignments = ConfigurationManager.AppSettings["tableNamePrefix"] + "RgRBACRoleAssignments";
         public static string RMResources = ConfigurationManager.AppSettings["tableNamePrefix"] + "RMResources";
         public static string RMResourceGroups = ConfigurationManager.AppSettings["tableNamePrefix"] + "RMResourceGroups";
+
     }
 }

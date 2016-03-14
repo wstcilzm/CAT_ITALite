@@ -4,13 +4,16 @@
 
 <script type="text/javascript">
     $(function () {
+        var passWordAreShow = false;
         var quick = {
+            
             panel: $('#quickCreateHVM'),
             button: $('#btnQuickCreate'),
+            checkbox:$('#passWord'),
             validate: function () {
                 return $('input,select', this.panel).vvalidate('validate') == 'success';
             },
-            getVMParams: function () {
+            getUserParams: function () {
                 var params = {};
                 $('input[name],select[name]', this.panel).each(function () {
                     var t = $(this);
@@ -20,10 +23,56 @@
             },
             initEvent: function () {
                 var actionID = 'quickCreate', title = 'Quick Create AAD USER';
+                this.checkbox.click(function () {
+                    passWordAreShow = !passWordAreShow;
+                    if (passWordAreShow) {
+                        $("#tr-passWord1").show();
+                        $("#tr-passWord2").show();
+                    }
+                    else {
+                        $("#tr-passWord1").hide();
+                        $("#tr-passWord2").hide();
+                    }
+                    
+                });
                 this.button.click(function () {
+                    var data = quick.getUserParams();
+                    data.RowKey = data.userName + '@@' + data.userDomain;
+                    data.PartitionKey = '@Guid.NewGuid()';
                     layout.collapseCmdPanel();
                     layout.action.create(actionID, { title: title });
-                    layout.action.success(actionID, 'Successfully Create Group！');
+
+
+                    //if (passWordAreShow) {
+                    //    if (data.passWord1 !=data.passWord2) {
+                    //        layout.action.error(actionID, 'The passWord input twice is not same!');
+                    //        return;
+                    //    }
+                    //    data.Password = data.passWord1;
+                    //    data.ForceChangePwd = $("#ForceChangePwd").attr("checked")=="checked"?true:false;
+                    //}
+                    //else {
+                    //    data.ForceChangePwd = false;
+                    //    data.Password = "";
+                    //}
+                    //$.ajax({
+                    //    type: "Post",
+                    //    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/add',
+                    //    data: data,
+                    //    traditional: true,
+                    //    success: function (d) {
+                    //        layout.action.success(actionID, 'Add User successful!');
+                    //        return;
+                    //    },
+                    //    error: function (d) {
+                    //        layout.action.error(actionID, d.result);
+                    //    }
+                    //});
+
+
+
+                    layout.action.error(actionID, 'Operation was denied due to insufficient privilege, please contact admin of the ITALite！');
+                    
                     return;
                 });
             }
@@ -39,10 +88,56 @@
             </td>
             <td colspan="3">
                 <div>
-                    <input type="text" name="userName" />
+                    <input type="text" name="userName"  style="width:295px;float:left;"/>
+                    <label style="margin-left:0px;margin-right:0px;float:left;margin-top:8px;" >@@</label>
+                    <select name="userDomain" id="userDomain" style="float:left;">
+                        <option value="jianwmfatest.partner.onmschina.cn">jianwmfatest.partner.onmschina.cn</option>
+                    </select>
+                </div>
+                
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>FIRST NAME:</span></div>
+            </td>
+            <td>
+                <div><input type="text" name="fisrtName" style="width:218px;float:left;" /></div>
+            </td>
+            <td>
+                <div><span>LAST NAME:</span></div>
+            </td>
+            <td>
+                <div><input type="text" name="lastName" style="width:180px;float:left;" /></div>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <div><span>USER TYPE:</span></div>
+            </td>
+            <td>
+                <div>
+                    <select name="UserType" id="userType" style="float:left;width:228px;">
+                        <option value="Member">New user in your organization</option>
+                        <option value="Member">User IN Other AAD</option>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div><span>USER ROLE:</span></div>
+            </td>
+            <td>
+                <div>
+                    <select id="userRole" style="float:left;width:190px;">
+                        <option value="volvo">User</option>
+                        <option value="saab">Global Admin</option>
+                    </select>
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
                 <div><span>DISPLAY NAME:</span></div>
@@ -56,16 +151,40 @@
 
         <tr>
             <td>
-                <div><span>MAILNICK NAME:</span></div>
+                <div><span>PASSWORD:</span></div>
             </td>
             <td colspan="3">
                 <div>
-                    <input type="text" name="ImageName" />
+                    <input type="checkbox" id="passWord" />
                 </div>
             </td>
         </tr>
 
-
+        <tr id="tr-passWord1" style="display:none;">
+            <td>
+                <div><span>INPUT PASSWORD:</span></div>
+            </td>
+            <td>
+                <div><input type="password" name="passWord1" style="width:218px;float:left;" /></div>
+            </td>
+            <td>
+                <div><span>CONFIRM:</span></div>
+            </td>
+            <td>
+                <div><input type="password" name="passWord2" style="width:180px;float:left;" /></div>
+            </td>
+        </tr>
+               
+        <tr id="tr-passWord2" style="display:none;">
+            <td>
+                <div><span>ForceChangePwd:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="checkbox" name="ForceChangePwd" id="ForceChangePwd" />
+                </div>
+            </td>
+        </tr>
 
         <tr>
             <td colspan="4" class="buttons">

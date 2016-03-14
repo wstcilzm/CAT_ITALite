@@ -21,7 +21,7 @@
                 user.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/role/' + '@ViewBag.roleId' + '/users',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/role/' + '@ViewBag.roleId' + '/users',
                     traditional: true,
                     success: function (d) {
                         user.bindData(d.result);

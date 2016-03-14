@@ -11,9 +11,9 @@
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
                     app.load();
                 });
-                t.add('AddGroup', 'AddGroup', 'toolbar-add', function () {
-                    $('.assign-group-wizard').load('../Home/AddGroup');
-                });
+                //t.add('AddGroup', 'AddGroup', 'toolbar-add', function () {
+                //    $('.assign-group-wizard').load('../Home/AddGroup');
+                //});
 
                 t.add('DelGroup', 'DelGroup', 'toolbar-delete', function () {
                     var selectedRows = app.grid.vgrid('selectedRows');
@@ -38,9 +38,9 @@
                     //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
                     //});
                     var succId = 0;
-                    var title="Delete Successful！";
+                    var title = "Operation was denied due to insufficient privilege, please contact admin of the ITALite！";
                     layout.action.create(succId, { title: title });
-                    layout.action.success(succId,'delete group.....');
+                    layout.action.error(succId, 'delete group.....');
                 };
             },
             initEvent: function () {
@@ -49,7 +49,7 @@
                 app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/group/list',
                     traditional: true,
                     success: function (d) {
                         app.bindData(d.result);

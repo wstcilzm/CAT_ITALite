@@ -395,64 +395,119 @@
                 $('.command-menu').vshellmenu({
                     features: data,
                     disableDescription: 'This feature is not enable, please contact group admin to enable it on Administrator page Feature tab',
+                    //introductionOfITA:'<br>Why ITALite? <br> - Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph mining.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language ',
                     menus: [
                         {
                             feature: 'AAD Apps',
                             text: 'AAD APP',
                             css: 'item-hyperv-vm',
-                            description: 'Create an AAD APP.',
+                            description: 'Create an AAD APP.' + '<br><br>Why ITALite? <br>- Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph minign.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language',
                             menus: [{
-                                text: 'Custom Create', css: 'item-customcreate',
-                                description: 'Create an AAD APP follow a wizard.',
-                                handler: function () {
-                                    popupCreationView('../../VM/CreateHyperVVM');
-                                }
-                            },
-                                {
                                     text: 'Quick Create', css: 'item-quickcreate',
                                     description: 'Quick create an AAD APP.',
-                                    url: '../../VM/QuickCreateHyperVVM',
-                                }
+                                    url: '../Home/QuickCreateAADApp',
+                            },
+                            //{
+                            //    text: 'Custom Create', css: 'item-customcreate',
+                            //    description: 'Create an AAD APP follow a wizard.',
+                            //    handler: function () {
+                            //        popupCreationView('../Home/AddApp');
+                            //    }
+                            //}
                             ]
                         },
                         {
                             feature: 'AAD Groups',
                             text: 'AAD GROUP',
                             css: 'item-hyperv-vm',
-                            description: 'Create an AAD GROUP.',
-                            menus: [{
-                                text: 'Custom Create', css: 'item-customcreate',
-                                description: 'Create an AAD GROUP follow a wizard.',
-                                handler: function () {
-                                    popupCreationView('../Home/AddGroup');
-                                }
-                            },
-                                {
+                            description: 'Create an AAD GROUP.' + '<br><br>Why ITALite? <br>- Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph minign.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language',
+                            menus: [ {
                                     text: 'Quick Create', css: 'item-quickcreate',
                                     description: 'Quick create an AAD GROUP.',
                                     url: '../Home/QuickCreateAADGroup',
-                                }
+                            },
+                            //{
+                            //    text: 'Custom Create', css: 'item-customcreate',
+                            //    description: 'Create an AAD GROUP follow a wizard.',
+                            //    handler: function () {
+                            //        popupCreationView('../Home/AddGroup');
+                            //    }
+                            //}
                             ]
                         },
                         {
                             feature: 'AAD Users',
                             text: 'AAD USER',
                             css: 'item-hyperv-vm',
-                            description: 'Create an AAD User.',
+                            description: 'Create an AAD User.' + '<br><br>Why ITALite? <br>- Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph minign.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language',
                             menus: [{
-                                text: 'Custom Create', css: 'item-customcreate',
-                                description: 'Create an AAD User follow a wizard.',
-                                handler: function () {
-                                    popupCreationView('../Home/AddUser');
-                                }
-                            },
-                                {
                                     text: 'Quick Create', css: 'item-quickcreate',
                                     description: 'Quick create an AAD User.',
                                     url: '../Home/QuickCreateAADUser',
-                                }
+                            },
+                            //{
+                            //    text: 'Custom Create', css: 'item-customcreate',
+                            //    description: 'Create an AAD User follow a wizard.',
+                            //    handler: function () {
+                            //        popupCreationView('../Home/AddUser');
+                            //    }
+                            //}
                             ]
-                        },
+                        }, {
+                            feature: 'Roles',
+                            text: 'AAD AdminRole',
+                            css: 'item-hyperv-vm',
+                            description: 'Create an AAD AdminRole.' + '<br><br>Why ITALite? <br>- Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph minign.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language',
+                            menus: [{
+                                text: 'Quick Create', css: 'item-quickcreate',
+                                description: 'Quick create an AAD AdminRole.',
+                                url: '../Home/QuickCreateAdminRole',
+                            },
+                            //{
+                            //    text: 'Custom Create', css: 'item-customcreate',
+                            //    description: 'Create an AAD AdminRole follow a wizard.',
+                            //    handler: function () {
+                            //        popupCreationView('../Home/AddAdminRole');
+                            //    }
+                            //}
+                            ]
+                        }, {
+                            feature: 'Roles',
+                            text: 'RBAC Role',
+                            css: 'item-hyperv-vm',
+                            description: 'Create a RBAC Role.' + '<br><br>Why ITALite? <br>- Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph minign.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language',
+                            menus: [{
+                                text: 'Quick Create', css: 'item-quickcreate',
+                                description: 'Quick create a RBAC Role.',
+                                url: '../Home/QuickCreateRBACRole',
+                            },
+                            //{
+                            //    text: 'Custom Create', css: 'item-customcreate',
+                            //    description: 'Create a RBAC Role follow a wizard.',
+                            //    handler: function () {
+                            //        popupCreationView('../Home/AddRBACRole');
+                            //    }
+                            //}
+                            ]
+                        }, {
+                            feature: 'RM Groups',
+                            text: 'RM Group',
+                            css: 'item-hyperv-vm',
+                            description: 'Create a RM Group.' + '<br><br>Why ITALite? <br>- Centralized Authentication and Authorization service for all Apps relying on same AAD (from MS ITA product) <br>- Intelligent AAD explorer for AAD/ARM management and operations with auto syncing and graph minign.<br>- Portal based configure and wizard enabling fast deploy and integration for apps of all language',
+                            menus: [{
+                                text: 'Quick Create', css: 'item-quickcreate',
+                                description: 'Quick create a RM Group.',
+                                url: '../Home/QuickCreateARMResources',
+                            },
+                            //{
+                            //    text: 'Custom Create', css: 'item-customcreate',
+                            //    description: 'Create an ARM Resource follow a wizard.',
+                            //    handler: function () {
+                            //        popupCreationView('../Home/AddARMResources');
+                            //    }
+                            //}
+                            ]
+                        }
                         
                     ]
                 });

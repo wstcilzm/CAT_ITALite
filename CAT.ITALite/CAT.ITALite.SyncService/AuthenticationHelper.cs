@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Azure.ActiveDirectory.GraphClient;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using System.Configuration;
 
 namespace CAT.ITALite.SyncService
 {
@@ -14,16 +15,18 @@ namespace CAT.ITALite.SyncService
         {
             //
             string _aadTenantDomain = "cciccat.partner.onmschina.cn";
+            _aadTenantDomain = ConfigurationSettings.AppSettings["_aadTenantDomain"];
             //_aadTenantDomain = "cciccat.com";
             string _aadClientId = "9adbfe5e-2252-4d26-a3ad-68bbd1e25963";
+            _aadClientId = ConfigurationSettings.AppSettings["_aadClientId"];
 
             AuthenticationResult result = null;
             var context = new AuthenticationContext("https://login.chinacloudapi.cn/" + _aadTenantDomain);
 
             // Directly specify the username and password. 
             var credential = new UserCredential(
-                "jianw@cciccat.partner.onmschina.cn",
-                "User@123");
+                ConfigurationSettings.AppSettings["CoAdminUser"],
+                ConfigurationSettings.AppSettings["CoAdminPassword"]);
             result = context.AcquireToken(
                 "https://management.core.chinacloudapi.cn/",
                 _aadClientId,

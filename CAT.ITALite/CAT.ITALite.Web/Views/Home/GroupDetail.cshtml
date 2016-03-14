@@ -20,9 +20,16 @@
                 groupDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + 'api/group/' + '@ViewBag.groupID' + '/users',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + 'api/group/' + '@ViewBag.groupID' + '/users',
                     traditional: true,
                     success: function (d) {
+                        if (d.result) {
+                            for (var i = 0; i < d.result.length; i++) {
+                                var userName = d.result[i].UserPrincipleName;
+                                var userID = d.result[i].PartitionKey.toString();
+                                d.result[i].UserPrincipleName = '<a href="#" onclick="groupDetail.linkToUserInfo(' + '\'' + userID + '\');return false;">' + userName + '</a>';
+                            }
+                        }
                         groupDetail.bindUserData(d.result);
                         groupDetail.panel.vloading('hide');
                     },
@@ -34,9 +41,16 @@
 
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + 'api/group/' + '@ViewBag.groupID' + '/applications',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + 'api/group/' + '@ViewBag.groupID' + '/applications',
                     traditional: true,
                     success: function (f) {
+                        if (f.result) {
+                            for (var i = 0; i < f.result.length; i++) {
+                                var appName = f.result[i].AppName;
+                                var appID = f.result[i].PartitionKey.toString();
+                                f.result[i].AppName = '<a href="#" onclick="groupDetail.linkToAppInfo(' + '\'' + appID + '\');return false;">' + appName + '</a>';
+                            }
+                        }
                         groupDetail.bindAppData(f.result);
                         groupDetail.panel.vloading('hide');
                     },
@@ -112,6 +126,12 @@
                     history.back(-1);
                 });
             },
+            linkToUserInfo: function (userID) {
+                self.location = "../../Home/UserDetail?id=" + userID;
+            },
+            linkToAppInfo: function (appID) {
+                window.location = "../../Home/AppsGroups?appId=" + appID;
+            }
         };
         groupDetail.init();
         groupDetail.load();

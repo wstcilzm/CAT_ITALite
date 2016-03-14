@@ -21,7 +21,7 @@
                 app.panel.css({ 'min-height': layout.contantHeight/4*1 }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/aad/getaad',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/aad/getaad',
                     traditional: true,
                     success: function (d) {
                         app.bindData(d.result);

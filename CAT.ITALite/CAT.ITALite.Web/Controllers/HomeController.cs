@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace CAT.ITALite.Web.Controllers
 {
-    //[ITALiteAuthorize]
+    [ITALiteAuthorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -13,8 +13,9 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
-        public ActionResult Application()
+        public ActionResult Application(string apps)
         {
+            ViewBag.apps = apps;
             return View();
         }
 
@@ -34,8 +35,9 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
-        public ActionResult User()
+        public ActionResult User(string users="")
         {
+            ViewBag.Users = users;
             return View();
         }
 
@@ -54,11 +56,40 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
+        public ActionResult AddApp()
+        {
+            return View();
+        }
+
+        public ActionResult QuickCreateAADApp()
+        {
+            return View();
+        }
+
         public ActionResult Role()
         {
             return View();
         }
 
+        public ActionResult AddRBACRole()
+        {
+            return View();
+        }
+
+        public ActionResult QuickCreateRBACRole()
+        {
+            return View();
+        }
+
+        public ActionResult AddAdminRole()
+        {
+            return View();
+        }
+
+        public ActionResult QuickCreateAdminRole()
+        {
+            return View();
+        }
         public ActionResult AssignUserToGroup(string users)
         {
             ViewBag.users = users;
@@ -100,8 +131,20 @@ namespace CAT.ITALite.Web.Controllers
         {
             return View();
         }
-        public ActionResult Resource(string groupID)
+
+        public ActionResult AddARMResources()
         {
+            return View();
+        }
+
+        public ActionResult QuickCreateARMResources()
+        {
+            return View();
+        }
+
+        public ActionResult Resource(string groupID,string resGroupID)
+        {
+            ViewBag.resGroupID = resGroupID;
             ViewBag.groupID = groupID;
             return View();
         }
@@ -113,7 +156,8 @@ namespace CAT.ITALite.Web.Controllers
 
         public ActionResult DynamicDetail(string param)
         {
-          ViewBag.param = param;
+            ViewBag.param = param;
+            //ViewBag.pageCaption = pageCaption;
             return View();
         }
     }

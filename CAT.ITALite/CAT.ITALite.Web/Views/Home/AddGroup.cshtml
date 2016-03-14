@@ -32,9 +32,9 @@
                         //    });
                         //};
                         var succId = 0;
-                        var title = "Create AAD Group Successful！";
+                        var title = "Operation was denied due to insufficient privilege, please contact admin of the ITALite！";
                         layout.action.create(succId, { title: title });
-                        layout.action.success(succId, 'Create AAD Group done');
+                        layout.action.error(succId, 'Create AAD Group done');
                         return true;
                     }
                 };

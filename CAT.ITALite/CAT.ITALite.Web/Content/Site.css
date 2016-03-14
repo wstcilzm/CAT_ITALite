@@ -1592,8 +1592,11 @@ confirmbar-item:hover {
         cursor: pointer;
         height: 32px;
         width: 32px;
-        margin-top: 15px;
         border: none;
+        /*margin-top: 15px;*/
+        margin-top:10px;
+        position:absolute;
+        padding-left:8px;
     }
 
     .vshell .command .command-body .button-close {
@@ -1629,11 +1632,11 @@ confirmbar-item:hover {
                 width: 400px;
                 display: inline-block;
                 vertical-align: top;
-                border: 1px solid white;
+                /*border: 1px solid white;*/
                 height: 300px;
-                margin: 30px;
+                margin: -8px 30px 30px 30px;
                 padding: 20px;
-                font-size: 20px;
+                font-size: 16px;
             }
 
             .vshell .command .command-body .command-content .command-menu .content-panel {

@@ -6,6 +6,9 @@
     a{
 text-decoration:none;
 }
+    .vgrid-filter-icon{
+        top:20px;
+    } 
 </style>
 
 <script type="text/javascript">
@@ -34,27 +37,34 @@ text-decoration:none;
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
                     role.load();
                 });
-                t.add('Detail', 'Detail', 'toolbar-showDetail', function (param) {
+                t.add('Detail', 'RoleDetail', 'toolbar-detail', function (param) {
                     var selectedRows;
                     var rowIndex = -1;
                     var jData;
+                    var pageCaption;
                     if (activeTab == "RBAC Role")
                     {
                         selectedRows = rbac.grid.vgrid('selectedRows');
                         rowIndex = rbac.grid.vgrid('rowIndex', rbac.grid.vgrid('selectedRows'));
                         jData = rbacRoleDetail[rowIndex];
+                        pageCaption = "RBAC Role Detail"
                     }
                     else
                     {
                         selectedRows = role.grid.vgrid('selectedRows');
                         rowIndex = role.grid.vgrid('rowIndex', role.grid.vgrid('selectedRows'));
                         jData = adminRoleDetail[rowIndex];
+                        pageCaption = "AAD AdminRole Detail";
                     }
                     if (selectedRows.length > 1 || selectedRows == 0) {
-                        alert("please select one row!");
+                        var actionID = 'RoleDetail', title = 'Show role Detail';
+                        layout.collapseCmdPanel();
+                        layout.action.create(actionID, { title: title });
+                        layout.action.error(actionID, 'Please select one row!');
+                        //alert("please select one row!");
                         return;
                     }
-                    $('.assign-detail-wizard').load('../Home/DynamicDetail?param=' + window.encodeURIComponent(JSON.stringify(jData)));
+                    $('.assign-detail-wizard').load('../Home/DynamicDetail?param=' + window.encodeURIComponent(JSON.stringify(jData)) );
                 });
             },
             initEvent: function () {
@@ -63,7 +73,7 @@ text-decoration:none;
                 role.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/role/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/role/list',
                     traditional: true,
                     success: function (d) {
                         role.bindData(d.result);
@@ -123,7 +133,7 @@ text-decoration:none;
                 //rbac.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/role/rbac/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/role/rbac/list',
                     traditional: true,
                     success: function (d) {
                         rbac.bindData(d.result);
@@ -154,6 +164,7 @@ text-decoration:none;
                     filter: true,
                     checkbox: true,
                     scaleWidth: true,
+                    RBACRole:true,
                     columns: [
                         { caption: 'Role Name', field: 'RowKey', width: 1, primary: true },
                         { caption: 'TypeProperty', field: 'TypeProperty', width: 1 },
@@ -203,11 +214,11 @@ text-decoration:none;
    
         <div class="tab-pane active role-panel" id="adminRole">
             
-                <div class="role-grid"></div>
+                <div class="role-grid" style="margin-top:25px;"></div>
             
         </div>
         <div class="tab-pane rbac-panel" id="rbacRole">
-            <div class="rbac-grid"></div>
+            <div class="rbac-grid"  style="margin-top:25px;"></div>
         </div>
    
 </div>

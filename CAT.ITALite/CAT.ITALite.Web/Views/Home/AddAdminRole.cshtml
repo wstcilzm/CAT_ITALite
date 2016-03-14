@@ -1,0 +1,108 @@
+﻿@{
+    Layout = null;
+}
+<script type="text/javascript">
+    $(function () {
+        var assignment = {
+            wizard: $('.assign-wizard'),
+            panel: $('.assign-panel'),
+            init: function () {
+                var wizardSetting = {
+                    width: 600,
+                    height: 500,
+                    onCreate: function () {
+                        //assignment.loadGroups();
+                    },
+                    finish: function () {
+                        //var groupId = $("#group").val();
+                        //for (var i = 0; i < user.selectedList.length; i++) {
+                        //    alert("each function");
+                        //    $.ajax({
+                        //        type: 'Get',
+                        //        url: 'http://localhost:33042/api/assignment/addusertogroup?userId=' + user.selectedList[i] + '&groupId=' + groupId,
+                        //        success: function (r) {
+                        //            alert("$ajax success");
+                        //            callback(r, tr, id, actionMsgTemplate);
+
+                        //        },
+                        //        error: function (e) {
+                        //            layout.onGetJsonError(id, actionTitle, e);
+                        //            alert("$ajax error");
+                        //        }
+                        //    });
+                        //};
+                        var succId = 0;
+                        var title = "Operation was denied due to insufficient privilege, please contact admin of the ITALite！";
+                        layout.action.create(succId, { title: title });
+                        layout.action.error(succId, 'Create Admin Role done');
+                        return true;
+                    }
+                };
+                assignment.wizard.vwizard(wizardSetting).vwizard('open');
+            },
+            loadGroups: function () {
+                $.ajax({
+                    //url: 'http://localhost:33042/api/group/list',
+                    //type: 'Get',
+                    //success: function (r) {
+                    //    var optionstring = "";
+                    //    for (var i = 0; i < r.result.length; i++) {
+                    //        optionstring += "<option value=\"" + r.result[i].PartitionKey + "\">" + r.result[i].RowKey + "</option>";
+                    //    }
+                    //    $("#group").html("<option value='Choose'>Choose...</option>" + optionstring);
+                    //},
+                    //error: function (e) {
+                    //    console.error(e);
+                    //}
+                });
+            },
+        };
+        assignment.init();
+    });
+</script>
+<style>
+    .assign-wizard textarea,
+    .assign-wizard input, select, label {
+        margin: 0 50px 0 50px;
+        display: block;
+    }
+
+    #cbgroup {
+    }
+
+    #selectedTable {
+    }
+
+        #selectedTable table {
+            margin: 0px 0px 0px 55px;
+        }
+
+        #selectedTable td {
+            border: 1px solid black;
+            width: 200px;
+            padding: 10px;
+        }
+</style>
+<div class="assign-wizard">
+    <div class="assign-panel">
+        <div class="editor-caption" style="margin-left:20px">ADD Admin Role</div>
+        <div id="cbgroup">
+
+            <p><label><strong>ADMIN ROLE NAME</strong></label></p>
+            <input id="roleName" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
+
+            <p><label><strong>DESCRIPTION</strong></label></p>
+            <input id="Description" type="text" style="width:150px;border-color:black;height:10px;margin-right:1px;" />
+
+            <p>
+                <label><strong>IS SUSTEM</strong></label>
+            </p>
+            <p>
+                <select id="isSystem" style="width:150px;">
+                    <option value=""></option>
+                </select>
+            </p>
+
+        </div>
+    </div>
+</div>

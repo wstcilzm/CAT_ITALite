@@ -11,6 +11,9 @@ using CAT.ITALite.Entity;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
+using System.Threading;
 
 
 namespace CAT.ITALite.SyncService
@@ -30,8 +33,11 @@ namespace CAT.ITALite.SyncService
         public static TableDal userAdminRoleAssignmentOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserAdminRoleAssignments);
         public static TableDal rbacRoleTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RBACRoles);
         public static TableDal rbacRoleAssignmentTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.UserRBACRoleAssignments);
+        public static TableDal rgRoleAssignmentTableOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RGRBACRoleAssignments);        
         public static TableDal rmResourceOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RMResources);
         public static TableDal rmResourceGroupOper = new TableDal(ConfigurationSettings.AppSettings["storageConnection"], TableNames.RMResourceGroups);
+        public static ActiveDirectoryClient activeDirectoryClient;
+
 
         static void Main(string[] args)
         {
@@ -40,7 +46,6 @@ namespace CAT.ITALite.SyncService
             //*********************************************************************
             // setup Active Directory Client
             //*********************************************************************
-            ActiveDirectoryClient activeDirectoryClient;
             try
             {
                 activeDirectoryClient = AuthenticationHelper.GetActiveDirectoryClientAsApplication();
@@ -61,33 +66,36 @@ namespace CAT.ITALite.SyncService
             }
 
             #endregion
-
+            
             CleanTableStorages();
-            RetrieveAADInfo(activeDirectoryClient);
-            RetrieveUsers(activeDirectoryClient);
-            RetrieveGroups(activeDirectoryClient);
-            RetrieveApps(activeDirectoryClient);
-            RetrieveAdminRoles(activeDirectoryClient);
-            ParseUserMembership();
-            RetrieveRBACRoles();
-            ParseRBACRoleAssignments();
-            RetrieveResourceGroups();
-            RetrieveRMResources();
-
-
+            Thread t = new Thread(new ThreadStart(ThreadRetrieveUpdates));
+            t.Start();
             PortalSimulator();
-            Console.WriteLine("ITALite initialization is done!");
-            
-            InvokingITA testITACore = new InvokingITA();
-            Console.WriteLine(testITACore.AccessControl(true));
-            Console.WriteLine(testITACore.AccessControl(false));
-            
-            TestItaLite();
 
-            Console.WriteLine("TestItaLite done!");
+            while (true)
+            {
+                RetrieveAADInfo();
+                RetrieveUsers();
+                RetrieveGroups();
+                RetrieveApps();
+                RetrieveAdminRoles();
+                ParseUserMembership();
+                RetrieveRBACRoles();
+                ParseRBACRoleAssignments();
+                RetrieveResourceGroups();
+                RetrieveRMResources();                
+                Console.WriteLine("ITALite initialization is done!");
+                Thread.Sleep(600000);
+            }
+            
+            //InvokingITA testITACore = new InvokingITA();
+            //Console.WriteLine(testITACore.AccessControl(true));
+            //Console.WriteLine(testITACore.AccessControl(false));  
+            //TestItaLite();
+            //Console.WriteLine("TestItaLite done!");
+
             Console.Read();
         }
-
 
         static void CleanTableStorages()
         {
@@ -104,6 +112,7 @@ namespace CAT.ITALite.SyncService
                 userAdminRoleAssignmentOper.CleanTable();
                 rbacRoleTableOper.CleanTable();
                 rbacRoleAssignmentTableOper.CleanTable();
+                rgRoleAssignmentTableOper.CleanTable();
                 rmResourceOper.CleanTable();
                 rmResourceGroupOper.CleanTable();
                 Console.WriteLine("All history tables are deleted.");
@@ -113,8 +122,63 @@ namespace CAT.ITALite.SyncService
             }
         }
 
+        static void ThreadRetrieveUpdates()
+        {
+            //// Retrieve storage account from connection string.
+            //CloudStorageAccount storageAccount0 = CloudStorageAccount.Parse(ConfigurationSettings.AppSettings["storageConnection"]);
+            //// Create the queue client.
+            //CloudQueueClient queueClient0 = storageAccount0.CreateCloudQueueClient();
+            //// Retrieve a reference to a queue.
+            //CloudQueue queue0 = queueClient0.GetQueueReference("italitemsgqueue");
+            //// Create the queue if it doesn't already exist.
+            //queue0.CreateIfNotExists();
+            //// Create a message and add it to the queue.
+            //CloudQueueMessage message = new CloudQueueMessage("New AAD User;47a6edd63c@jianwmfatest.partner.onmschina.cn");
+            //queue0.AddMessage(message); 
+            
+            Console.WriteLine("Real time updating is started.");
+            // Retrieve storage account from connection string
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationSettings.AppSettings["storageConnection"]);
+            // Create the queue client
+            CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+            // Retrieve a reference to a queue
+            CloudQueue queue = queueClient.GetQueueReference("italitemsgqueue");
+            // Create the queue if it doesn't already exist.
+            queue.CreateIfNotExists();
 
-        static void RetrieveAADInfo(ActiveDirectoryClient activeDirectoryClient)
+            while(true)
+            {
+                // Get the next message
+                CloudQueueMessage retrievedMessage = queue.GetMessage();
+
+                if(retrievedMessage!=null)
+                {
+                    string[] msg = retrievedMessage.AsString.Split(';');
+                    //msg pattern: "New AAD User;newuser@jianwmfatest.partner.onmschina.cn"
+                    if(msg.Length==2)
+                    {
+                        switch(msg[0])
+                        {
+                            case "New AAD User":
+                                RetrieveUpdatedUser(msg[1]);
+                                break;
+                            case "New AAD Group":
+                                RetrieveUpdatedGroup(msg[1]);
+                                break;
+                            default:
+                                break;
+
+                        }
+                    }
+
+                    //Process the message in less than 30 seconds, and then delete the message
+                    queue.DeleteMessage(retrievedMessage);
+                }
+                System.Threading.Thread.Sleep(3000);
+            }
+        }
+
+        static void RetrieveAADInfo()
         {
             Console.WriteLine("Start to sync AADInfo ...");
             VerifiedDomain initialDomain = new VerifiedDomain();
@@ -170,9 +234,8 @@ namespace CAT.ITALite.SyncService
             }
         }
 
-
         public static List<IUser> AllUsers = new List<IUser>();
-        static void RetrieveUsers(ActiveDirectoryClient activeDirectoryClient)
+        static void RetrieveUsers()
         {
             Console.WriteLine("Start to sync AAD Users ...");
             AllUsers.Clear();
@@ -209,7 +272,35 @@ namespace CAT.ITALite.SyncService
             }
         }
 
-        static void RetrieveGroups(ActiveDirectoryClient activeDirectoryClient)
+        static void RetrieveUpdatedUser(string userUPN)
+        {
+            // search for a single user by UPN
+            User retrievedUser = new User();
+            List<IUser> retrievedUsers = null;
+            try
+            {
+                retrievedUsers = activeDirectoryClient.Users.Where(user => user.UserPrincipalName.Equals(userUPN)).ExecuteAsync().Result.CurrentPage.ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nError getting new user {0} {1}", e.Message, e.InnerException != null ? e.InnerException.Message : "");
+            }
+            // should only find one user with the specified UPN
+            if (retrievedUsers != null && retrievedUsers.Count == 1)
+            {
+                retrievedUser = (User)retrievedUsers.First();
+
+                var newUser = new UserEntity(retrievedUser.ObjectId, retrievedUser.UserPrincipalName.Contains("#EXT#") ? retrievedUser.UserPrincipalName.Replace("#EXT#", "_") : retrievedUser.UserPrincipalName);
+                newUser.DisplayName = retrievedUser.DisplayName;
+                newUser.MailNickname = retrievedUser.MailNickname;
+                newUser.AccountEnabled = (bool)retrievedUser.AccountEnabled;
+                newUser.UserType = retrievedUser.UserType;
+                newUser.UsageLocation = retrievedUser.UsageLocation;
+                userTableOper.InsertEntity(newUser);
+            }
+        }
+
+        static void RetrieveGroups()
         {
             Console.WriteLine("Start to sync AAD groups ...");
             List<IGroup> foundGroups = null;
@@ -239,6 +330,33 @@ namespace CAT.ITALite.SyncService
             else
             {
                 Console.WriteLine("Group Not Found");
+            }
+        }
+
+        static void RetrieveUpdatedGroup(string groupName)
+        {
+            List<IGroup> foundGroups = null;
+            try
+            {
+                foundGroups = activeDirectoryClient.Groups.Where(group =>group.DisplayName.Equals(groupName)).ExecuteAsync().Result.CurrentPage.ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("\nError getting Group {0} {1}", e.Message, e.InnerException != null ? e.InnerException.Message : "");
+            }
+            if (foundGroups != null && foundGroups.Count > 0)
+            {
+                foreach (IGroup group in foundGroups)
+                {
+                    //Console.WriteLine("Group Name: {0}   GroupObjectId: {1}", group.DisplayName, group.ObjectId);
+
+                    var newGroup = new GroupEntity(group.ObjectId, group.DisplayName);
+                    newGroup.Descrption = group.Description;
+                    newGroup.SecurityEnabled = (bool)group.SecurityEnabled;
+                    newGroup.MailNickName = group.MailNickname;
+                    newGroup.OriginatedFrom = "AAD";
+                    groupTableOper.InsertEntity(newGroup);
+                }
             }
         }
 
@@ -290,7 +408,7 @@ namespace CAT.ITALite.SyncService
         }
 
 
-        static void RetrieveApps(ActiveDirectoryClient activeDirectoryClient)
+        static void RetrieveApps()
         {
             Console.WriteLine("Start to sync AAD Apps ...");
             IPagedCollection<IApplication> applications = null;
@@ -321,7 +439,7 @@ namespace CAT.ITALite.SyncService
             }
         }
 
-        static void RetrieveAdminRoles(ActiveDirectoryClient activeDirectoryClient)
+        static void RetrieveAdminRoles()
         {
             Console.WriteLine("Start to sync AAD Roles ...");
             List<IDirectoryRole> foundRoles = null;
@@ -461,6 +579,7 @@ namespace CAT.ITALite.SyncService
                     string roleDefinitionId = jTk["properties"]["roleDefinitionId"].ToString(); //  /subscriptions/-----/providers/.../roleDefinitions/rolebackendidname
                     string[] items = roleDefinitionId.Split('/');
                     string roleBackendIDName = items[items.Count() - 1];
+                    string resourceGroupID = jTk["properties"]["scope"].ToString().Replace('/', '&');
 
                     var rbacRoleAssignment = new UserRBACRoleAssignmentEntity(jTk["properties"]["principalId"].ToString(), roleBackendIDName);
                     rbacRoleAssignment.RoleDefinitionId = roleDefinitionId;
@@ -473,6 +592,21 @@ namespace CAT.ITALite.SyncService
                     rbacRoleAssignment.Type = jTk["type"].ToString();
                     rbacRoleAssignment.AssignmentName = jTk["name"].ToString();
                     rbacRoleAssignmentTableOper.InsertEntity(rbacRoleAssignment);
+
+                    var rgRoleAssignment = new RGRBACRoleAssignmentEntity(resourceGroupID,roleBackendIDName);
+                    rgRoleAssignment.RoleDefinitionId = roleDefinitionId;
+                    rgRoleAssignment.UserObjectID = jTk["properties"]["principalId"].ToString();
+                    rgRoleAssignment.Scope = jTk["properties"]["scope"].ToString();
+                    rgRoleAssignment.CreatedOn = jTk["properties"]["createdOn"].ToString();
+                    rgRoleAssignment.UpdatedOn = jTk["properties"]["updatedOn"].ToString();
+                    rgRoleAssignment.CreatedBy = jTk["properties"]["createdBy"].ToString();
+                    rgRoleAssignment.UpdatedBy = jTk["properties"]["updatedBy"].ToString();
+                    rgRoleAssignment.AssignmentID = jTk["id"].ToString();
+                    rgRoleAssignment.Type = jTk["type"].ToString();
+                    rgRoleAssignment.AssignmentName = jTk["name"].ToString();
+                    rgRoleAssignmentTableOper.InsertEntity(rgRoleAssignment);
+
+
 
                     jTk = jTk.Next;
                 }

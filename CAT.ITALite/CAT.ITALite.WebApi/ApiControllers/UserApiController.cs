@@ -2,6 +2,11 @@
 using System.Threading.Tasks;
 using System.Web.Http;
 using CAT.ITALite.Common;
+using CAT.ITALite.Entity;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
+using CAT.ITALite.WebApi.Utility;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace CAT.ITALite.WebApi.ApiControllers
 {
@@ -42,6 +47,65 @@ namespace CAT.ITALite.WebApi.ApiControllers
             var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.AADUsers);
             var result = operation.RetrieveUserByUserId(userId);
             return CreateSuccessResult(result);
+        }
+
+        [HttpPost]
+        [Route("add")]
+        public async Task<IHttpActionResult> PostAddUserAsync([FromBody] AADUserEntity user)
+        {
+
+            
+
+            ActiveDirectoryClient activeDirectoryClient;
+            try
+            {
+                activeDirectoryClient = AuthenticationHelper.GetActiveDirectoryClientAsApplication();
+            }
+            catch (AuthenticationException ex)
+            {
+                return CreateErrorResult(401, ex.Message);
+            }
+
+            IUser newUser = new User();
+            if (user!= null )
+            {
+                newUser.DisplayName = user.DisplayName; 
+                newUser.UserPrincipalName = user.RowKey;
+                newUser.AccountEnabled = true;
+                newUser.MailNickname = user.DisplayName;
+                newUser.UserType = user.UserType;
+                newUser.UsageLocation = user.UsageLocation;
+                newUser.PasswordProfile = new PasswordProfile
+                {
+                    Password = user.Password,
+                    ForceChangePasswordNextLogin =user.ForceChangePwd 
+                };
+                try
+                {
+                    await Task.Run(()=>
+                        {
+                        activeDirectoryClient.Users.AddUserAsync(newUser).Wait();
+                    });
+                    
+                    // Retrieve storage account from connection string.
+                    CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationSettings.AppSettings["storageConnection"]);
+                    // Create the queue client.
+                    CloudQueueClient queueClient = storageAccount.CreateCloudQueueClient();
+                    // Retrieve a reference to a queue.
+                    CloudQueue queue = queueClient.GetQueueReference("italitemsgqueue");
+                    // Create the queue if it doesn't already exist.
+                    queue.CreateIfNotExists();
+                    // Create a message and add it to the queue.
+                    CloudQueueMessage message = new CloudQueueMessage("New AAD User;" + user.RowKey);
+                    queue.AddMessage(message);
+                    return CreateSuccessResult(string.Empty);
+                }
+                catch (System.Exception e)
+                {
+                    return CreateErrorResult(501, e.Message);
+                }
+            }
+            return CreateErrorResult(301, "User has some invalid info");
         }
 
 

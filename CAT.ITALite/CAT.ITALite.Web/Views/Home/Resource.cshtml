@@ -8,25 +8,66 @@
         var resource = {
             panel: $('.res-panel'),
             grid: $('.res-grid'),
+            roleGrid:$('.role-grid'),
             createToolbar: function () {
                 var t = layout.toolbar;
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
                     resource.load();
                 });
+
+                t.add('DelResou', 'DelResou', 'toolbar-delete', function () {
+                    var selectedRows = resource.grid.vgrid('selectedRows');
+                    if (selectedRows.length < 1) {
+                        var errorId = 1;
+                        var title = 'Must selecte items for delete!';
+                        layout.action.create(errorId, { title: title });
+                        layout.action.warning(errorId, 'At least one item must be selected!');
+                        return;
+                    }
+                    deleteGroup();
+                });
+                function deleteGroup() {
+                    layout.confirm('Remove this Resource?', yesToDeleteResource, null);
+                }
+
+                function yesToDeleteResource() {
+                    //var arra = [];
+                    //var selectedRows = user.grid.vgrid('selectedRows');
+                    //selectedRows.each(function () {
+                    //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
+                    //});
+                    var succId = 0;
+                    var title = "Operation was denied due to insufficient privilege, please contact admin of the ITALite！";
+                    layout.action.create(succId, { title: title });
+                    layout.action.error(succId, 'delete Resource.....');
+                };
             },
 
             load: function () {
                 resource.panel.css({ 'min-height': layout.contantHeight , 'max-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/RMResource/{groupId}/resources?groupId='+'@ViewBag.groupID',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/RMResource/{groupId}/resources?groupId='+'@ViewBag.groupID',
                     traditional: true,
                     success: function (d) {
                         resource.bindData(d.result);
-                        resource.panel.vloading('hide');
+                        //resource.panel.vloading('hide');
                     },
                     error: function (d) {
-                        alert(d);
+                        //alert(d);
+                        //resource.panel.vloading('hide');
+                    }
+                });
+                $.ajax({
+                    type: "GET",
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/RMResource/{resGroupId}/roles?resGroupID=' + '@ViewBag.groupID'+';'+'@ViewBag.resGroupID',
+                    traditional: true,
+                    success: function (f) {
+                        resource.bindRoleData(f.result);
+                        resource.panel.vloading('hide');
+                    },
+                    error: function (f) {
+                        alert(f);
                         resource.panel.vloading('hide');
                     }
                 });
@@ -34,13 +75,21 @@
             bindData: function (data) {
                 resource.grid.vgrid('bindData', data);
             },
+            bindRoleData: function (data) {
+                for (i = 0; i < data.length; i++) {
+                    var roleName = data[i].RoleName;
+                    var roleID = data[i].RoleID
+                    data[i].RoleName = '<a href="#" onclick=self.location="../../Home/RBACRoleUsers?roleId="+\'' + roleID + '\'+"&roleName="+\'' + roleName + '\';return false;">' + roleName + '</a>';
+                }
+                resource.roleGrid.vgrid('bindData',data);
+            },
             getGridSetting: function () {
                 var gridSetting = {
-                    caption: 'Resources',
+                    caption: 'Group Resources <img src="../../Content/images/back.png" class="BackBtnStyle" />',
                     url: '/Home',
                     searchAction: 'GetApplications',
                     width: layout.contantWidth,
-                    height: layout.contantHeight,
+                    height: layout.contantHeight * 1 / 2,
                     noDataMsg: 'No resources found',
                     rp: 20,
                     rowProps: [{ name: 'resName', field: 'RowKey' }, { name: 'resId', field: 'PartitionKey' }],
@@ -68,9 +117,35 @@
                 };
                 return gridSetting;
             },
+            getRoleGridSetting:function(){
+                var gridSetting = {
+                    caption: 'Group Roles',
+                    url: '/Home',
+                    searchAction: 'GetApplications',
+                    width: layout.contantWidth,
+                    height: layout.contantHeight * 1 / 2,
+                    noDataMsg: 'No role found',
+                    rowProps: [{ name: 'roleID', field: 'RoleID' }],
+                    rp: 20,
+                    usePage: false,
+                    filter: true,
+                    checkbox: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'Resources Group Name', field: 'ResourceGroupName', width: 2.5 },
+                        { caption: 'Location', field: 'Location', width: 2 },
+                        { caption: 'Role Name', field: 'RoleName', width: 1.5 },
+                        { caption: 'User Name', field: 'UserPrincipleName', width: 2 },
+                        { caption: 'Group ID', field: 'GroupID', width: 4 },
+                        { caption: 'User ID', field: 'UserID', width: 4 },
+                    ]
+                };
+                return gridSetting;
+            },
             init: function () {
                 resource.grid.vgrid(resource.getGridSetting());
-                $(".vgrid-caption").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
+                resource.roleGrid.vgrid(resource.getRoleGridSetting());
+                //$(".vgrid-caption").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
                 $('.BackBtnStyle').on("click", function (event) {
                     event.preventDefault();
                     history.back(-1);
@@ -86,5 +161,5 @@
 </script>
 <div class="res-panel">
     <div class="res-grid"></div>
-
+    <div class="role-grid"></div>
 </div>

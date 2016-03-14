@@ -59,16 +59,16 @@ namespace CAT.ITALite.Common
         public IEnumerable<GroupEntity> RetrieveGroups(IEnumerable<AppGroupAssignmentEntity> entities)
         {
             string filter = string.Empty;
-            foreach(var group in entities)
+            foreach (var group in entities)
             {
-                filter += "PartitionKey eq " + group.RowKey + " or";                    
+                filter += "PartitionKey eq " + group.RowKey + " or";
             }
             filter = filter.Remove(filter.LastIndexOf(" or"));
             //TableQuery<GroupEntity> query = new TableQuery<GroupEntity>().Where(filter);
             //foreach(var entity in entities)
             //{
-             //   filter = entity.RowKey;
-           // }
+            //   filter = entity.RowKey;
+            // }
             var query = new TableQuery<GroupEntity>().Where(filter);
             var result = _table.ExecuteQuery(query);
             return result;
@@ -83,7 +83,12 @@ namespace CAT.ITALite.Common
             _table.Execute(operation);
             return true;
         }
-
+        public IEnumerable<RMResourceGroupEntiry> RetrieveRMGroup(string groupName)
+        {
+            var query = new TableQuery<RMResourceGroupEntiry>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, groupName));
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
 
         #endregion
 
@@ -161,7 +166,7 @@ namespace CAT.ITALite.Common
             _table.Execute(operation);
             return true;
         }
-        
+
         public IEnumerable<AdminRoleEntity> RetrieveAdminRoles()
         {
             var query = new TableQuery<AdminRoleEntity>();
@@ -185,7 +190,12 @@ namespace CAT.ITALite.Common
             var result = _table.ExecuteQuery(query);
             return result;
         }
-
+        public IEnumerable<RBACRoleEntity> RetrieveRbacRoleByID(string roleID)
+        {
+            var query = new TableQuery<RBACRoleEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, roleID));
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
         #endregion
 
         #region UserGroupAssignment
@@ -223,7 +233,7 @@ namespace CAT.ITALite.Common
             //var query = new TableQuery<UserGroupAssignmentsEntity>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userID), TableOperators.And, TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, groupID)));
             //var result = _table.ExecuteQuery(query);
 
-            TableOperation retrieveOperation= TableOperation.Retrieve<UserGroupAssignmentsEntity>(userID, groupID);
+            TableOperation retrieveOperation = TableOperation.Retrieve<UserGroupAssignmentsEntity>(userID, groupID);
             TableResult retrievedResult = _table.Execute(retrieveOperation);
             try
             {
@@ -233,7 +243,7 @@ namespace CAT.ITALite.Common
                 _table.Execute(deleteOperation);
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -271,7 +281,7 @@ namespace CAT.ITALite.Common
             var result = _table.ExecuteQuery(query);
             return result;
         }
-        
+
         public IEnumerable<UserGroupAppEntity> RetrieveUserGroupApplications(string groups)
         {
             List<UserGroupAppEntity> list = new List<UserGroupAppEntity>();
@@ -292,7 +302,7 @@ namespace CAT.ITALite.Common
             return list;
         }
 
-        public bool RemoveAppAssignment(string appId,string groupId)
+        public bool RemoveAppAssignment(string appId, string groupId)
         {
             TableOperation retrieveOperation = TableOperation.Retrieve<AppGroupAssignmentEntity>(appId, groupId);
             TableResult retrievedResult = _table.Execute(retrieveOperation);
@@ -337,9 +347,23 @@ namespace CAT.ITALite.Common
             return true;
         }
 
+        public bool InsertEntity(RGRBACRoleAssignmentEntity assignment)
+        {
+            var operation = TableOperation.InsertOrReplace(assignment);
+            _table.Execute(operation);
+            return true;
+        }
+
         public IEnumerable<UserRBACRoleAssignmentEntity> RetrieveUsersByRbacRoleId(string roleId)
         {
             var query = new TableQuery<UserRBACRoleAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, roleId));
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
+
+        public IEnumerable<RGRBACRoleAssignmentEntity> RetrieveRGRBACRoleAssignmentByGroupID(string resGroupID)
+        {
+            var query = new TableQuery<RGRBACRoleAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, resGroupID));
             var result = _table.ExecuteQuery(query);
             return result;
         }

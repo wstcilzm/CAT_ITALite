@@ -25,7 +25,7 @@
         "icon":"local-vm"
     },
     {
-        "caption": "ARM Resources",
+        "caption": "RM Groups",
         "url": "/Home/ResourceGroups",
         "icon": "group"
     },

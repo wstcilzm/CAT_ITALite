@@ -242,6 +242,7 @@
     <Content Include="Content\images\back.png" />
     <Content Include="Content\images\delete.jpg" />
     <Content Include="Content\screen.css" />
+    <Content Include="Content\SettingStyle.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\tabContainer.css" />
     <Content Include="Content\themes\base\images\add.png" />
@@ -449,6 +450,7 @@
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
     <Content Include="img\glyphicons-halflings-white.png" />
     <Content Include="img\glyphicons-halflings.png" />
+    <Content Include="img\ITALiteInfo.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\Settings.settings">
@@ -488,6 +490,7 @@
     <Content Include="Scripts\vvalidationRules.js" />
     <Content Include="Scripts\vxml.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Views\WebForm\ITALiteInfo.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -520,6 +523,14 @@
     <Content Include="Views\Home\GroupDetail.cshtml" />
     <Content Include="Views\Home\QuickCreateAADGroup.cshtml" />
     <Content Include="Views\Home\QuickCreateAADUser.cshtml" />
+    <Content Include="Views\Home\AddApp.cshtml" />
+    <Content Include="Views\Home\QuickCreateAADApp.cshtml" />
+    <Content Include="Views\Home\AddAdminRole.cshtml" />
+    <Content Include="Views\Home\QuickCreateAdminRole.cshtml" />
+    <Content Include="Views\Home\AddRBACRole.cshtml" />
+    <Content Include="Views\Home\QuickCreateRBACRole.cshtml" />
+    <Content Include="Views\Home\AddARMResources.cshtml" />
+    <Content Include="Views\Home\QuickCreateARMResources.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

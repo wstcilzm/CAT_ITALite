@@ -62,4 +62,53 @@ namespace CAT.ITALite.Entity
 
     }
 
+    /// <summary>
+    /// Generate this table with index from UserRBACRoleAssignmentEntity
+    /// </summary>
+    public class RGRBACRoleAssignmentEntity : TableEntity
+    {
+        public RGRBACRoleAssignmentEntity() { }
+
+        public RGRBACRoleAssignmentEntity(string resourceGroupId, string rbacRoleBackendName)
+        {
+            this.PartitionKey = resourceGroupId;
+            this.RowKey = rbacRoleBackendName;
+        }
+
+        public string RoleDefinitionId { set; get; }
+        public string UserObjectID { set; get; }
+        public string Scope { set; get; }
+        public string CreatedOn { get; set; }
+        public string UpdatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public string UpdatedBy { get; set; }
+        public string AssignmentID { get; set; }
+        public string Type { set; get; }
+        public string AssignmentName { set; get; }
+
+
+    }
+
+    /// <summary>
+    /// for ResourcePage Entity; 
+    /// </summary>
+    public class ResourcePageView:TableEntity
+    {
+        public ResourcePageView() { }
+
+        public ResourcePageView(string id,string name)
+        {
+            this.PartitionKey = id;
+            this.RowKey = name;
+        }
+
+        public string ResourceGroupName { get; set; }
+        public string UserPrincipleName { get; set; }
+        public string Location { get; set; }
+        public string RoleName { get; set; }
+        public string RoleID { get; set; }
+        public string GroupID { get; set; }
+        public string UserID { get; set; }
+    }
+
 }

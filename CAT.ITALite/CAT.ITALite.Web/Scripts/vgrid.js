@@ -33,7 +33,8 @@
             onColumnFilter: null,
             orderBy: '',
             order: 'asc',
-            onCreate: null// exec after grid created.,
+            onCreate: null,// exec after grid created.,
+            RBACRole:false // Attribute for RBAC Role Inco Position；
         },
         init: function (option) {
             return this.each(function () {
@@ -136,12 +137,15 @@
                 g.hTable.append(tr);
                 tr = null;
                 $('div', g.hDiv).append(g.hTable);
-                $t.append(g.hDiv);
+                $t.append(g.hDiv); 
                 if (g.filter == 'auto') {
                     g.filter = !g.usePage;
                 }
                 if (g.filter) {
-                    var filterIcon = $('<div class="vgrid-filter-icon"></div>').css('top', g.hDiv.position().top);
+                    var inconTop=g.hDiv.position().top;
+                    if (g.RBACRole)
+                        inconTop = 20;
+                    var filterIcon = $('<div class="vgrid-filter-icon"></div>').css('top', inconTop);
                     var toggleFilter = function () {
                         if (filterBox.is(':visible')) {
                             filterBox.hide();

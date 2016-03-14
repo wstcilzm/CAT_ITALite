@@ -1,0 +1,92 @@
+﻿@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        var quick = {
+            panel: $('#quickCreateHVM'),
+            button: $('#btnQuickCreate'),
+            validate: function () {
+                return $('input,select', this.panel).vvalidate('validate') == 'success';
+            },
+            getVMParams: function () {
+                var params = {};
+                $('input[name],select[name]', this.panel).each(function () {
+                    var t = $(this);
+                    params[t.attr('name')] = t.val();
+                });
+                return params;
+            },
+            initEvent: function () {
+                var actionID = 'quickCreate', title = 'Quick Create AAD APP';
+                this.button.click(function () {
+                    layout.collapseCmdPanel();
+                    layout.action.create(actionID, { title: title });
+                    layout.action.error(actionID, 'Operation was denied due to insufficient privilege, please contact admin of the ITALite！');
+                    return;
+                });
+            }
+        };
+        quick.initEvent();
+    })
+</script>
+<div id="quickCreateHVM">
+    <table>
+        <tr>
+            <td>
+                <div><span>APP NAME:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="AppName" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>SIGN-ON URL:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="signOnUrl" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>APP ID URI:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="APPIDUrl" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>APP TYPE:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <select id="Architecture" name="App_Type">
+                        <option value="volvo">WEB APP</option>
+                        <option value="saab">NATIVE APP</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="4" class="buttons">
+                <span>
+                    Create AAD APP
+                </span>
+                <button id="btnQuickCreate" class="button button-ok"></button>
+            </td>
+        </tr>
+    </table>
+</div>

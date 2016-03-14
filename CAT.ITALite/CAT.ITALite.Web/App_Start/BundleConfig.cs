@@ -49,7 +49,7 @@ namespace CAT.ITALite.Web
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                         //"~/Content/christmas.css",
-                        
+                        "~/Content/SettingStyle.css",
                         "~/Content/site.css",
                         "~/Content/vdropdown.css",
                         "~/Content/vlinechart.css",

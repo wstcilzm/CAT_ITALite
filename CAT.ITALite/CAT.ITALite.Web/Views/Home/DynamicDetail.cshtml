@@ -10,13 +10,14 @@
             panel: $('.assign-panel'),
             init: function () {
                 var wizardSetting = {
-                    width: 600,
-                    height: 800,
+                    width: 700,
+                    height: 600,
                     showNavButtons: true,
-                    showCloseButton: true,
+                    showCloseButton: false,
                     onCreate: function () {
                     },
-                    finish: function () {                      
+                    finish: function () {     
+                        return true;
                     }
                 };
                 assignment.wizard.vwizard(wizardSetting).vwizard('open');
@@ -29,42 +30,40 @@
 
 <style>
     .assign-wizard textarea,
-    .assign-wizard input, select, span {
+    .assign-wizard input, select {
         margin: 0 50px 0 50px;
         display: block;
     }
-
-    #cbgroup {
-    }
-
-    #selectedTable {
-    }
-
-        #selectedTable table {
-            margin: 0px 0px 0px 55px;
+        #tbDetail {
+            border:solid ; 
+            border-width:1px 0px 0px 1px;
+            margin:40px;
         }
-
-        #selectedTable td {
-            border: 1px solid black;
-            width: 200px;
-            padding: 10px;
+        #tbDetail td{
+            border:solid ; 
+            border-width:0px 1px 1px 0px; 
+            padding:10px 10px 10px 10px;
         }
 </style>
 
 
-<div class="assign-wizard">
-    <div class="assign-panel">
-        <div class="editor-caption" style="margin-left:20px">Detail</div>
-        <div id="cbDetail">
+<div class="assign-wizard" >
+    <div class="assign-panel" style="overflow:auto">
+        <div class="editor-caption" style="margin-left:20px"><strong>Detail</strong></div>
+        <div id="cbDetail" >
+            <table id="tbDetail">
+            </table>
         </div>
     </div>
 </div>
 
 <script>
     var params=@Html.Raw(@ViewBag.param);
+   
     for(var item in params)
     {
-        $("#cbDetail").append("<p><span>" + item + "</span></p>");
-        $("#cbDetail").append("<p><span>" + params[item] + "</span></p>");
+
+        $("#tbDetail").append("<tr><td><strong>" + item + "</strong></td>　<td colspan='8'>" + params[item] + "</td></tr>");
+        
     }
 </script>

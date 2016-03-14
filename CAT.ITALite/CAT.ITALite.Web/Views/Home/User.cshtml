@@ -20,9 +20,13 @@
                     window.location = "../Home/AssignUserToGroup?users=" + JSON.stringify(arra);
                 });
                 
-                t.add('AddUser', 'AddUser', 'toolbar-add', function () {
-                    //$(document).mask().click(function(){$(document).unmask()});
-                    $('.assign-group-wizard').load('../Home/AddUser');
+                //t.add('AddUser', 'AddUser', 'toolbar-add', function () {
+                //    //$(document).mask().click(function(){$(document).unmask()});
+                //    $('.assign-group-wizard').load('../Home/AddUser');
+                //});
+
+                t.add('MFA Management', 'MFA Management', 'toolbar-transferhost', function () {
+                    window.open("https://account.activedirectory.windowsazure.cn/usermanagement/multifactorverification.aspx ");
                 });
 
                 t.add('DelUser', 'DelUser', 'toolbar-delete', function () {
@@ -50,16 +54,22 @@
                     //    arra.push({ PartitionKey: $(this).attr('userId'), RowKey: $(this).attr('userName') });
                     //});
                     var succId = 0;
-                    var title = "Delete Successful！";
+                    var title = "Operation was denied due to insufficient privilege, please contact admin of the ITALite！";
                     layout.action.create(succId, { title: title });
-                    layout.action.success(succId, 'delete user.....');
+                    layout.action.error(succId, 'delete user.....');
                 };
+                if('@ViewBag.Users'!=""){
+                    var actionID = 'assignUser', title = 'Assign user To Group.';
+                    layout.collapseCmdPanel();
+                    layout.action.create(actionID, { title: title });
+                    layout.action.success(actionID, 'Add Users to group successful ！');
+                }
             },
             load: function () {
                 user.panel.css({ 'min-height': layout.contantHeight , 'max-height': layout.contantHeight  }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/user/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/list',
                     traditional: true,
                     success: function (d) {
                         user.bindData(d.result);

@@ -1,0 +1,81 @@
+﻿@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+    $(function () {
+        var quick = {
+            panel: $('#quickCreateHVM'),
+            button: $('#btnQuickCreate'),
+            validate: function () {
+                return $('input,select', this.panel).vvalidate('validate') == 'success';
+            },
+            getVMParams: function () {
+                var params = {};
+                $('input[name],select[name]', this.panel).each(function () {
+                    var t = $(this);
+                    params[t.attr('name')] = t.val();
+                });
+                return params;
+            },
+            initEvent: function () {
+                var actionID = 'quickCreate', title = 'Quick Create Admin Role';
+                this.button.click(function () {
+                    layout.collapseCmdPanel();
+                    layout.action.create(actionID, { title: title });
+                    layout.action.error(actionID, 'Operation was denied due to insufficient privilege, please contact admin of the ITALite！');
+                    return;
+                });
+            }
+        };
+        quick.initEvent();
+    })
+</script>
+<div id="quickCreateHVM">
+    <table>
+        <tr>
+            <td>
+                <div><span>ADMIN ROLE NAME:</span></div>
+            </td>
+            <td colspan="2">
+                <div>
+                    <input type="text" name="roleName" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>DESCRIPTION:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <input type="text" name="Description" />
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <div><span>IS SYSTEM:</span></div>
+            </td>
+            <td colspan="3">
+                <div>
+                    <select id="Architecture" name="isSystem">
+                        <option value="volvo">Ture</option>
+                        <option value="saab">False</option>
+                    </select>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="4" class="buttons">
+                <span>
+                    Create Admin Role
+                </span>
+                <button id="btnQuickCreate" class="button button-ok"></button>
+            </td>
+        </tr>
+    </table>
+</div>

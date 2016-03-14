@@ -21,7 +21,7 @@
                 user.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/role/rbac/' + '@ViewBag.roleId' + '/users',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/role/rbac/' + '@ViewBag.roleId' + '/users',
                     traditional: true,
                     success: function (d) {
                         user.bindData(d.result);
@@ -39,13 +39,16 @@
                 {
                     var str = new Object();
                     str.roleName = '@ViewBag.roleName';
-                    str.userName='User not found';
+                    str.userName = 'External AAD User';
                     str.Type = data[i].Type;
                     str.Scope = data[i].Scope;
+                    var scope = data[i].Scope;
+                    scope = scope.substring(scope.lastIndexOf('\/') + 1);
+                    str.DisplayScope = '<a href="#" onclick=self.location="../../Home/Resource?groupID="+\''+scope+'\'+"&resGroupID="+\''+str.Scope+'\';return false;">' + str.Scope + '</a>';
                     str.UpdatedOn = data[i].UpdatedOn;
                     $.ajax({
                         type: "GET",
-                        url: vstorm.getApiServerUrl() + '/api/user/' + data[i].PartitionKey,
+                        url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/' + data[i].PartitionKey,
                         traditional: true,
                         success: function (d) {
                             str.userName=d.result.DisplayName;
@@ -73,10 +76,10 @@
                     checkbox: false,
                     scaleWidth: true,
                     columns: [
-                        { caption: 'User Name', field: 'userName', width: 1, primary: true },
+                        { caption: 'User Name', field: 'userName', width: 1},
                         { caption: 'Role Name', field: 'roleName', width: 1},
                         { caption: 'Type', field: 'Type', width: 2 },
-                        { caption: 'Scope', field: 'Scope', width: 2 },
+                        { caption: 'Scope', field: 'DisplayScope', width: 2 },
                         { caption: 'UpdatedOn', field: 'UpdatedOn', width: 2 }
                     ]
                 };

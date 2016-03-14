@@ -39,4 +39,21 @@ namespace CAT.ITALite.Web
             config.Services.Replace(typeof(IContentNegotiator), new JsonContentNegotiator(jsonFormatter));
         }
     }
+
+    public static class CommonHelper
+    {
+        public static string GetWebAPiUrl()
+        {
+            var obj = System.Configuration.ConfigurationManager.AppSettings["AuthenServer"];
+            if(obj==null)
+            {
+                return "http://localhost:33042/";
+            }
+            else
+            {
+                return obj.ToString();
+            }
+        }
+    }
+
 }

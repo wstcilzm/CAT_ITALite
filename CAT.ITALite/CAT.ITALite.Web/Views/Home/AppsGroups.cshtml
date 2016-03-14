@@ -20,9 +20,17 @@
                 app.panel.css({ 'min-height': layout.contantHeight }).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/application/' +'@ViewBag.appId'+'/groups',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/application/' +'@ViewBag.appId'+'/groups',
                     traditional: true,
                     success: function (d) {
+                        if (d.result) {
+                            for (var i = 0; i < d.result.length; i++) {
+                                var groupName = d.result[i].GroupName;
+                                var groupID = d.result[i].RowKey.toString();
+                                d.result[i].GroupName = '<a href="#" onclick="app.linkToGroupInfo(' + '\'' + groupID + '\');return false;">' + groupName + '</a>';
+                            }
+                        }
+
                         app.bindData(d.result);
                         app.panel.vloading('hide');
                     },
@@ -67,6 +75,9 @@
                     event.preventDefault();
                     history.back(-1);
                 });
+            },
+            linkToGroupInfo: function (groupID) {
+                self.location = "../../Home/GroupDetail?id=" + groupID;
             }
         };
         app.init();

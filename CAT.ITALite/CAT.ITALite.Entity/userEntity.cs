@@ -25,4 +25,21 @@ namespace CAT.ITALite.Entity
         public bool AccountEnabled { get; set; }
 
     }
+
+    public class AADUserEntity:UserEntity
+    {
+        public AADUserEntity()
+        {
+
+        }
+
+        public AADUserEntity(string objectId,string upn) :base(objectId,upn)
+        {
+
+        }
+
+        public string Password { get; set; }
+
+        public bool ForceChangePwd { get; set; }
+    }
 }

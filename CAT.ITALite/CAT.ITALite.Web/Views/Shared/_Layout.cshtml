@@ -25,7 +25,23 @@
                 </div>
                 <div class="user">
                     <div class="summary">
-                        <div class="name">@HttpContext.Current.User.Identity.Name</div><!--Admin@ITALite.com-->
+                        @*<div class="name" id="userName" >@HttpContext.Current.User.Identity.Name</div>*@
+                        <div class="name" id="userName" >@HttpContext.Current.User.Identity.Name</div><!--Admin@ITALite.com-->
+                        <div id="menuList" style="left: 895.97px; top: 31px; display: none;">
+                            <div class="fx-itemlist fx-editablecontrol" style="padding-bottom: 15px;">
+                                <ul style="list-style:none;margin-left:0px;margin-top:15px;margin-bottom:0px;"  aria-labelledby="null">
+                                    <li id="menuitems" tabindex="0"   aria-selected="false">
+                                        <a href="~/ITALiteAuth/ITALogout/">Sign out</a>
+                                    </li>
+                                    <li tabindex="-1" style="margin:13px 0;border-top:1px solid;border-color:#94979a;" aria-selected="false">
+                                    </li>
+                                    <li id="menuitems" tabindex="-1"  aria-selected="false">
+                                        <a href="#">Change password</a>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
+                        </div>
                         <div class="photo" style="background:url(@{@PortalConfig.CurrentUser.PhotoUrl});
                              background-size: 30px; background-position:center">
                         </div>
@@ -56,7 +72,7 @@
                         </div>
                         <div id="command-subtoolbar"></div>
                         <button id="command-actionCount" class="processing"></button>
-                        <button class="help"></button>
+                        <button class="help" onclick="window.open('../Views/WebForm/ITALiteInfo.html')"></button>
                     </div>
                     <div class="command-body" style="height: 0;">
                         <div class="caption">
@@ -96,3 +112,17 @@
     </div>
 </body>
 </html>
+<script type="text/javascript">
+    $().ready(function () {
+        $("#userName").click(function () {
+            $("#menuList").toggle(500);
+        });
+
+        $("#menuitems a").mouseover(function () {
+            $(this).css("color", "#2086bf");
+        })
+        $("#menuitems a").mouseout(function () {
+            $(this).css("color", "#fff");
+        })
+    });
+</script>

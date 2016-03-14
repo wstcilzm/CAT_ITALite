@@ -44,7 +44,7 @@ namespace CAT.ITALite.WebApi
                             context.HandleResponse();
                             context.Response.Redirect("/Error?message=" + context.Exception.Message);
                             return Task.FromResult(0);
-                        }
+                        }                                               
                     }
                 });
         }

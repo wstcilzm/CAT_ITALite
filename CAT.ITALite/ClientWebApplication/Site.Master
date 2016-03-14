@@ -49,7 +49,7 @@
                         <AnonymousTemplate>
                             <ul>                                
                                 <li><a id="loginLink" href="<%=AuthenServer+"?Uri="+ReturnUri %>"><%=LoginName %></a></li>
-                                <li><a id="registerLink" href="<%=SignoutServer %>"><%=BuddyLink %></a></li>
+                                <li><a id="registerLink" href="<%=SignoutServer+"?Uri="+ReturnUri %>"><%=BuddyLink %></a></li>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>

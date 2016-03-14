@@ -18,9 +18,18 @@ namespace CAT.ITALite.WebApi.Controllers
         }
         public void SignOut()
         {
+            string relyingApp = Request.QueryString["Uri"];
             // Send an OpenID Connect sign-out request.
             HttpContext.GetOwinContext().Authentication.SignOut(
                 OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
+            if (string.IsNullOrEmpty(relyingApp))
+            {
+                Session["RelyingApp"] = null;
+            }
+            else
+            {
+                Session["RelyingApp"] = relyingApp;
+            }
         }
     }
 }

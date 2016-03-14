@@ -161,7 +161,7 @@
                 app.bindData(apps);
                 $.ajax({
                     type: "GET",
-                    url: vstorm.getApiServerUrl() + '/api/group/list',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/group/list',
                     traditional: true,
                     success: function (d) {
                         var optionstring = "";
@@ -254,27 +254,33 @@
         };
         $('.assignToGroup').click(function() 
         {
+            var actionID = 'assignApp', title = 'Assign App To Group.';
+            layout.collapseCmdPanel();
+            layout.action.create(actionID, { title: title });
             var groupId = $("#appGroup").val();
             if(groupId=='Choose')
             {
-                alert('Please choose your group');
+                layout.action.error(actionID, 'Please choose a group ！');
                 return;
             }
+            var appArr="";
             for (var i = 0; i < apps.length; i++) {
+                appArr+=app[i].RowKey+';';
                 //alert("add app!");
                 $.ajax({
                     type: 'Get',
-                    url: vstorm.getApiServerUrl() + '/api/assignment/addapptogroup?appId=' + apps[i].PartitionKey +'&appName='+apps[i].RowKey+ '&groupId=' + $("#appGroup").val()+'&groupName='+ $("#appGroup").find("option:selected").text(),
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/assignment/addapptogroup?appId=' + apps[i].PartitionKey +'&appName='+apps[i].RowKey+ '&groupId=' + $("#appGroup").val()+'&groupName='+ $("#appGroup").find("option:selected").text(),
                     success: function (r) {
-                        alert("Add apps to group successfully!");
+                        //alert("Add apps to group successfully!");
                     },
                     error: function (e) {
-                        alert("Add apps failed!");
+                        //alert("Add apps failed!");
                     }
                 });
             }; 
             //history.back(-1);
-            window.location = '../../Home/Application';
+            layout.action.success(actionID, 'Add apps to group successful ！');
+            window.location = '../../Home/Application?apps='+appArr;
         });
         app.init();
         app.load();

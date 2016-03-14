@@ -56,21 +56,17 @@
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms">
       <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.19.208020213\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.WindowsForms.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IT.Core, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Azure Validation\AAD\MS.ITALITE\ItaLite\Microsoft.IT.Security.ItaLite.PolicySetProvider\bin\Debug\Microsoft.IT.Core.dll</HintPath>
+    <Reference Include="Microsoft.IT.Core">
+      <HintPath>..\References\Microsoft.IT.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IT.Security.Core, Version=3.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Azure Validation\AAD\MS.ITALITE\ItaLite\Microsoft.IT.Security.ItaLite.PolicySetProvider\bin\Debug\Microsoft.IT.Security.Core.dll</HintPath>
+    <Reference Include="Microsoft.IT.Security.Core">
+      <HintPath>..\References\Microsoft.IT.Security.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IT.Security.Enforcement, Version=3.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Azure Validation\AAD\MS.ITALITE\ItaLite\Microsoft.IT.Security.ItaLite.PolicySetProvider\bin\Debug\Microsoft.IT.Security.Enforcement.dll</HintPath>
+    <Reference Include="Microsoft.IT.Security.Enforcement">
+      <HintPath>..\References\Microsoft.IT.Security.Enforcement.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.IT.Security.Enforcement.Server, Version=3.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Azure Validation\AAD\MS.ITALITE\ItaLite\Microsoft.IT.Security.ItaLite.PolicySetProvider\bin\Debug\Microsoft.IT.Security.Enforcement.Server.dll</HintPath>
+    <Reference Include="Microsoft.IT.Security.Enforcement.Server">
+      <HintPath>..\References\Microsoft.IT.Security.Enforcement.Server.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=6.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAzure.Storage.6.2.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
@@ -119,6 +115,9 @@
       <Project>{3cb87dab-9238-4d62-9a32-f1acca028c2b}</Project>
       <Name>CAT.ITALite.Entity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
