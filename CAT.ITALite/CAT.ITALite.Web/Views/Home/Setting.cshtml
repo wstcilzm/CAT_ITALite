@@ -30,70 +30,98 @@
     }*/
 </style>
 
-<div class="waz-config waz-config-help-header" style="padding-left:10px;padding-right:10px">
-    <div class="waz-config-setting ad-setting ad-setting-displaynone" style="display: block;">
-        <div class="waz-config-help-header-section ad-setting-header-section">
-            <h2 style="font-weight:300">
-                <span>AAD Common config</span>
-            </h2>
+<script type="text/javascript">
+    $(function () {
+        var setting = {
+            createToolbar: function () {
+                var t = layout.toolbar;
+                t.add('Save', 'Save', 'toolbar-save', function () {
+                    var actionID = 'saveSetting', title = 'Save';
+                    layout.collapseCmdPanel();
+                    layout.action.create(actionID, { title: title });
+                    layout.action.success(actionID, 'save setting successful ！');
+                });
+                
+            },
+            initEvent: function () {
+            },
+            init: function () {
+                setting.initEvent();
+            }
+        };
+        setting.init();
+        setting.createToolbar();
+        window.setting = setting;
+    });
+
+</script>
+
+<div class="app-panel">
+    <div class="waz-config waz-config-help-header" style="padding-left:10px;padding-right:10px">
+        <div class="waz-config-setting ad-setting ad-setting-displaynone" style="display: block;">
+            <div class="waz-config-help-header-section ad-setting-header-section">
+                <h2 style="font-weight:300">
+                    <span>AAD Common config</span>
+                </h2>
+            </div>
+            <div class="waz-config-setting">
+                <label>storageConnection</label>
+                <input type="password" value="TableEndpoint=https://jianwstorage.table.core.chinacloudapi.cn/;AccountName=jianwstorage;AccountKey=If7+5Dn3iCvQ/cf65C4aSIAStnIIaBhS8kZUNZJ9L6DS60HYkAhwrA3d8Oo5QyOtyTf0GUcU2D3iIDQfpJ8Xjg==" />
+            </div>
+            <div class="waz-config-setting">
+                <label>azureSubscriptionID</label>
+                <input type="text" value="03042fd8-7b09-4c73-9217-0dcea66ede69" />
+            </div>
+            <div class="waz-config-setting">
+                <label>tableNamePrefix</label>
+                <input type="text" value="ITALite" />
+            </div>
         </div>
-        <div class="waz-config-setting">
-            <label>storageConnection</label>
-            <input type="text" placeholder="TableEndpoint=https://jianwstorage.table.core.chinacloudapi.cn/;AccountName=jianwstorage;AccountKey=If7+5Dn3iCvQ/cf65C4aSIAStnIIaBhS8kZUNZJ9L6DS60HYkAhwrA3d8Oo5QyOtyTf0GUcU2D3iIDQfpJ8Xjg==" />
+        <div class="waz-config-setting ad-setting ad-setting-displaynone" style="display: block;">
+            <div class="waz-config-help-header-section ad-setting-header-section">
+                <h2 style="font-weight:300">
+                    <span>AAD Parsing config</span>
+                </h2>
+            </div>
+            <div class="waz-config-setting">
+                <label>TenantName</label>
+                <input type="text" value="jianwmfatest.partner.onmschina.cn" />
+            </div>
+            <div class="waz-config-setting">
+                <label>TenantId</label>
+                <input type="text" value="9f435dd8-c995-42e2-a86f-c3e393af6699" " />
+            </div>
+            <div class="waz-config-setting">
+                <label>ClientId</label>
+                <input type="text" value="1a7249e7-fa56-4c47-83de-5048097bc510" />
+            </div>
+            <div class="waz-config-setting">
+                <label>ClientSecret</label>
+                <input type="text" value="MkNP0Qpq2fbDaEoLtUSn/3VfgK7+oQW+ToN20NfmuQY=" />
+            </div>
         </div>
-        <div class="waz-config-setting">
-            <label>azureSubscriptionID</label>
-            <input type="text" placeholder="03042fd8-7b09-4c73-9217-0dcea66ede69" />
-        </div>
-        <div class="waz-config-setting">
-            <label>tableNamePrefix</label>
-            <input type="text" placeholder="ITALite" />
-        </div>
-    </div>
-    <div class="waz-config-setting ad-setting ad-setting-displaynone" style="display: block;">
-        <div class="waz-config-help-header-section ad-setting-header-section">
-            <h2 style="font-weight:300">
-                <span>AAD Parsing config</span>
-            </h2>
-        </div>
-        <div class="waz-config-setting">
-            <label>TenantName</label>
-            <input type="text" placeholder="jianwmfatest.partner.onmschina.cn" />
-        </div>
-        <div class="waz-config-setting">
-            <label>TenantId</label>
-            <input type="text" placeholder="9f435dd8-c995-42e2-a86f-c3e393af6699"" />
-        </div>
-        <div class="waz-config-setting">
-            <label>ClientId</label>
-            <input type="text" placeholder="1a7249e7-fa56-4c47-83de-5048097bc510"/>
-        </div>
-        <div class="waz-config-setting">
-            <label>ClientSecret</label>
-            <input type="text" placeholder="MkNP0Qpq2fbDaEoLtUSn/3VfgK7+oQW+ToN20NfmuQY="/>
-        </div>
-    </div>
-    <div class="waz-config-setting ad-setting ad-setting-displaynone" style="display: block;">
-        <div class="waz-config-help-header-section ad-setting-header-section">
-            <h2 style="font-weight:300">
-                <span>AAD RBAC Config</span>
-            </h2="">
-        </div>
-        <div class="waz-config-setting">
-            <label>_aadTenantDomain</label>
-            <input type="text" placeholder="cciccat.partner.onmschina.cn" />
-        </div>
-        <div class="waz-config-setting">
-            <label>_aadClientId</label>
-            <input type="text" placeholder="9adbfe5e-2252-4d26-a3ad-68bbd1e25963" />
-        </div>
-        <div class="waz-config-setting">
-            <label>CoAdminUser</label>
-            <input type="text" placeholder="jianw@cciccat.partner.onmschina.cn"/>
-        </div>
-        <div class="waz-config-setting">
-            <label>CoAdminPassword</label>
-            <input type="text" placeholder="User@123"/>
+        <div class="waz-config-setting ad-setting ad-setting-displaynone" style="display: block;">
+            <div class="waz-config-help-header-section ad-setting-header-section">
+                <h2 style="font-weight:300">
+                    <span>AAD RBAC Config</span>
+                </h2>
+            </div>
+            <div class="waz-config-setting">
+                <label>_aadTenantDomain</label>
+                <input type="text" value="cciccat.partner.onmschina.cn" />
+            </div>
+            <div class="waz-config-setting">
+                <label>_aadClientId</label>
+                <input type="text" value="9adbfe5e-2252-4d26-a3ad-68bbd1e25963" />
+            </div>
+            <div class="waz-config-setting">
+                <label>CoAdminUser</label>
+                <input type="text" value="jianw@cciccat.partner.onmschina.cn" />
+            </div>
+            <div class="waz-config-setting">
+                <label>CoAdminPassword</label>
+                <input type="password" value="User@123" />
+            </div>
         </div>
     </div>
 </div>

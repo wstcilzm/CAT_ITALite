@@ -7,6 +7,7 @@ using Microsoft.Azure.ActiveDirectory.GraphClient;
 using CAT.ITALite.WebApi.Utility;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
+using System.Collections.Generic;
 
 namespace CAT.ITALite.WebApi.ApiControllers
 {
@@ -108,7 +109,27 @@ namespace CAT.ITALite.WebApi.ApiControllers
             return CreateErrorResult(301, "User has some invalid info");
         }
 
+        [HttpGet]
+        [Route("{userId}/roles")]
+        public async Task<IHttpActionResult> GetRBACRolesByUserID(string userId)
+        {
+            List<RBACRoleEntity> list = new List<RBACRoleEntity>();
 
+            var operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.UserRBACRoleAssignments);
+            var result = operation.RetrieveRolesByUserId(userId);
+            foreach(UserRBACRoleAssignmentEntity entiry in result)
+            {
+                string roleId = entiry.RowKey;
+                operation = new TableDal(ConfigurationManager.AppSettings["storageConnection"], TableNames.RBACRoles);
+                var RBAC_result = operation.RetrieveRbacRoleByID(roleId);
+                foreach(RBACRoleEntity rb_entity in RBAC_result)
+                {
+                    list.Add(rb_entity);
+                }
+            }
+
+            return CreateSuccessResult(list);
+        }
     }
     
 }

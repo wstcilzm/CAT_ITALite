@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=301879
+  -->
+<configuration>
+  <configSections>
+    
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+  <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 --></configSections>
+  <connectionStrings>
+    <add name="DefaultConnection" connectionString="Data Source=(LocalDb)\v11.0;AttachDbFilename=|DataDirectory|\aspnet-CAT.ITALite.WebApi-20151202034752.mdf;Initial Catalog=aspnet-CAT.ITALite.WebApi-20151202034752;Integrated Security=True" providerName="System.Data.SqlClient" />
+  </connectionStrings>
+  <appSettings>
+    <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
+    <!-- Start of ITA lite required configs -->
+    <add key="ConfigurationProviders" value="AppSettings" />
+    <add key="ComponentPath" value="Enforcement" />
+    <add key="EnforcementPath" value="Enforcement" />
+    <add key="Enforcement/DisableAudit" value="true" />
+    <add key="Enforcement/MaxThreads" value="100" />
+    <add key="Enforcement/ThreadAbortPollingTime" value="10" />
+    <add key="Enforcement/UseCacheForPolicySet" value="false" />
+    <add key="Enforcement/EnableEnforcementPerformanceCounters" value="false" />
+    <add key="Enforcement/ControlThreadCount" value="false" />
+    <!-- Hack to avoid calling AD to parse realm -->
+    <add key="DoNotParseSubject" value="true" />
+    <!-- End of ITA lite required configs -->
+
+    <!--Customer config for ITALite starts here-->
+    <!--Common config-->
+    <add key="storageConnection" value="QueueEndpoint=https://jianwstorage.queue.core.chinacloudapi.cn/;TableEndpoint=https://jianwstorage.table.core.chinacloudapi.cn/;AccountName=jianwstorage;AccountKey=If7+5Dn3iCvQ/cf65C4aSIAStnIIaBhS8kZUNZJ9L6DS60HYkAhwrA3d8Oo5QyOtyTf0GUcU2D3iIDQfpJ8Xjg==" />
+    <add key="azureSubscriptionID" value="03042fd8-7b09-4c73-9217-0dcea66ede69" />
+    <!--for RBAC/RM-->
+    <add key="tableNamePrefix" value="ITALite" />
+    <!--AAD Web app Info, used for parsing AAD info-->
+    <add key="TenantName" value="jianwmfatest.partner.onmschina.cn" />
+    <add key="TenantId" value="9f435dd8-c995-42e2-a86f-c3e393af6699" />
+    <add key="ClientId" value="1a7249e7-fa56-4c47-83de-5048097bc510" />
+    <add key="ClientSecret" value="MkNP0Qpq2fbDaEoLtUSn/3VfgK7+oQW+ToN20NfmuQY=" />
+    <!--AAD Native App Info, used for parsing RBAC info, should be registered in AAD managing Azure subscription -->
+    <add key="_aadTenantDomain" value="cciccat.partner.onmschina.cn" />
+    <add key="_aadClientId" value="9adbfe5e-2252-4d26-a3ad-68bbd1e25963" />
+    <add key="CoAdminUser" value="jianw@cciccat.partner.onmschina.cn" />
+    <add key="CoAdminPassword" value="User@123" />
+    <!-- AAD Resource URL and Authorize URL used for regist AAD Client-->
+    <add key="ResourceUrl" value="https://graph.chinacloudapi.cn"/>
+    <add key="AuthorizeUrl" value="https://login.partner.microsoftonline.cn/"/>
+    
+    <!--AAD web app, used for AAD login/logout in web api-->
+    <add key="ida:ClientId" value="0ee053f7-8a22-492c-8d4e-d791942be4ee" />
+    <add key="ida:Tenant" value="jianwmfatest.partner.onmschina.cn" />
+    <add key="ida:AADInstance" value="https://login.chinacloudapi.cn/{0}" />
+    <add key="ida:PostLogoutRedirectUri" value="http://localhost:33042/" />
+  
+    <!--Customer config for ITALite ends here-->
+    
+  </appSettings>
+  <system.web>
+    <authentication mode="None" />
+    <compilation debug="true" targetFramework="4.5" />
+    <httpRuntime targetFramework="4.5" />
+  </system.web>
+  <system.webServer>
+    <modules>
+      <remove name="FormsAuthentication" />
+    </modules>
+    <httpProtocol>
+      <customHeaders>
+        <add name="Access-Control-Allow-Origin" value="*" />
+        <add name="Access-Control-Allow-Headers" value="Content-Type" />
+        <add name="Access-Control-Allow-Methods" value="GET, POST, PUT, DELETE, OPTIONS" />
+      </customHeaders>
+    </httpProtocol>
+    
+  <handlers>
+      <remove name="ExtensionlessUrlHandler-Integrated-4.0" />
+      <remove name="OPTIONSVerbHandler" />
+      <remove name="TRACEVerbHandler" />
+      <add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="*" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" />
+    </handlers></system.webServer>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security.OAuth" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security.Cookies" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Owin.Security" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-3.0.1.0" newVersion="3.0.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Newtonsoft.Json" culture="neutral" publicKeyToken="30ad4fe6b2a6aeed" />
+        <bindingRedirect oldVersion="0.0.0.0-7.0.0.0" newVersion="7.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Optimization" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-1.1.0.0" newVersion="1.1.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="WebGrease" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="0.0.0.0-1.5.2.14234" newVersion="1.5.2.14234" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.IdentityModel.Protocol.Extensions" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-1.0.2.33" newVersion="1.0.2.33" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.IdentityModel.Tokens.Jwt" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.20622.1351" newVersion="4.0.20622.1351" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Http" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Net.Http.Formatting" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Antlr3.Runtime" publicKeyToken="eb42632606e9261f" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.5.0.2" newVersion="3.5.0.2" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.Services.Client" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.OData" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.Data.Edm" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-5.7.0.0" newVersion="5.7.0.0" />
+      </dependentAssembly>
+       <dependentAssembly>
+        <assemblyIdentity name="Microsoft.IT.Core" publicKeyToken="31BF3856AD364E35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.1.0.0" newVersion="3.1.0.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+    <!--<assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+     
+    </assemblyBinding>-->
+  </runtime>
+  <entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">
+      <parameters>
+        <parameter value="mssqllocaldb" />
+      </parameters>
+    </defaultConnectionFactory>
+    <providers>
+      <provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" />
+    </providers>
+  </entityFramework>
+</configuration>

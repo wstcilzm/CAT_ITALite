@@ -22,12 +22,12 @@
     {
         "caption": "Roles",
         "url": "/Home/Role",
-        "icon":"local-vm"
+        "icon": "host"
     },
     {
         "caption": "RM Groups",
         "url": "/Home/ResourceGroups",
-        "icon": "group"
+        "icon": "resource"
     },
     {
         "caption": "Setting",

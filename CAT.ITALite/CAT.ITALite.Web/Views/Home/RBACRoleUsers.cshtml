@@ -48,10 +48,12 @@
                     str.UpdatedOn = data[i].UpdatedOn;
                     $.ajax({
                         type: "GET",
+                        async:false,
                         url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/' + data[i].PartitionKey,
                         traditional: true,
                         success: function (d) {
-                            str.userName=d.result.DisplayName;
+                            if (d.result[0]&& d.result[0].DisplayName)
+                                str.userName=d.result[0].DisplayName;
                         },
                         error: function (d) {
                         }

@@ -14,7 +14,9 @@ namespace CAT.ITALite.WebApi.ApiControllers
         [Route("connect")]
         public AuthData Get(string AuthenKey)
         {
-            return AuthenController.IDsDic[AuthenKey];
+            AuthData resAuthData = AuthenController.IDsDic[AuthenKey];
+            AuthenController.IDsDic.Remove(AuthenKey);
+            return resAuthData;
         }
 
         private static InvokingITA ITACore = new InvokingITA();

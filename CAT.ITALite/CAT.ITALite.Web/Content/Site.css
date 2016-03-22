@@ -1409,6 +1409,11 @@ confirmbar-item:hover {
                 background-position: -227px -1280px;
             }
 
+            .command-title .tools button.toolbar-save {
+                background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
+                background-position: -243px -1219px;
+            }
+
             .command-title .tools button.toolbar-back {
                 background-image: url("/content/themes/base/images/icons-action-32-sprites.png");
                 background-position: -237px -65px;
@@ -1824,6 +1829,11 @@ confirmbar-item:hover {
     .menu .menu-item .setting {
         background-image: url("/content/themes/base/images/Settings.png");
     }
+
+    .menu .menu-item .resource {
+        background-image: url("/content/themes/base/images/Storage.png");
+    }
+
 /*Styles for SQL status ------------------------------------------------------*/
 .sql-status,
 .sql-status-unknown {

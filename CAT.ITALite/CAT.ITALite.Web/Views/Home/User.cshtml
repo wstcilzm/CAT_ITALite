@@ -112,7 +112,8 @@
                         ev.stopPropagation();
                         var tr = $(this).parent();
                         var userId = tr.attr('userid');
-                        self.location = "../../Home/UserDetail?id=" + userId;
+                        var userName = tr.attr('userName');
+                        self.location = "../../Home/UserDetail?id=" + userId+"&name="+userName;
                     }
                 };
                 return gridSetting;

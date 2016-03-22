@@ -114,6 +114,13 @@ namespace CAT.ITALite.Common
             var result = _table.ExecuteQuery(query);
             return result;
         }
+
+        public IEnumerable<UserRBACRoleAssignmentEntity> RetrieveRolesByUserId(string userId)
+        {
+            var query = new TableQuery<UserRBACRoleAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
         #endregion
 
         #region App
@@ -357,6 +364,13 @@ namespace CAT.ITALite.Common
         public IEnumerable<UserRBACRoleAssignmentEntity> RetrieveUsersByRbacRoleId(string roleId)
         {
             var query = new TableQuery<UserRBACRoleAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, roleId));
+            var result = _table.ExecuteQuery(query);
+            return result;
+        }
+
+        public IEnumerable<RGRBACRoleAssignmentEntity> RetrieveRMGroupsByRbacRoleId(string roleId)
+        {
+            var query = new TableQuery<RGRBACRoleAssignmentEntity>().Where(TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.Equal, roleId));
             var result = _table.ExecuteQuery(query);
             return result;
         }

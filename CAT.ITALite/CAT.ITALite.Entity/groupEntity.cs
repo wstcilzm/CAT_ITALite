@@ -81,4 +81,24 @@ namespace CAT.ITALite.Entity
         public string properties { set; get; }
     }
 
+    public class RmAccessGroupView: RMResourceGroupEntiry
+    {
+        public RmAccessGroupView() { }
+        public RmAccessGroupView(RMResourceGroupEntiry view)
+        {
+            this.PartitionKey = view.PartitionKey;
+            this.RowKey = view.RowKey;
+            this.resourceGroupID = view.resourceGroupID;
+            this.resourceGroupName = view.resourceGroupName;
+            this.tags = view.tags;
+            this.properties = view.properties;
+        }
+        public RmAccessGroupView(RMResourceGroupEntiry view,string roleName):this(view)
+        {
+            this.RoleName = roleName;
+        }
+        public string RoleName { get; set; }
+        public string RoleID { get; set; }
+    }
+
 }

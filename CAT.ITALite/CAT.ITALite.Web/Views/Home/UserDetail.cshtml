@@ -1,44 +1,81 @@
 ﻿@{
     ViewBag.Title = "UserDetail";
 }
+
+<style type="text/css">
+    a {
+        text-decoration: none;
+    }
+
+    .vgrid-filter-icon {
+        top: 20px;
+    }
+</style>
+
 <script type="text/javascript">
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+
+    }
+
+    function refresh() {
+        if (getCookie('UserTabIndex') == 1) {
+            rmDetail.load(true);
+        }
+        else {
+            aadDetail.load();
+        }
+    }
+
     $(function () {
+        var adminRoleDetail;
+        var rbacRoleDetail;
+        var activeTab;
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            activeTab = $(e.target).text();
+        });
+
         var isRemoving = false;
-        var userDetail = {
-            groupid :null,
-            groupname :null,
-            userid : null,
-            panel: $('.user-panel'),
+        var aadDetail = {
+            groupid: null,
+            groupname: null,
+            userid: null,
+            panel: $('.aad-panel'),
             groupGrid: $('.group-grid'),
             appGrid: $('.app-grid'),
             createToolbar: function () {
                 var t = layout.toolbar;
                 t.add('Refresh', 'Refresh', 'toolbar-showall', function () {
-                    userDetail.load();
+                    refresh();
                 });
             },
             load: function () {
-                userDetail.panel.css({ 'min-height': layout.contantHeight * 2 / 3, 'max-height': layout.contantHeight * 2 / 3 }).vloading().vloading('show');
+                aadDetail.panel.css({ 'min-height': layout.contantHeight * 9 / 10, 'max-height': layout.contantHeight * 9 / 10}).vloading().vloading('show');
                 $.ajax({
                     type: "GET",
-                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/{userId}/groups?userId='+'@ViewBag.userID',
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/{userId}/groups?userId=' + '@ViewBag.userID',
                     traditional: true,
                     success: function (d) {
                         var groups = "";
                         window.userGroups = d.result;
                         for (var i = 0; i < d.result.length; i++) {
                             var group = d.result[i];
-                            group.del = '<a href="#" onclick="userDetail.verifyRemove(' + i + ');return false;">remove</a>';
+                            group.del = '<a href="#" onclick="aadDetail.verifyRemove(' + i + ');return false;">remove</a>';
                             group.GroupLevel = 1;
                             var groupID = group.RowKey;
                             var groupName = group.GroupName;
-                            d.result[i].GroupName = '<a href="#" onclick="userDetail.linkToGroupInfo(' + '\'' + groupID + '\');return false;">' + groupName + '</a>';
+                            d.result[i].GroupName = '<a href="#" onclick="aadDetail.linkToGroupInfo(' + '\'' + groupID + '\');return false;">' + groupName + '</a>';
                             //groups += group.UserPrincipleName + "," + group.RowKey + ";";
-                            groups += group.RowKey + "," ;
+                            groups += group.RowKey + ",";
                         }
-                        userDetail.bindGroupData(d.result);
+                        aadDetail.bindGroupData(d.result);
                         if (d.result.length > 0) {
-                            groups += d.result[0].UserPrincipleName; //groups : ID1,ID2...IDN,UserPrincipleName; 
+                            groups += d.result[0].UserPrincipleName; //groups : ID1,ID2...IDN,UserPrincipleName;
+                            //window.userPrincipleName=d.result[0].UserPrincipleName;
                             $.ajax({
                                 type: "GET",
                                 url: ' @CommonHelper.GetWebAPiUrl()' + 'api/user/' + groups + '/apps',
@@ -48,38 +85,37 @@
                                         for (var i = 0; i < f.result.length; i++) {
                                             var appName = f.result[i].AppName;
                                             var appID = f.result[i].PartitionKey.toString();
-                                            f.result[i].AppName = '<a href="#" onclick="userDetail.linkToAppInfo(' + '\'' + appID + '\');return false;">' + appName + '</a>';
+                                            f.result[i].AppName = '<a href="#" onclick="aadDetail.linkToAppInfo(' + '\'' + appID + '\');return false;">' + appName + '</a>';
                                         }
                                     }
-                                    userDetail.bindAppData(f.result);
-                                    userDetail.panel.vloading('hide');
+                                    aadDetail.bindAppData(f.result);
+                                    aadDetail.panel.vloading('hide');
                                 }
                             })
                         }
                         else
-                            userDetail.bindAppData(d.result);
-                        userDetail.panel.vloading('hide');
+                            aadDetail.bindAppData(d.result);
+                        aadDetail.panel.vloading('hide');
                     },
                     error: function (d) {
                         alert(d);
-                        userDetail.panel.vloading('hide');
+                        aadDetail.panel.vloading('hide');
                     }
                 });
             },
             bindGroupData: function (data) {
-                userDetail.groupGrid.vgrid('bindData', data);
+                aadDetail.groupGrid.vgrid('bindData', data);
             },
-            bindAppData: function(data){
-                userDetail.appGrid.vgrid('bindData',data);
+            bindAppData: function (data) {
+                aadDetail.appGrid.vgrid('bindData', data);
             },
-            yesToRemove: function()
-            {
+            yesToRemove: function () {
                 $.ajax({
                     type: "GET",
-                    url: ' @CommonHelper.GetWebAPiUrl()' + 'api/assignment/removeuserfromgroup?userId='+userid+'&groupId='+groupid,
+                    url: ' @CommonHelper.GetWebAPiUrl()' + 'api/assignment/removeuserfromgroup?userId=' + userid + '&groupId=' + groupid,
                     traditional: true,
                     success: function () {
-                        userDetail.load();
+                        aadDetail.load();
                     }
                 })
             },
@@ -87,7 +123,7 @@
                 groupid = userGroups[index].RowKey;
                 groupname = userGroups[index].GroupName;
                 userid = userGroups[index].PartitionKey;
-                layout.confirm('Remove User From '+groupname+'?', userDetail.yesToRemove, null);
+                layout.confirm('Remove User From ' + groupname + '?', aadDetail.yesToRemove, null);
             },
             verifyRemove: function (index) {
                 if (isRemoving == true) {
@@ -97,29 +133,29 @@
                 //groupid = userGroups[index].RowKey;
                 //groupname = userGroups[index].GroupName;
                 //userid = userGroups[index].PartitionKey;
-                userGroups[index].del = '<a href="#" onclick="userDetail.yRemove(' + index + ');return false;">yes</a> &nbsp; <a href="#" onclick="userDetail.nRemove(' + index + ');return false;">no</a>';
-                userDetail.groupGrid.vgrid('destroy');
-                userDetail.init();
-                userDetail.bindGroupData(userGroups);
+                userGroups[index].del = '<a href="#" onclick="aadDetail.yRemove(' + index + ');return false;">yes</a> &nbsp; <a href="#" onclick="aadDetail.nRemove(' + index + ');return false;">no</a>';
+                aadDetail.groupGrid.vgrid('destroy');
+                aadDetail.init();
+                aadDetail.bindGroupData(userGroups);
             },
             yRemove: function (index) {
-                userDetail.groupGrid.vgrid('destroy');
-                userDetail.appGrid.vgrid('destroy');
-                userDetail.init();
+                aadDetail.groupGrid.vgrid('destroy');
+                aadDetail.appGrid.vgrid('destroy');
+                aadDetail.init();
                 $.ajax({
                     type: "GET",
                     url: ' @CommonHelper.GetWebAPiUrl()' + 'api/assignment/removeuserfromgroup?userId=' + userGroups[index].PartitionKey + '&groupId=' + userGroups[index].RowKey,
                     traditional: true,
                     success: function () {
-                        userDetail.load();
+                        aadDetail.load();
                     }
                 })
             },
             nRemove: function (index) {
-                userGroups[index].del = '<a href="#" onclick="userDetail.verifyRemove(' + index + ');return false;">remove</a>';
-                userDetail.groupGrid.vgrid('destroy');
-                userDetail.init();
-                userDetail.bindGroupData(userGroups);
+                userGroups[index].del = '<a href="#" onclick="aadDetail.verifyRemove(' + index + ');return false;">remove</a>';
+                aadDetail.groupGrid.vgrid('destroy');
+                aadDetail.init();
+                aadDetail.bindGroupData(userGroups);
                 isRemoving = false;
             },
             getAppGridSetting: function () {
@@ -127,8 +163,8 @@
                     caption: 'User-Apps',
                     url: '/Home',
                     searchAction: 'GetApplications',
-                    width: layout.contantWidth,
-                    height: layout.contantHeight *1 / 2,
+                    width: layout.contantWidth-20,
+                    height: layout.contantHeight * 1 / 2,
                     noDataMsg: 'No applications found',
                     rp: 20,
                     //rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, { name: 'displayName', field: 'DisplayName' }],
@@ -143,7 +179,7 @@
                         { caption: 'App ID', field: 'PartitionKey', width: 4 },
                         { caption: 'OperationType', field: 'OperationTypes', width: 2 },
                         { caption: 'Group Name', field: 'GroupName', width: 2 },
-                        { caption: 'Group ID', field: 'RowKey', width: 4 }
+                        { caption: 'Group ID', field: 'RowKey', width: 3 }
                     ]
                 };
                 return gridSetting;
@@ -153,7 +189,7 @@
                     caption: 'User-Groups <img src="../../Content/images/back.png" class="BackBtnStyle" />',
                     url: '/Home',
                     searchAction: 'GetApplications',
-                    width: layout.contantWidth,
+                    width: layout.contantWidth-20,
                     height: layout.contantHeight * 1 / 2,
                     noDataMsg: 'No groups found',
                     rp: 20,
@@ -164,9 +200,9 @@
                     checkbox: false,
                     scaleWidth: true,
                     columns: [
-                        { caption: 'User PrincipleName',field:'UserPrincipleName',width:4},
+                        { caption: 'User PrincipleName', field: 'UserPrincipleName', width: 4},
                         { caption: 'Group Name', field: 'GroupName', width: 2 },
-                        { caption: 'Group ID', field: 'RowKey',width:4},
+                        { caption: 'Group ID', field: 'RowKey', width: 3 },
                         { caption: 'Updated By', field: 'UpdatedBy', width: 2 },
                         { caption: 'Group Level', field: 'GroupLevel', width: 2 },
                         { caption: 'Remove', field: 'del', width: 2 }
@@ -176,8 +212,8 @@
             },
 
             init: function () {
-                userDetail.groupGrid.vgrid(userDetail.getGroupGridSetting());
-                userDetail.appGrid.vgrid(userDetail.getAppGridSetting());
+                aadDetail.groupGrid.vgrid(aadDetail.getGroupGridSetting());
+                aadDetail.appGrid.vgrid(aadDetail.getAppGridSetting());
                 $(".group-grid").show();
                 $('.app-grid').show();
                 //$(".group-grid").append('<img src="../../Content/images/back.png" class="BackBtnStyle" /> ');
@@ -193,15 +229,180 @@
                 self.location = "../../Home/GroupDetail?id=" + groupID;
             }
         };
-        userDetail.init();
-        userDetail.load();
-        userDetail.createToolbar();
-        window.userDetail = userDetail;
+
+        var rmDetail = {
+            panel: $('.rm-panel'),
+            roleGrid: $('.role-grid'),
+            rmGrid: $('.rmGroup-grid'),
+            load: function (isShowPanel) {
+                if (isShowPanel)
+                    rmDetail.panel.css({ 'min-height': layout.contantHeight * 9 / 10, 'max-height': layout.contantHeight * 9 / 10 }).vloading().vloading('show');
+                $.ajax({
+                    type: "GET",
+                    url: ' @CommonHelper.GetWebAPiUrl()' + '/api/user/{userId}/roles?userId=' + '@ViewBag.userID',
+                    traditional: true,
+                    success: function (d) {
+                        window.userRoles = d.result;
+                        for (var i = 0; i < d.result.length; i++) {
+                            var role = d.result[i];
+                            role.UserPrincipleName = window.userPrincipleName;
+                            var roleId = role.PartitionKey;
+                            var roleName = role.RowKey;
+                            role.RowKey = '<a href="#" onclick=self.location="../../Home/RBACRoleUsers?roleId="+\'' + roleId + '\'+"&roleName="+\'' + roleName + '\';return false;">' + roleName + '</a>';
+                            }
+                        rmDetail.bindRoleData(d.result);
+                        if (d.result.length > 0) {
+                            $.ajax({
+                                type: "GET",
+                                url: ' @CommonHelper.GetWebAPiUrl()' + '/api/role/rbac/' + '@ViewBag.userID' + '/groups',
+                                traditional: true,
+                                success: function (f) {
+                                    if (f.result) {
+                                        for (var i = 0; i < f.result.length; i++) {
+                                            f.result[i].UserPrincipleName = window.userPrincipleName;
+                                            var group=f.result[i];
+                                            var groupName = group.PartitionKey;
+                                            var resGroupID = group.resourceGroupID;
+                                            group.PartitionKey = '<a href="#" onclick=self.location="../../Home/Resource?groupID="+\'' + groupName + '\'+"&resGroupID="+\'' + resGroupID + '\';return false;">' + groupName + '</a>';
+                                        }
+                                    }
+                                    rmDetail.bindRmData(f.result);
+                                    rmDetail.panel.vloading('hide');
+                                },
+                                error: function (f) {
+                                    alert(f.result);
+                                    rmDetail.panel.vloading('hide');
+                                }
+
+                            })
+                        }
+                        else
+                        {
+                            rmDetail.bindRmData(d.result);
+                            rmDetail.panel.vloading('hide');
+                        }
+                    },
+                    error: function (d) {
+                        alert(d);
+                        rmDetail.panel.vloading('hide');
+                    }
+                });
+            },
+            bindRoleData: function (data) {
+                rmDetail.roleGrid.vgrid('bindData', data);
+            },
+            bindRmData: function (data) {
+                rmDetail.rmGrid.vgrid('bindData', data);
+            },
+            getroleGridSetting: function () {
+                var gridSetting = {
+                    caption: 'User-Roles  <img src="../../Content/images/back.png" class="BackBtnStyle" />',
+                    url: '/Home',
+                    searchAction: 'GetRoles',
+                    width: layout.contantWidth - 20,
+                    height: layout.contantHeight * 1 / 2,
+                    noDataMsg: 'No roles found',
+                    rp: 20,
+                    //rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, { name: 'displayName', field: 'DisplayName' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: false,
+                    USERROLE: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'User PrincipleName', field: 'UserPrincipleName', width: 4 },
+                        { caption: 'Role Name', field: 'RowKey', width: 4 },
+                        { caption: 'Type Propety', field: 'TypeProperty', width: 2 }
+                    ]
+                };
+                return gridSetting;
+            },
+            getrmGridSetting: function () {
+                var gridSetting = {
+                    caption: 'User-RMGroups',
+                    url: '/Home',
+                    searchAction: 'GetRMGroups',
+                    width: layout.contantWidth - 20,
+                    height: layout.contantHeight * 1 / 2,
+                    noDataMsg: 'No groups found',
+                    rp: 20,
+                    //rowProps: [{ name: 'userName', field: 'RowKey' }, { name: 'userId', field: 'PartitionKey' }, { name: 'displayName', field: 'DisplayName' }],
+                    orderBy: 'Homepage',
+                    usePage: false,
+                    filter: true,
+                    checkbox: false,
+                    USERRMGROUP: true,
+                    scaleWidth: true,
+                    columns: [
+                        { caption: 'User PrincipleName', field: 'UserPrincipleName', width: 4 },
+                        { caption: 'Group Name', field: 'PartitionKey', width: 2 },
+                        { caption: 'Location', field: 'RowKey', width: 3 },
+                        { caption: 'Role Name', field: 'RoleName', width: 2 }
+                    ]
+                };
+                return gridSetting;
+            },
+
+            init: function () {
+                rmDetail.roleGrid.vgrid(rmDetail.getroleGridSetting());
+                rmDetail.rmGrid.vgrid(rmDetail.getrmGridSetting());
+                $(".role-grid").show();
+                $('.rmGroup-grid').show();
+                $('.BackBtnStyle').on("click", function (event) {
+                    event.preventDefault();
+                    history.back(-1);
+                });
+            }
+        };
+        window.userPrincipleName='@ViewBag.userName';
+        aadDetail.init();
+        aadDetail.load();
+        aadDetail.createToolbar();
+        window.aadDetail = aadDetail;
+
+        rmDetail.init();
+        rmDetail.load();
+        window.rmDetail = rmDetail;
+
+        if (getCookie('UserTabIndex') == 1) {
+            $('#roleTab li:eq(1) a').tab('show');
+        }
+        else {
+            $('#roleTab li:eq(0) a').tab('show');
+        }
+
     });
+
 
 </script>
 
-<div class="user-panel">
-    <div class="group-grid"></div>
-    <div class="app-grid"></div>
+<ul id="roleTab" class="nav nav-tabs" style="margin-top:10px;font-size:large">
+    <li class="active"><a href="#aadAccess" data-toggle="tab">AAD ACCESS</a></li>
+    <li><a href="#rmAccess" data-toggle="tab">RM ACCESS</a></li>
+</ul>
+<div id="roleTabContent" class="tab-content">
+
+    <div class="tab-pane active aad-panel" id="aadAccess">
+
+        <div class="group-grid"></div>
+        <div class="app-grid"></div>
+
+    </div>
+    <div class="tab-pane rm-panel" id="rmAccess">
+        <div class="role-grid"></div>
+        <div class="rmGroup-grid"></div>
+    </div>
+
 </div>
+
+<script>
+    $(function () {
+        $('#roleTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+            document.cookie = $(this)[0].innerHTML == "RM ACCESS" ? "UserTabIndex=1" : "UserTabIndex=0";
+        })
+
+    });
+</script>

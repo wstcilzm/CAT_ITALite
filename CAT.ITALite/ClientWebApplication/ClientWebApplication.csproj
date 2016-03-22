@@ -326,6 +326,8 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="IAuthHelper.cs" />
+    <Compile Include="MVCAuthHelper.cs" />
     <Compile Include="tempDefault.aspx.cs">
       <DependentUpon>tempDefault.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

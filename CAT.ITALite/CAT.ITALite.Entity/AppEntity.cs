@@ -30,6 +30,11 @@ namespace CAT.ITALite.Entity
         public RMResourceEntity()
         {}
 
+        /// <summary>
+        /// new RMResourceEntity
+        /// </summary>
+        /// <param name="resourceGroupName">resource group name</param>
+        /// <param name="resourceType">resource type is filled with type and resource name</param>
         public RMResourceEntity(string resourceGroupName, string resourceType)
         {
             this.PartitionKey = resourceGroupName;

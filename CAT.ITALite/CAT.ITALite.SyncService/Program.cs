@@ -66,11 +66,10 @@ namespace CAT.ITALite.SyncService
             }
 
             #endregion
-            
+
             CleanTableStorages();
             Thread t = new Thread(new ThreadStart(ThreadRetrieveUpdates));
             t.Start();
-            PortalSimulator();
 
             while (true)
             {
@@ -85,7 +84,7 @@ namespace CAT.ITALite.SyncService
                 RetrieveResourceGroups();
                 RetrieveRMResources();                
                 Console.WriteLine("ITALite initialization is done!");
-                Thread.Sleep(600000);
+                Thread.Sleep(100000);
             }
             
             //InvokingITA testITACore = new InvokingITA();
@@ -116,6 +115,9 @@ namespace CAT.ITALite.SyncService
                 rmResourceOper.CleanTable();
                 rmResourceGroupOper.CleanTable();
                 Console.WriteLine("All history tables are deleted.");
+
+                //System.IO.File.AppendAllText("ITALiteLog.txt", DateTime.Now.ToString() + "   All history tables are deleted.\r\n");
+
                 System.Threading.Thread.Sleep(5000);
                 Environment.Exit(0);
                
@@ -123,19 +125,7 @@ namespace CAT.ITALite.SyncService
         }
 
         static void ThreadRetrieveUpdates()
-        {
-            //// Retrieve storage account from connection string.
-            //CloudStorageAccount storageAccount0 = CloudStorageAccount.Parse(ConfigurationSettings.AppSettings["storageConnection"]);
-            //// Create the queue client.
-            //CloudQueueClient queueClient0 = storageAccount0.CreateCloudQueueClient();
-            //// Retrieve a reference to a queue.
-            //CloudQueue queue0 = queueClient0.GetQueueReference("italitemsgqueue");
-            //// Create the queue if it doesn't already exist.
-            //queue0.CreateIfNotExists();
-            //// Create a message and add it to the queue.
-            //CloudQueueMessage message = new CloudQueueMessage("New AAD User;47a6edd63c@jianwmfatest.partner.onmschina.cn");
-            //queue0.AddMessage(message); 
-            
+        {            
             Console.WriteLine("Real time updating is started.");
             // Retrieve storage account from connection string
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(ConfigurationSettings.AppSettings["storageConnection"]);
@@ -691,7 +681,7 @@ namespace CAT.ITALite.SyncService
                         }
                         if(items[i]=="providers")
                         {
-                            resourceType = items[i+1] + "."+items[i+2];
+                            resourceType = items[i + 1] + "." + items[i + 2] + "." + items[i + 3];
                             break;
                         }
                     }

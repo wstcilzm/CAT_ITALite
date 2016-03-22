@@ -48,8 +48,8 @@
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
                             <ul>                                
-                                <li><a id="loginLink" href="<%=AuthenServer+"?Uri="+ReturnUri %>"><%=LoginName %></a></li>
-                                <li><a id="registerLink" href="<%=SignoutServer+"?Uri="+ReturnUri %>"><%=BuddyLink %></a></li>
+                                <li><a id="loginLink" href="<%= (LoginName=="Log In")? SigninServer+"?Uri="+ReturnUri : "./" %>"><%=LoginName %></a></li>
+                                <li><a id="registerLink" href="<%=(BuddyLink == "Register")? "./" : SignoutServer+"?Uri="+ReturnUri %>"><%=BuddyLink %></a></li>
                             </ul>
                         </AnonymousTemplate>
                         <LoggedInTemplate>

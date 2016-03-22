@@ -12,7 +12,7 @@ namespace CAT.ITALite.WebApi.Controllers
     {
         public static Dictionary<string,AuthData> IDsDic = new Dictionary<string,AuthData>();
 
-        [Authorize]
+        //[Authorize]
         // GET: Authen
         public string Index()
         {

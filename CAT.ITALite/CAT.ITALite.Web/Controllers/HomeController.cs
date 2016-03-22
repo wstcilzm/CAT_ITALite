@@ -108,9 +108,10 @@ namespace CAT.ITALite.Web.Controllers
             return View();
         }
 
-        public ActionResult UserDetail(string id)
+        public ActionResult UserDetail(string id,string name)
         {
             ViewBag.userID = id;
+            ViewBag.userName = name;
             return View();
         }
 

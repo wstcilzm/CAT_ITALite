@@ -71,10 +71,10 @@ namespace ClientWebApplication
         }
 
         protected string LoginName = "Log In";
-        protected string AuthenServer = ConfigurationManager.AppSettings["AuthenServer"];
+        protected string SigninServer = ConfigurationManager.AppSettings["AuthenServer"] + "Account/SignIn";
+        protected string SignoutServer = ConfigurationManager.AppSettings["AuthenServer"] + "Account/SignOut";
         protected string ReturnUri =  ConfigurationManager.AppSettings["ReturnUri"];
         protected string BuddyLink = "Register"; //Register or Sign Out
-        protected string SignoutServer = ConfigurationManager.AppSettings["SignoutServer"];
         public static AuthData CurrentUser = null;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -85,7 +85,7 @@ namespace ClientWebApplication
             {
                 using (var client = new HttpClient())
                 {
-                    client.BaseAddress = new Uri("http://localhost:33042/");
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["AuthenServer"]);
                     client.DefaultRequestHeaders.Accept.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -124,10 +124,10 @@ namespace ClientWebApplication
                 using (var client = new HttpClient())
                 {
 
-                    client.BaseAddress = new Uri("http://localhost:33042/");
+                    client.BaseAddress = new Uri(ConfigurationManager.AppSettings["AuthenServer"]);
 
-                    CurrentUser.appObjectId = "1a7249e7-fa56-4c47-83de-5048097bc510";
-                    CurrentUser.appName = "Console App for Azure AD";
+                    CurrentUser.appObjectId = "05dbf7ce-ea6b-4784-89c6-d11c67a2c7f1";
+                    CurrentUser.appName = "CATITA ClientWepApp";
                     CurrentUser.hashKey = DateTime.Now.Ticks.ToString();
 
                     var requestJson = JsonConvert.SerializeObject(CurrentUser);

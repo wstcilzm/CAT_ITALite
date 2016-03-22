@@ -23,9 +23,13 @@ namespace CAT.ITALite.Web
             }
             if (httpContext.User.Identity.IsAuthenticated)
             {
+                if(CheckITAPermission(httpContext))
+                {
+                    return true;
+                }
                 return true;
             }
-
+          
             return false;
         }
 
@@ -42,14 +46,13 @@ namespace CAT.ITALite.Web
             string Uri = System.Configuration.ConfigurationManager.AppSettings["ReturnRelyingUri"];
 
             if (string.IsNullOrEmpty(AK))
-            {
-                string authServerUri = System.Configuration.ConfigurationManager.AppSettings["AuthenServer"] + "authen/index?Uri=" + Uri + "ITALiteAuth/ITALogon";           
+            {           
+                string authServerUri = System.Configuration.ConfigurationManager.AppSettings["AuthenServer"] + "Account/SignIn?Uri=" + Uri + "ITALiteAuth/ITALogon";
                 filterContext.Result = new RedirectResult(authServerUri);
             }
         }
 
-
-        public static void RestoreUserFromCookie(HttpRequest Request)
+        public void RestoreUserFromCookie(HttpRequest Request)
         {
             HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
             if (authCookie != null)
@@ -67,6 +70,41 @@ namespace CAT.ITALite.Web
                 }
             }
         }
+
+        public bool CheckITAPermission(HttpContextBase httpContext)
+        {
+            bool pass = false;
+
+            if (httpContext.User.Identity.IsAuthenticated)
+            {
+                using (var client = new HttpClient())
+                {
+
+                    client.BaseAddress = new Uri(System.Configuration.ConfigurationManager.AppSettings["AuthenServer"]);
+                    AuthData AuthUser = new AuthData();
+                    HttpCookie authCookie = httpContext.Request.Cookies[FormsAuthentication.FormsCookieName];
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    ITALogonModel serializeModel = JsonConvert.DeserializeObject<ITALogonModel>(authTicket.UserData);
+
+                    AuthUser.appObjectId = "1a7249e7-fa56-4c47-83de-5048097bc510";
+                    AuthUser.appName = "Console App for Azure AD";
+                    AuthUser.hashKey = DateTime.Now.Ticks.ToString();
+                    AuthUser.userObjectID = serializeModel.ObjectId;
+                    AuthUser.userPrincipleName = serializeModel.UPN;
+
+                    var requestJson = JsonConvert.SerializeObject(AuthUser);
+                    HttpContent httpContent = new StringContent(requestJson);
+                    httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                    var result = client.PostAsync("api/auth/check", httpContent).Result.Content.ReadAsStringAsync().Result;
+                    AuthUser = JsonConvert.DeserializeObject<AuthData>(result);
+                    return AuthUser.authResult;
+                }
+            }
+
+            return pass;
+        }
+
+
     }
 
     public class ITALiteAuthController : Controller
@@ -76,6 +114,7 @@ namespace CAT.ITALite.Web
             string AK = Request.QueryString["AK"];
             string Uri = Request.Url.AbsoluteUri;
 
+            //authentication back process
             if (!string.IsNullOrEmpty(AK))
             {
                 if (AK != null) //will use decryption to detect information loyalty
@@ -113,8 +152,6 @@ namespace CAT.ITALite.Web
                             System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
 
                             Response.Redirect("~/");
-                            //LoginName = CurrentUser.userPrincipleName;
-                            //SignoutServer = ConfigurationManager.AppSettings["SignoutServer"];
                         }
                         catch (Exception ex)
                         {
@@ -124,16 +161,21 @@ namespace CAT.ITALite.Web
                     }
                 }
             }
+            else
+            {
+                string authServerUri = System.Configuration.ConfigurationManager.AppSettings["AuthenServer"] + "Account/SignIn?Uri=" + Uri + "ITALiteAuth/ITALogon";
+                Response.Redirect(authServerUri);
+            }
             return "hello, world.";
         }
 
-        [ITALiteAuthorize]
+        //[ITALiteAuthorize]
         public string ITALogout()
         {
-            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,"null",DateTime.Now,DateTime.Now.AddDays(-1),false,"null");
-            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-            System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-            System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+            //FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,"null",DateTime.Now,DateTime.Now.AddDays(-1),false,"null");
+            //string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            //System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            //System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
 
             string returnUri = System.Configuration.ConfigurationManager.AppSettings["ReturnRelyingUri"] + "ITALiteAuth/ITALite";
             Response.Redirect(System.Configuration.ConfigurationManager.AppSettings["AuthenServer"] + "Account/SignOut?Uri=" + returnUri);
@@ -143,6 +185,11 @@ namespace CAT.ITALite.Web
 
         public string ITALite()
         {
+            FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1, "null", DateTime.Now, DateTime.Now.AddDays(-1), false, "null");
+            string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+            System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+            System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+
             Response.Redirect("~/Views/WebForm/ITALiteInfo.html");
             return "Hello, ITALite.";
         }

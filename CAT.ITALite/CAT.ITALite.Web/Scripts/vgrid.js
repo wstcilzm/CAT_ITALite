@@ -145,6 +145,10 @@
                     var inconTop=g.hDiv.position().top;
                     if (g.RBACRole)
                         inconTop = 20;
+                    if (g.USERROLE)
+                        inconTop = 68;
+                    if (g.USERRMGROUP)
+                        inconTop = 60;
                     var filterIcon = $('<div class="vgrid-filter-icon"></div>').css('top', inconTop);
                     var toggleFilter = function () {
                         if (filterBox.is(':visible')) {
