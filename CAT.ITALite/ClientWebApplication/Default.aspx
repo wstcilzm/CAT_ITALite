@@ -19,9 +19,9 @@
         </li>
     </ol>
     <p>
-        <span id="privateBlock" ><%=((site_master.CurrentUser == null) ? "<h2 style=\"color:red\">Not authenticated, please login and check it again.</h2>" : privateInfo) %></span>
+        <span id="privateBlock" ><%=((GetCookie() == null) ? "<h2 style=\"color:red\">Not authenticated, please login and check it again.</h2>" : privateInfo) %></span>
     <p>
-        <span id="managerBlock"><%=((site_master.CurrentUser != null && site_master.CurrentUser.authResult) ? managerInfo : "<h2 style=\"color:red\">Not authorized, please login and check your permission.</h2>") %></span>
+        <span id="managerBlock"><%=((GetCookie() != null && GetCookie().authResult) ? managerInfo : "<h2 style=\"color:red\">Not authorized, please login and check your permission.</h2>") %></span>
     <p>
         &nbsp;</p>
 </asp:Content>

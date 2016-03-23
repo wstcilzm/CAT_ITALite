@@ -9,9 +9,18 @@ namespace ClientWebApplication
 {
     public partial class MyDefault : Page
     {
+
+        protected MVCAuthHelper mVCAuthHelper = new MVCAuthHelper();
         protected void Page_Load(object sender, EventArgs e)
         {
+            
+        }
 
+
+        protected CAT.ITALite.Common.AuthData GetCookie()
+        {
+            mVCAuthHelper.GetUserDataCookie();
+            return mVCAuthHelper.UserData;
         }
 
         protected string privateInfo =

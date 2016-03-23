@@ -5,13 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Web;
+using CAT.ITALite.Common;
 
 namespace ClientWebApplication
 {
-    interface IAuthHelper
+    public interface IAuthHelper
     {
         bool HasAccessToken(Object sender);
-        void ChangeToken();
-        void CheckUser();
+        void Authentication(string accesskey);
+        bool IsAuthentication();
+        bool IsAuthorization();
+        void Authorization(string appId, string appName, string hashKey);
+        void ClearCookie();
     }
 }
