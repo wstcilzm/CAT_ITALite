@@ -16,6 +16,7 @@ namespace ClientWebApplication
         bool IsAuthentication();
         bool IsAuthorization();
         void Authorization(string appId, string appName, string hashKey);
-        void ClearCookie();
+        void ClearCookieAndLogoff();
+        //IDictionary<string,string> Users { get; }
     }
 }

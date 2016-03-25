@@ -19,8 +19,9 @@ namespace ClientWebApplication
 
         protected CAT.ITALite.Common.AuthData GetCookie()
         {
-            mVCAuthHelper.GetUserDataCookie();
-            return mVCAuthHelper.UserData;
+            
+            return mVCAuthHelper.GetUserCookie();
+            //return mVCAuthHelper.UserData;
         }
 
         protected string privateInfo =

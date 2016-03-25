@@ -16,6 +16,11 @@ namespace ClientWebApplication
     public class MVCAuthHelper : IAuthHelper
     {
 
+        static MVCAuthHelper()
+        {
+            users = new Dictionary<string, AuthData>();
+        }
+
         private AuthData userData;
         public AuthData UserData
         {
@@ -23,34 +28,106 @@ namespace ClientWebApplication
             private set { }
         }
 
+        private static IDictionary<string, AuthData> users ;
+        public static IDictionary<string,AuthData> Users
+        {
+            get { return users; }
+            private set {; }
+        }
+
         public LoginModel loginModel { get; set; }
 
 
-        public void GetUserDataCookie()
+        public void GetUserDataFromServerCookie()
         {
-            bool isSignIn = HttpContext.Current.User.Identity.IsAuthenticated;
             HttpCookie authCookie = HttpContext.Current.Response.Cookies.Get(FormsAuthentication.FormsCookieName);
             if (authCookie == null || authCookie.Value == null)
             {
-                authCookie = HttpContext.Current.Request.Cookies.Get(FormsAuthentication.FormsCookieName);
+                userData = null;
             }
-            try
+            else
             {
+                try
+                {
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null)
+                    {
+                        AuthData tempData = JsonConvert.DeserializeObject<AuthData>(authTicket.UserData);
+                        if (users.Keys.Contains(UserData.userPrincipleName))
+                        {
+                            userData = users[tempData.userPrincipleName];
+                        }
 
-                FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
-                if (authTicket != null)
-                {
-                    userData = JsonConvert.DeserializeObject<AuthData>(authTicket.UserData);
+                    }
+                    else
+                    {
+                        userData = null;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
+                    string message = ex.Message;
                     userData = null;
                 }
             }
-            catch (Exception ex)
+        }
+
+        public void GetUserDataFromCustomerCookie()
+        {
+            HttpCookie authCookie = HttpContext.Current.Request.Cookies.Get(FormsAuthentication.FormsCookieName);
+            if (authCookie == null || authCookie.Value == null)
             {
-                string message = ex.Message;
                 userData = null;
+            }
+            else
+            {
+                try
+                {
+                    FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                    if (authTicket != null)
+                    {
+                        AuthData tempData = JsonConvert.DeserializeObject<AuthData>(authTicket.UserData);
+                        if (users.Keys.Contains(UserData.userPrincipleName))
+                        {
+                            userData = users[tempData.userPrincipleName];
+                        }
+
+                    }
+                    else
+                    {
+                        userData = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    string message = ex.Message;
+                    userData = null;
+                }
+            }
+        }
+        
+
+        public AuthData GetUserCookie()
+        {
+            HttpCookie httpCookie = HttpContext.Current.Request.Cookies.Get(FormsAuthentication.FormsCookieName);
+            if(httpCookie!=null && httpCookie.Value!=null && httpCookie.Value!=string.Empty)
+            {
+                string userName = httpCookie.Value;
+                if(Users.Keys.Contains(userName))
+                {
+                    return Users[userName];
+                }
+            }
+            
+            return null;
+        }
+
+        public void GetUserDataFromDic()
+        {
+            HttpCookie authCookie = HttpContext.Current.Request.Cookies.Get(FormsAuthentication.FormsCookieName);
+            if (authCookie == null || authCookie.Value == null)
+            {
+                authCookie = null;
             }
         }
 
@@ -61,18 +138,28 @@ namespace ClientWebApplication
                 try
                 {
                     var result = JsonConvert.SerializeObject(userData);
-                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
-                    1,
-                    userData.userPrincipleName,
-                    DateTime.Now,
-                    DateTime.Now.AddMinutes(30),
-                    false,
-                   result
-                    );
-                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                    //HttpContext.Current.Response.Cookies.Clear();
-                    System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    // FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(
+                    // 1,
+                    // userData.userPrincipleName,
+                    // DateTime.Now,
+                    // DateTime.Now.AddMinutes(30),
+                    // false,
+                    //result
+                    // );
+                    //string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    //System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName, userData.userPrincipleName);
                     System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+
+                    if (users.Keys.Contains(UserData.userPrincipleName))
+                    {
+                        users[UserData.userPrincipleName] = UserData;
+                    }
+                    else
+                    {
+                        users.Add(UserData.userPrincipleName, UserData);
+                    }
+
                 }
                 catch(Exception)
                 {
@@ -118,8 +205,9 @@ namespace ClientWebApplication
 
         public bool IsAuthentication()
         {
-            GetUserDataCookie();
-            if(userData!=null)
+            //GetUserDataFromCustomerCookie();
+            AuthData authData = GetUserCookie();
+            if (authData != null)
             {
                 return true;
             }
@@ -129,8 +217,9 @@ namespace ClientWebApplication
 
         public bool IsAuthorization()
         {
-            GetUserDataCookie();
-            if (userData != null && userData.authResult)
+            //GetUserDataFromCustomerCookie();
+            AuthData authData = GetUserCookie();
+            if (authData != null && authData.authResult)
             {
                 return true;
             }
@@ -153,7 +242,7 @@ namespace ClientWebApplication
                         httpContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                         var result = client.PostAsync("api/auth/check", httpContent).Result.Content.ReadAsStringAsync().Result;
                         userData = JsonConvert.DeserializeObject<AuthData>(result);
-                        SetUserDataCookie();
+                        //SetUserDataCookie();
                     }
                     catch(Exception ex)
                     {
@@ -164,12 +253,17 @@ namespace ClientWebApplication
             }
         }
 
-        public void ClearCookie()
+        public void ClearCookieAndLogoff()
         {
             HttpContext.Current.Response.Cookies.Clear();
             System.Web.HttpCookie authCookie = new System.Web.HttpCookie(FormsAuthentication.FormsCookieName);
             authCookie.Expires= DateTime.Now.AddDays(-1d);
             System.Web.HttpContext.Current.Response.Cookies.Add(authCookie);
+            AuthData authData = GetUserCookie();
+            if (authData != null)
+            {
+                users.Remove(authData.userPrincipleName);
+            }
             this.userData = null;
         }
 

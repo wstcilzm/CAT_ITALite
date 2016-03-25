@@ -22,6 +22,7 @@ namespace ClientWebApplication
         protected void Page_Init(object sender, EventArgs e)
         {
             // The code below helps to protect against XSRF attacks
+            
             var requestCookie = Request.Cookies[AntiXsrfTokenKey];
             Guid requestCookieGuidValue;
             if (requestCookie != null && Guid.TryParse(requestCookie.Value, out requestCookieGuidValue))
@@ -81,21 +82,33 @@ namespace ClientWebApplication
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            AuthHelper  = new MVCAuthHelper();
+            AuthHelper = new MVCAuthHelper();
+            Session["sdfsdf"] = "sdfsdf";
+            Console.WriteLine(Session["sdfsdf"]);
             if (AuthHelper.HasAccessToken(Request))
             {
                 AuthHelper.Authentication(Request.QueryString["AK"]);
                 LoginName = ((MVCAuthHelper)AuthHelper).UserData.userPrincipleName;
                 BuddyLink = "Sign Out";
                 SignoutServer = ConfigurationManager.AppSettings["SignoutServer"];
+                return;
             }
 
-            if (!AuthHelper.IsAuthentication() || !string.IsNullOrEmpty(Request.QueryString["BK"]))
+            if(!string.IsNullOrEmpty(Request.QueryString["BK"]))
+            {
+                AuthHelper.ClearCookieAndLogoff();
+                BuddyLink = "Register";
+                SignoutServer = "Account/Register";
+                LoginName = "Log In";
+                return;
+            }
+
+            //if (!AuthHelper.IsAuthentication() || !string.IsNullOrEmpty(Request.QueryString["BK"]))
+            else if (!AuthHelper.IsAuthentication())
             {
                 BuddyLink = "Register";
                 SignoutServer = "Account/Register";
                 LoginName = "Log In";
-                AuthHelper.ClearCookie();
             }
             else
             {
@@ -104,7 +117,8 @@ namespace ClientWebApplication
                 SignoutServer = ConfigurationManager.AppSettings["SignoutServer"];
             }
 
-            if(AuthHelper.IsAuthentication() && !AuthHelper.IsAuthorization())
+            //if (AuthHelper.IsAuthentication() && !AuthHelper.IsAuthorization())
+            if (!AuthHelper.IsAuthorization())
             {
                 AuthHelper.Authorization("05dbf7ce-ea6b-4784-89c6-d11c67a2c7f1", "CATITA ClientWepApp", DateTime.Now.Ticks.ToString());
             }
